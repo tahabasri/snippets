@@ -1,27 +1,73 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { SnippetsProvider } from './provider/snippetsProvider';
+import { Snippet } from './interface/snippet';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "snippets" is now active!');
+	const content: Snippet = {
+		"label": "snippets",
+		//"id": 1,
+		"children": [
+			{
+				"label": "Bootstrap_Snippets",
+				// "id": 2,
+				"children": [
+					{
+						"label": "Alerts",
+						// "id": 3,
+						"children": [
+							{
+								"label": "Success Alert",
+								// "id": 6,
+								"value": '<div class="alert alert-success" role="alert"></div>',
+								"children": []
+							}
+						]
+					},
+					{
+						"label": "Cards",
+						// "id": 4,
+						"children": [
+							{
+								"label": "Primary Card",
+								"value": '<div class="card text-white bg-primary mb-3" style="max-width: 18rem;"></div>',
+								// "id": 5,
+								"children": []
+							}
+						]
+					}
+				]
+			}
+		]
+	};
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('snippets.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+	function openSnippet(value:string) {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+		  vscode.window.showInformationMessage("no editor is open");
+		  return;
+		}
+		editor.edit(edit => {
+			edit.insert(editor.selection.start, value);
+		});
+	}
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Snippets!');
-	});
+	context.subscriptions.push(
+		vscode.commands.registerCommand('snippets.openSnippet', openSnippet)
+	);
 
-	context.subscriptions.push(disposable);
+	const snippetsProvider = new SnippetsProvider(content);
+	
+	vscode.window.registerTreeDataProvider('snippetsExplorer', snippetsProvider);
+	vscode.commands.registerCommand('snippetsExplorer.refreshEntry', () =>
+		snippetsProvider.refresh()
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('snippets.helloWorld', () => {
+			vscode.window.showInformationMessage('Hello World from Snippets!');
+		})
+	);
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }

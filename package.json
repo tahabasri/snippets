@@ -3,23 +3,133 @@
 	"displayName": "Snippets",
 	"description": "Manage your code snippets via collections without quitting your editor.",
 	"version": "0.0.1",
+	"preview": true,
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"publisher": "tahabasri",
+	"author": {
+		"name": "Taha BASRI"
+	},
+	"icon": "images/logo.png",
+	"homepage": "https://github.com/tahabasri/snippets/blob/main/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tahabasri/snippets.git"
+	},
+	"bugs": {
+		"url": "https://github.com/tahabasri/snippets/issues"
+	},
 	"engines": {
 		"vscode": "^1.51.0"
 	},
 	"categories": [
+		"Snippets",
 		"Other"
 	],
+	"keywords": [
+		"Snippets",
+		"Snippet",
+		"Collections",
+		"Collection",
+		"Bookmarks",
+		"Bookmark"
+	],
 	"activationEvents": [
-		"onCommand:snippets.helloWorld"
+		"onCommand:snippets.helloWorld",
+		"onView:snippetsExplorer"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"viewsWelcome": [
+			{
+				"view": "snippetsExplorer",
+				"contents": "In order to use git features, you can open a folder containing a git repository or clone from a URL.\n[Open Folder](command:vscode.openFolder)\n[Clone Repository](command:git.clone)\nTo learn more about how to use git and source control in VS Code [read our docs](https://aka.ms/vscode-scm).",
+				"when": "config.git.enabled && git.state == initialized && workbenchState == empty"
+			}
+		],
 		"commands": [
 			{
+				"command": "snippetsExplorer.refreshEntry",
+				"title": "Refresh",
+				"category": "Tests",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "snippetsExplorer.addEntry",
+				"title": "Add Snippet",
+				"icon": "$(search-new-editor)"
+			},
+			{
+				"command": "snippetsExplorer.addFolder",
+				"title": "Add Folder",
+				"icon": "$(new-folder)"
+			},
+			{
+				"command": "snippetsExplorer.editEntry",
+				"title": "Edit Snippet",
+				"icon": "$(edit)"
+			},
+			{
+				"command": "snippetsExplorer.deleteEntry",
+				"title": "Delete Snippet",
+				"icon": "$(remove)"
+			},
+			{
 				"command": "snippets.helloWorld",
-				"title": "Hello World"
+				"title": "Test Command",
+				"category": "Snippets"
 			}
-		]
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "snippetsExplorer.refreshEntry",
+					"when": "view == snippetsExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "snippetsExplorer.addEntry",
+					"when": "view == snippetsExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "snippetsExplorer.addFolder",
+					"when": "view == snippetsExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "snippets.helloWorld",
+					"when": "view == snippetsExplorer"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "snippetsExplorer.editEntry",
+					"when": "view == snippetsExplorer && viewItem == snippet",
+					"group": "inline"
+				},
+				{
+					"command": "snippetsExplorer.deleteEntry",
+					"when": "view == snippetsExplorer && viewItem == snippet"
+				}
+			]
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "snippets-explorer",
+					"title": "Snippets",
+					"icon": "resources/icons/logo_w.svg"
+				}
+			]
+		},
+		"views": {
+			"snippets-explorer": [
+				{
+					"id": "snippetsExplorer",
+					"name": "Snippets Explorer"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
