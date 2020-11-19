@@ -43,7 +43,7 @@
 			{
 				"view": "snippetsExplorer",
 				"contents": "In order to use git features, you can open a folder containing a git repository or clone from a URL.\n[Open Folder](command:vscode.openFolder)\n[Clone Repository](command:git.clone)\nTo learn more about how to use git and source control in VS Code [read our docs](https://aka.ms/vscode-scm).",
-				"when": "config.git.enabled && git.state == initialized && workbenchState == empty"
+				"when": "workbenchState == empty"
 			}
 		],
 		"commands": [
@@ -74,7 +74,7 @@
 				"icon": "$(remove)"
 			},
 			{
-				"command": "snippets.helloWorld",
+				"command": "snippets.testCommand",
 				"title": "Test Command",
 				"category": "Snippets"
 			}
@@ -97,7 +97,7 @@
 					"group": "navigation"
 				},
 				{
-					"command": "snippets.helloWorld",
+					"command": "snippets.testCommand",
 					"when": "view == snippetsExplorer"
 				}
 			],
