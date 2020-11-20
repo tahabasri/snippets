@@ -4,7 +4,7 @@ import { Snippet } from '../interface/snippet';
 import { DataAcess } from '../data/dataAccess';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
-    
+
     snippetsFlatten: string;
     snippets: Snippet;
 
@@ -32,7 +32,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
     refresh(): void {
         console.log("refreshing from fs");
         //this.snippetsFlatten = this.compact(this.snippets);
-        if(this.compact(this.snippets) !== this.snippetsFlatten){
+        if (this.compact(this.snippets) !== this.snippetsFlatten) {
             this.dataAccess.writeToFile(this.snippets);
         }
         this._onDidChangeTreeData.fire();
@@ -44,19 +44,29 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         return JSON.stringify(snippets);
     }
 
-	addSnippet(snippet: string) {
+    addSnippet(snippet: string, parentId: number) {
         //throw new Error('Method not implemented.');
-        
-        this.snippets.children.push({
+        let lastId = (this.snippets.lastId ?? 0) + 1;
+
+        const newSnippet = {
+            id: lastId,
+            parentId: parentId,
             label: "new snippet",
             value: snippet,
             children: []
-        });
-        console.log("Data changed");
-        console.log(this.snippets);
+        };
 
+        parentId === 1
+            ? this.snippets.children.push(newSnippet)
+            : Snippet.findParent(parentId, this.snippets)?.children.push(newSnippet);
+
+        this.snippets.lastId = lastId;
+
+        console.clear();
+        console.log("Data changed, refreshing");
+        console.log(this.snippets);
         this.refresh();
-	}
+    }
 
     private snippetToTreeItem(element: Snippet): vscode.TreeItem {
         let treeItem = new vscode.TreeItem(
