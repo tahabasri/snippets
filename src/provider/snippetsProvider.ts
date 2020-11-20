@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import fs = require('fs');
+import * as path from 'path';
 import { Snippet } from '../interface/snippet';
 import { DataAcess } from '../data/dataAccess';
 
@@ -62,8 +63,43 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
 
         this.snippets.lastId = lastId;
 
-        console.clear();
-        console.log("Data changed, refreshing");
+        console.log("Snippet added, refreshing");
+        console.log(this.snippets);
+        this.refresh();
+    }
+
+    removeSnippet(snippet: Snippet) {
+        const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
+
+        if (parentElement) {
+            const index = parentElement.children.indexOf(snippet, 0);
+
+            if (index > -1) {
+                parentElement?.children.splice(index, 1);
+            }
+        }
+        console.log("Snippet removed, refreshing");
+        console.log(this.snippets);
+        this.refresh();
+    }
+
+    addSnippetFolder(parentId: number) {
+        let lastId = (this.snippets.lastId ?? 0) + 1;
+
+        const newSnippet = {
+            id: lastId,
+            parentId: parentId,
+            label: "New Snippet Folder",
+            children: []
+        };
+
+        parentId === 1
+            ? this.snippets.children.push(newSnippet)
+            : Snippet.findParent(parentId, this.snippets)?.children.push(newSnippet);
+
+        this.snippets.lastId = lastId;
+
+        console.log("Snippet folder added, refreshing");
         console.log(this.snippets);
         this.refresh();
     }
@@ -79,12 +115,18 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         treeItem.description = "";
         // dynamic context value depending on item type (snippet or snippet folder)
         // context value is used in view/item/context in 'when' condition
-        treeItem.contextValue = 'snippet';
         if (element.children.length === 0) {
             treeItem.command = {
                 command: 'snippets.openSnippet',
                 arguments: [element.value],
                 title: 'Open snippet'
+            };
+            treeItem.contextValue = 'snippet';
+        }else{
+            treeItem.contextValue = 'snippetFolder';
+            treeItem.iconPath = {
+                light: path.join(__filename, '..', '..', '..', '..', 'resources', 'light', 'folder.svg'),
+                dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'dark', 'folder.svg')
             };
         }
         return treeItem;

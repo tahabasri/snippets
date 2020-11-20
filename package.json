@@ -54,28 +54,33 @@
 				"icon": "$(refresh)"
 			},
 			{
-				"command": "snippetsExplorer.addEntry",
+				"command": "snippetsExplorer.addSnippet",
 				"title": "Add Snippet",
-				"icon": "$(search-new-editor)"
+				"icon": "$(search-new-editor)",
+				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.addFolder",
+				"command": "snippetsExplorer.addSnippetFolder",
 				"title": "Add Folder",
-				"icon": "$(new-folder)"
+				"icon": "$(new-folder)",
+				"category": "Snippets"
 			},
 			{
 				"command": "snippetsExplorer.editEntry",
 				"title": "Edit Snippet",
-				"icon": "$(edit)"
+				"icon": "$(edit)",
+				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.deleteEntry",
+				"command": "snippetsExplorer.deleteSnippet",
 				"title": "Delete Snippet",
-				"icon": "$(remove)"
+				"icon": "$(remove)",
+				"category": "Snippets"
 			},
 			{
-				"command": "snippets.testCommand",
-				"title": "Test Command",
+				"command": "snippetsExplorer.deleteSnippetFolder",
+				"title": "Delete Folder",
+				"icon": "$(remove)",
 				"category": "Snippets"
 			}
 		],
@@ -87,18 +92,14 @@
 					"group": "navigation"
 				},
 				{
-					"command": "snippetsExplorer.addEntry",
+					"command": "snippetsExplorer.addSnippet",
 					"when": "view == snippetsExplorer",
 					"group": "navigation"
 				},
 				{
-					"command": "snippetsExplorer.addFolder",
+					"command": "snippetsExplorer.addSnippetFolder",
 					"when": "view == snippetsExplorer",
 					"group": "navigation"
-				},
-				{
-					"command": "snippets.testCommand",
-					"when": "view == snippetsExplorer"
 				}
 			],
 			"view/item/context": [
@@ -108,8 +109,13 @@
 					"group": "inline"
 				},
 				{
-					"command": "snippetsExplorer.deleteEntry",
-					"when": "view == snippetsExplorer && viewItem == snippet"
+					"command": "snippetsExplorer.deleteSnippetFolder",
+					"when": "view == snippetsExplorer && viewItem == snippetFolder"
+				},
+				{
+					"command": "snippetsExplorer.deleteSnippet",
+					"when": "view == snippetsExplorer && viewItem == snippet",
+					"group": "inline"
 				}
 			]
 		},
