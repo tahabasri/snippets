@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { SnippetsProvider } from './provider/snippetsProvider';
 import { DataAcess } from './data/dataAccess';
 import { Snippet } from './interface/snippet';
+import { EditSnippet } from './views/editSnippet';
+import { EditSnippetFolder } from './views/editSnippetFolder';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -110,7 +112,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		);
 
-		panel.webview.html = getWebviewContent();
+		panel.webview.html = EditSnippet.getWebviewContent(snippet);
 
 		// Handle messages from the webview
 		panel.webview.onDidReceiveMessage(
@@ -134,59 +136,42 @@ export function activate(context: vscode.ExtensionContext) {
 			undefined,
 			context.subscriptions
 		);
+	});
 
-		function getWebviewContent() {
-			return `<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>${snippet.label}</title>
-			</head>
-			<body>
-				<form name="edit-snippet-form">
-					<label for="snippet-label">Snippet Label:</label><br>
-					<input type="text" id="snippet-label" value="${snippet.label}" required><br><br>
-					<label for="snippet-value">Snippet Content:</label><br>
-					<textarea name="snippet-value" rows="20" cols="75" required>${snippet.value}</textarea>
-					<br/><input type="submit" value="Save">
-				</form>
-			
-				<script>
-					(function() {
-						const vscode = acquireVsCodeApi();
+	vscode.commands.registerCommand('snippetsExplorer.editSnippetFolder', (snippet: Snippet) => {
+		console.log(`Editing folder [${snippet.label}]`);
+		// Create and show a new webview for editing snippet
+		const panel = vscode.window.createWebviewPanel(
+			'editSnippetFolder', // Identifies the type of the webview. Used internally
+			`Edit Folder [${snippet.label}]`, // Title of the panel displayed to the user
+			vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+			{
+				enableScripts: true,
+				retainContextWhenHidden: true
+			}
+		);
 
-						document.querySelector('form').addEventListener('submit', (e) => {
-							e.preventDefault();
-							const form = document.querySelector('form[name="edit-snippet-form"]');
-							const snippetLabel = form.elements['snippet-label'].value;
-							const snippetValue = form.elements['snippet-value'].value;
+		panel.webview.html = EditSnippetFolder.getWebviewContent(snippet);
 
-							vscode.postMessage({
-								data: {
-									label: snippetLabel,
-									value: snippetValue
-								},
-								command: 'edit-snippet',
-								text: 'New value '
-							});
-						});
-
-						  
-						// const form = document.getElementById("edit-snippet-form");
-  
-						// form.onsubmit = function (e) {
-						// 	e.preventDefault();
-						// 	vscode.postMessage({
-						// 		command: 'alert',
-						// 		text: '🐛  on line '
-						// 	});
-						// }
-					}())
-				</script>
-			</body>
-			</html>`;
-		}
+		// Handle messages from the webview
+		panel.webview.onDidReceiveMessage(
+			message => {
+				switch (message.command) {
+					case 'edit-folder':
+						console.log('Form returned ' + message);
+						const label = message.data.label;
+						// call provider only if there is data change
+						if (label) {
+							snippet.label = label;
+						}
+						snippetsProvider.editSnippetFolder(snippet);
+						panel.dispose();
+						return;
+				}
+			},
+			undefined,
+			context.subscriptions
+		);
 	});
 
 	vscode.commands.registerCommand('snippetsExplorer.deleteSnippet', (snippet) => {

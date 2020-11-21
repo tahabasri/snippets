@@ -83,6 +83,11 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "snippetsExplorer.editSnippetFolder",
+				"title": "Edit Folder",
+				"category": "Snippets"
+			},
+			{
 				"command": "snippetsExplorer.deleteSnippetFolder",
 				"title": "Delete Folder",
 				"icon": "$(remove)",
@@ -135,9 +140,14 @@
 					"group": "2_snippetManagement@1"
 				},
 				{
-					"command": "snippetsExplorer.deleteSnippet",
+					"command": "snippetsExplorer.editSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "2_snippetManagement@2"
+				},
+				{
+					"command": "snippetsExplorer.deleteSnippet",
+					"when": "view == snippetsExplorer && viewItem == snippet",
+					"group": "2_snippetManagement@3"
 				},
 				{
 					"command": "snippetsExplorer.addSnippetFolder",
@@ -145,9 +155,14 @@
 					"group": "3_folderManagement@1"
 				},
 				{
+					"command": "snippetsExplorer.editSnippetFolder",
+					"when": "view == snippetsExplorer",
+					"group": "3_folderManagement@2"
+				},
+				{
 					"command": "snippetsExplorer.deleteSnippetFolder",
 					"when": "view == snippetsExplorer && viewItem == snippetFolder",
-					"group": "3_folderManagement@2"
+					"group": "3_folderManagement@3"
 				}
 			],
 			"editor/context": [

@@ -93,7 +93,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
 
         if (parentElement) {
-            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));//.indexOf(snippet, 0);
+            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
 
             if (index > -1) {
                 parentElement.children.map(obj =>
@@ -111,11 +111,32 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         this.refresh();
     }
 
+    editSnippetFolder(snippet: Snippet) {
+        const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
+
+        if (parentElement) {
+            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
+
+            if (index > -1) {
+                parentElement.children.map(obj =>
+                    obj.id === snippet.id ? {
+                         ...obj,
+                         label: snippet.label
+                        } 
+                        : obj
+                );
+            }
+        }
+        console.log("Snippet updated, refreshing");
+        console.log(this.snippets);
+        this.refresh();
+    }
+
     removeSnippet(snippet: Snippet) {
         const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
 
         if (parentElement) {
-            const index = parentElement.children.indexOf(snippet, 0);
+            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
 
             if (index > -1) {
                 parentElement?.children.splice(index, 1);
