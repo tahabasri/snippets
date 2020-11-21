@@ -8,11 +8,13 @@
             "id": 2,
             "parentId": 1,
             "label": "Bootstrap_Snippets",
+            "folder": true,
             "children": [
                 {
                     "id": 16,
                     "parentId": 2,
                     "label": "Alerts",
+                    "folder": true,
                     "children": [
                         {
                             "id": 3,
@@ -48,6 +50,7 @@
                     "id": 6,
                     "parentId": 2,
                     "label": "Cards",
+                    "folder": true,
                     "children": [
                         {
                             "id": 12,

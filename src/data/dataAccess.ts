@@ -17,11 +17,6 @@ export class DataAcess {
         }
 
         this.dataFile = sourceParentPath + '/data.json';
-
-        // this.data = this.readFile();
-        // if (this.data) {
-        //     console.info("Data has been retrieved");
-        // }
     }
 
     isBlank(str: string): boolean {

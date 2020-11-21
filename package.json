@@ -49,13 +49,18 @@
 		"commands": [
 			{
 				"command": "snippetsExplorer.refreshEntry",
-				"title": "Refresh",
+				"title": "Refresh Snippets",
 				"category": "Tests",
 				"icon": "$(refresh)"
 			},
 			{
+				"command": "snippets.openSnippet",
+				"title": "Open Snippet",
+				"category": "Snippets"
+			},
+			{
 				"command": "snippetsExplorer.addSnippet",
-				"title": "Add Snippet",
+				"title": "New Snippet",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
@@ -66,7 +71,7 @@
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.editEntry",
+				"command": "snippetsExplorer.editSnippet",
 				"title": "Edit Snippet",
 				"icon": "$(edit)",
 				"category": "Snippets"
@@ -85,37 +90,71 @@
 			}
 		],
 		"menus": {
-			"view/title": [
+			"commandPalette": [
 				{
-					"command": "snippetsExplorer.refreshEntry",
-					"when": "view == snippetsExplorer",
-					"group": "navigation"
-				},
+					"command": "snippets.openSnippet",
+					"when": "false"
+				}
+			],
+			"view/title": [
 				{
 					"command": "snippetsExplorer.addSnippet",
 					"when": "view == snippetsExplorer",
-					"group": "navigation"
+					"group": "navigation@1"
 				},
 				{
 					"command": "snippetsExplorer.addSnippetFolder",
 					"when": "view == snippetsExplorer",
-					"group": "navigation"
+					"group": "navigation@2"
+				},
+				{
+					"command": "snippetsExplorer.refreshEntry",
+					"when": "view == snippetsExplorer",
+					"group": "navigation@3"
 				}
 			],
 			"view/item/context": [
 				{
-					"command": "snippetsExplorer.editEntry",
+					"command": "snippetsExplorer.editSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "inline"
-				},
-				{
-					"command": "snippetsExplorer.deleteSnippetFolder",
-					"when": "view == snippetsExplorer && viewItem == snippetFolder"
 				},
 				{
 					"command": "snippetsExplorer.deleteSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "inline"
+				},
+				{
+					"command": "snippets.openSnippet",
+					"when": "view == snippetsExplorer && viewItem == snippet",
+					"group": "1_snippets@1"
+				},
+				{
+					"command": "snippetsExplorer.addSnippet",
+					"when": "view == snippetsExplorer",
+					"group": "2_snippetManagement@1"
+				},
+				{
+					"command": "snippetsExplorer.deleteSnippet",
+					"when": "view == snippetsExplorer && viewItem == snippet",
+					"group": "2_snippetManagement@2"
+				},
+				{
+					"command": "snippetsExplorer.addSnippetFolder",
+					"when": "view == snippetsExplorer",
+					"group": "3_folderManagement@1"
+				},
+				{
+					"command": "snippetsExplorer.deleteSnippetFolder",
+					"when": "view == snippetsExplorer && viewItem == snippetFolder",
+					"group": "3_folderManagement@2"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "snippetsExplorer.addSnippet",
+					"when": "editorTextFocus",
+					"group": "snippets@1"
 				}
 			]
 		},

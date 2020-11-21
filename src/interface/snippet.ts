@@ -2,8 +2,8 @@ export class Snippet {
 	id: number;
     parentId?: number;
     label: string;
+    folder?: boolean;
     children: Array<Snippet>;
-
     value?: string;
     lastId?: number;
 
@@ -11,11 +11,13 @@ export class Snippet {
         id: number,
         label: string,
         children: Array<Snippet>,
+        folder?: boolean,
         parentId?: number,
         value?: string
     ){
         this.id = id;
         this.label = label;
+        this.folder = folder;
         this.children = children;
         this.parentId = parentId;
         this.value = value;
@@ -43,19 +45,5 @@ export class Snippet {
 			// The node has not been found and we have no more options
 			return undefined;
 		}
-    }
-
-    static toArray(obj: any): any[] {
-        const result = [];
-        for (const prop in obj) {
-            const value = obj[prop];
-            if (typeof value === 'object') {
-                result.push(Snippet.toArray(value)); // <- recursive call
-            }
-            else if (prop === 'id'){
-                result.push(value);
-            }
-        }
-        return result;
     }
 }

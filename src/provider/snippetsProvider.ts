@@ -45,14 +45,13 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         return JSON.stringify(snippets);
     }
 
-    addSnippet(snippet: string, parentId: number) {
-        //throw new Error('Method not implemented.');
+    addSnippet(name: string, snippet: string, parentId: number) {
         let lastId = (this.snippets.lastId ?? 0) + 1;
 
         const newSnippet = {
             id: lastId,
             parentId: parentId,
-            label: "new snippet",
+            label: name,
             value: snippet,
             children: []
         };
@@ -64,6 +63,50 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         this.snippets.lastId = lastId;
 
         console.log("Snippet added, refreshing");
+        console.log(this.snippets);
+        this.refresh();
+    }
+
+    addSnippetFolder(name: string, parentId: number) {
+        let lastId = (this.snippets.lastId ?? 0) + 1;
+
+        const newSnippet = {
+            id: lastId,
+            parentId: parentId,
+            label: name,
+            folder: true,
+            children: []
+        };
+
+        parentId === 1
+            ? this.snippets.children.push(newSnippet)
+            : Snippet.findParent(parentId, this.snippets)?.children.push(newSnippet);
+
+        this.snippets.lastId = lastId;
+
+        console.log("Snippet folder added, refreshing");
+        console.log(this.snippets);
+        this.refresh();
+    }
+
+    editSnippet(snippet: Snippet) {
+        const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
+
+        if (parentElement) {
+            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));//.indexOf(snippet, 0);
+
+            if (index > -1) {
+                parentElement.children.map(obj =>
+                    obj.id === snippet.id ? {
+                         ...obj,
+                         label: snippet.label,
+                         value: snippet.value
+                        } 
+                        : obj
+                );
+            }
+        }
+        console.log("Snippet updated, refreshing");
         console.log(this.snippets);
         this.refresh();
     }
@@ -83,52 +126,41 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         this.refresh();
     }
 
-    addSnippetFolder(parentId: number) {
-        let lastId = (this.snippets.lastId ?? 0) + 1;
-
-        const newSnippet = {
-            id: lastId,
-            parentId: parentId,
-            label: "New Snippet Folder",
-            children: []
-        };
-
-        parentId === 1
-            ? this.snippets.children.push(newSnippet)
-            : Snippet.findParent(parentId, this.snippets)?.children.push(newSnippet);
-
-        this.snippets.lastId = lastId;
-
-        console.log("Snippet folder added, refreshing");
-        console.log(this.snippets);
-        this.refresh();
-    }
-
     private snippetToTreeItem(element: Snippet): vscode.TreeItem {
         let treeItem = new vscode.TreeItem(
             element.label,
-            element.children.length > 0
+            element.folder && element.folder === true
                 ? vscode.TreeItemCollapsibleState.Expanded
                 : vscode.TreeItemCollapsibleState.None
         );
-        treeItem.tooltip = `Snippet for ${element.label}`;
-        treeItem.description = "";
+        //treeItem.description = "";
         // dynamic context value depending on item type (snippet or snippet folder)
         // context value is used in view/item/context in 'when' condition
-        if (element.children.length === 0) {
-            treeItem.command = {
-                command: 'snippets.openSnippet',
-                arguments: [element.value],
-                title: 'Open snippet'
-            };
-            treeItem.contextValue = 'snippet';
-        }else{
+        if (element.folder && element.folder === true) {
             treeItem.contextValue = 'snippetFolder';
             treeItem.iconPath = {
-                light: path.join(__filename, '..', '..', '..', '..', 'resources', 'light', 'folder.svg'),
-                dark: path.join(__filename, '..', '..', '..', '..', 'resources', 'dark', 'folder.svg')
+                light: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'light', 'folder.svg'),
+                dark: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'dark', 'folder.svg')
+            };
+        } else {
+            const maxLength = 20;
+            treeItem.tooltip = `${element.value
+                ? "'" + element.value.replace('\n', '').slice(0, maxLength)
+                + (element.value.length > 20 ? '...' : '') + "'"
+                : "''"}`;
+            // conditional in configuration
+            treeItem.command = {
+                command: 'snippets.openSnippet',
+                arguments: [element],
+                title: 'Open Snippet'
+            };
+            treeItem.contextValue = 'snippet';
+            treeItem.iconPath = {
+                light: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'light', 'file.svg'),
+                dark: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'dark', 'file.svg')
             };
         }
+
         return treeItem;
     }
 }
