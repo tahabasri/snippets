@@ -68,6 +68,42 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	vscode.commands.registerCommand('snippetsExplorer.addSnippetFromClipboard', async (node) => {
+		const PARENT_ID = 1;
+		let clipboardContent = await vscode.env.clipboard.readText();
+		if (!clipboardContent || clipboardContent.trim() === "") {
+			vscode.window.showWarningMessage("no content in your clipboard");
+			return;
+		}
+		// get snippet name
+		const name = await vscode.window.showInputBox({
+			prompt: 'Snippet Name',
+			placeHolder: 'Some examples: Custom Navbar, CSS Alert Style, etc.',
+			validateInput: text => {
+				return text === "" ? 'Snippet name should not be empty' : null;
+			}
+		});
+		if (name === undefined || name === "") {
+			vscode.window.showWarningMessage("Snippet must have a non-empty name.");
+			return;
+		}
+		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
+		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
+		if (snippetsExplorer.selection.length === 0 && !node) {
+			console.log("No item is selected nor highlighted in the treeView, appending snippet to root of tree");
+			snippetsProvider.addSnippet(name, clipboardContent, PARENT_ID);
+		} else {
+			const selectedItem = node ? node : snippetsExplorer.selection[0];
+			if (selectedItem.folder && selectedItem.folder === true) {
+				console.log("Selected item is a folder, appending snippet to the end of current folder");
+				snippetsProvider.addSnippet(name, clipboardContent, selectedItem.id);
+			} else {
+				console.log("Selected item is a snippet, appending snippet to the end of current folder");
+				snippetsProvider.addSnippet(name, clipboardContent, selectedItem.parentId ?? PARENT_ID);
+			}
+		}
+	});
+
 	vscode.commands.registerCommand('snippetsExplorer.addSnippetFolder', async (node) => {
 		const PARENT_ID = 1;
 		// get snippet name

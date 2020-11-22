@@ -65,6 +65,12 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "snippetsExplorer.addSnippetFromClipboard",
+				"title": "New Snippet from Clipboard",
+				"icon": "$(search-new-editor)",
+				"category": "Snippets"
+			},
+			{
 				"command": "snippetsExplorer.addSnippetFolder",
 				"title": "Add Folder",
 				"icon": "$(new-folder)",
@@ -116,6 +122,11 @@
 					"command": "snippetsExplorer.refreshEntry",
 					"when": "view == snippetsExplorer",
 					"group": "navigation@3"
+				},
+				{
+					"command": "snippetsExplorer.addSnippetFromClipboard",
+					"when": "view == snippetsExplorer",
+					"group": "other"
 				}
 			],
 			"view/item/context": [
@@ -140,14 +151,19 @@
 					"group": "2_snippetManagement@1"
 				},
 				{
+					"command": "snippetsExplorer.addSnippetFromClipboard",
+					"when": "view == snippetsExplorer",
+					"group": "2_snippetManagement@2"
+				},
+				{
 					"command": "snippetsExplorer.editSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
-					"group": "2_snippetManagement@2"
+					"group": "2_snippetManagement@3"
 				},
 				{
 					"command": "snippetsExplorer.deleteSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
-					"group": "2_snippetManagement@3"
+					"group": "2_snippetManagement@4"
 				},
 				{
 					"command": "snippetsExplorer.addSnippetFolder",
