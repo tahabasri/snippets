@@ -59,6 +59,11 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "snippets.openSnippetInTerminal",
+				"title": "Open Snippet in Terminal",
+				"category": "Snippets"
+			},
+			{
 				"command": "snippetsExplorer.addSnippet",
 				"title": "New Snippet",
 				"icon": "$(search-new-editor)",
@@ -144,6 +149,11 @@
 					"command": "snippets.openSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "1_snippets@1"
+				},
+				{
+					"command": "snippets.openSnippetInTerminal",
+					"when": "view == snippetsExplorer && viewItem == snippet",
+					"group": "1_snippets@2"
 				},
 				{
 					"command": "snippetsExplorer.addSnippet",

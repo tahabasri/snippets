@@ -16,8 +16,16 @@ export function activate(context: vscode.ExtensionContext) {
 		editor.edit(edit => {
 			edit.insert(editor.selection.start, snippet.value);
 		});
-	}
-	);
+	});
+
+	vscode.commands.registerCommand('snippets.openSnippetInTerminal', (snippet) => {
+		const termianl = vscode.window.activeTerminal;
+		if (!termianl) {
+			vscode.window.showInformationMessage("no terminal is open");
+			return;
+		}
+		termianl.sendText(snippet.value);
+	});
 
 	const snippetsProvider = new SnippetsProvider(new DataAcess(context.globalStorageUri.fsPath));
 
@@ -29,15 +37,29 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand('snippetsExplorer.addSnippet', async (node) => {
 		const PARENT_ID = 1;
+		var text: string | undefined;
+
 		const editor = vscode.window.activeTextEditor;
-		if (!editor) {
-			vscode.window.showWarningMessage("no editor is open");
-			return;
-		}
-		const text = editor.document.getText(editor.selection);
-		if (text.length === 0) {
-			vscode.window.showWarningMessage("no text is selected");
-			return;
+		// if no editor is open or editor has no text, get value from user
+		if (!editor || editor.document.getText(editor.selection) === "") {
+			// get snippet name
+			text = await vscode.window.showInputBox({
+				prompt: 'Snippet Value',
+				placeHolder: 'An example: <div>my cool div</div>',
+				validateInput: text => {
+					return text === "" ? 'Snippet value should not be empty' : null;
+				}
+			});
+			if (!text || text.length === 0) {
+				vscode.window.showWarningMessage("no text was given");
+				return;
+			}
+		} else {
+			text = editor.document.getText(editor.selection);
+			if (text.length === 0) {
+				vscode.window.showWarningMessage("no text is selected");
+				return;
+			}
 		}
 		// get snippet name
 		const name = await vscode.window.showInputBox({
@@ -49,6 +71,10 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 		if (name === undefined || name === "") {
 			vscode.window.showWarningMessage("Snippet must have a non-empty name.");
+			return;
+		}
+		if (text === undefined || text === "") {
+			vscode.window.showWarningMessage("Snippet must have a non-empty value.");
 			return;
 		}
 		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
@@ -156,7 +182,7 @@ export function activate(context: vscode.ExtensionContext) {
 				switch (message.command) {
 					case 'edit-snippet':
 						console.log('Form returned ' + message);
-						const {label, value} = message.data;
+						const { label, value } = message.data;
 						// call provider only if there is data change
 						if (label) {
 							snippet.label = label;
