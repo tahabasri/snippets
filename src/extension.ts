@@ -7,15 +7,41 @@ import { EditSnippetFolder } from './views/editSnippetFolder';
 
 export function activate(context: vscode.ExtensionContext) {
 
-	vscode.commands.registerCommand('snippets.test', (snippet) => {
-		
-	});
-
-	vscode.commands.registerCommand('snippets.openSnippet', (snippet) => {
+	vscode.commands.registerCommand('snippets.openSnippet', async (snippet) => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
 			vscode.window.showInformationMessage("no editor is open");
 			return;
+		}
+		if (!snippet) {
+			// let snippets: Snippet[] = [];
+			// Snippet.flatten(snippetsProvider.snippets.children, snippets);
+
+			// interface CustomQuickPick extends vscode.QuickPickItem {
+			// 	label: string;
+			// 	detail: string;
+			// 	value: string;
+			// }
+
+			// const arr: CustomQuickPick[] = snippets.map(s => {
+			// 	return {
+			// 		label: s.label,
+			// 		detail: s.value?.slice(0, 10),
+			// 		value: s.value
+			// 	};
+			// });
+
+			// const selection = await vscode.window.showQuickPick(arr, {
+			// 	placeHolder: 'Select a snippet which should be opened'
+			// });
+
+			// if (
+			// 	!selection ||
+			// 	!selection.detail) {
+			// 	console.log(`No valid selection made!`);
+			// 	return;
+			// }
+			
 		}
 		vscode.commands.executeCommand("editor.action.insertSnippet",
 			{
@@ -34,7 +60,7 @@ export function activate(context: vscode.ExtensionContext) {
 		termianl.sendText(snippet.value);
 	});
 
-	const snippetsProvider = new SnippetsProvider(new DataAcess(context.globalStorageUri.fsPath));
+	const snippetsProvider = new SnippetsProvider(new DataAcess(context.globalStorageUri.fsPath), context);
 
 	//vscode.window.registerTreeDataProvider('snippetsExplorer', snippetsProvider);
 
@@ -256,6 +282,12 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('snippetsExplorer.refreshEntry', () =>
 		snippetsProvider.refresh()
 	);
+
+	vscode.commands.registerCommand('snippets.test', async (snippet) => {
+		let result: any[] = [];
+		Snippet.flatten(snippetsProvider.snippets.children, result);
+		console.log(result);
+	});
 }
 
 export function deactivate() { }

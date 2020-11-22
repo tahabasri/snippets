@@ -23,6 +23,25 @@ export class Snippet {
         this.value = value;
     }
 
+    /**
+     * to be used like the following:
+     * let result: any[] = [];
+     * Snippet.flatten(snippetsProvider.snippets.children, result);
+     * @param arr array of element
+     * @param result final result
+     */
+    static flatten(arr: any, result: any[] = []) {
+        for (let i = 0, length = arr.length; i < length; i++) {
+          const value = arr[i];
+          if (value.folder === true) {
+            Snippet.flatten(value.children, result);
+          } else {
+            result.push(value);
+          }
+        }
+        return result;
+      };      
+
     static findParent(parentId: number, currentElt: Snippet): Snippet | undefined {
 		var i, currentChild, result;
 	

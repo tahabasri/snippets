@@ -6,10 +6,12 @@ import { DataAcess } from '../data/dataAccess';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
 
+    context: vscode.ExtensionContext;
     snippetsFlatten: string;
     snippets: Snippet;
 
-    constructor(private dataAccess: DataAcess) {
+    constructor(private dataAccess: DataAcess, context: vscode.ExtensionContext) {
+        this.context = context;
         this.snippets = dataAccess.readFile();
         this.snippetsFlatten = this.compact(this.snippets);
         console.log(this.snippets);
@@ -98,10 +100,10 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
             if (index > -1) {
                 parentElement.children.map(obj =>
                     obj.id === snippet.id ? {
-                         ...obj,
-                         label: snippet.label,
-                         value: snippet.value
-                        } 
+                        ...obj,
+                        label: snippet.label,
+                        value: snippet.value
+                    }
                         : obj
                 );
             }
@@ -120,9 +122,9 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
             if (index > -1) {
                 parentElement.children.map(obj =>
                     obj.id === snippet.id ? {
-                         ...obj,
-                         label: snippet.label
-                        } 
+                        ...obj,
+                        label: snippet.label
+                    }
                         : obj
                 );
             }
@@ -169,16 +171,17 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
                 ? "'" + element.value.replace('\n', '').slice(0, maxLength)
                 + (element.value.length > 20 ? '...' : '') + "'"
                 : "''"}`;
+            treeItem.contextValue = 'snippet';
+            treeItem.iconPath = {
+                light: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'light', 'file.svg'),
+                dark: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'dark', 'file.svg')
+            };
+
             // conditional in configuration
             treeItem.command = {
                 command: 'snippets.openSnippet',
                 arguments: [element],
                 title: 'Open Snippet'
-            };
-            treeItem.contextValue = 'snippet';
-            treeItem.iconPath = {
-                light: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'light', 'file.svg'),
-                dark: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'dark', 'file.svg')
             };
         }
 

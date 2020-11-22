@@ -29,6 +29,35 @@ This extension contributes the following settings:
 
 ## Known Issues
 
+- Provide snippets as completionItems (shown next to the built in snippets using ctrl+space).
+  - When initializing the application, we can successfully populate VSCode with snippets prefixed with 'snp:snippet-label'
+  - Problem starts to show up when we update existing snippets as the code bellow do not override existing ones but duplicate them
+```typescript
+// see https://code.visualstudio.com/api/references/vscode-api#DocumentSelector
+this.context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
+    '*', {
+    provideCompletionItems() {
+        return [
+            {
+                // see https://code.visualstudio.com/api/references/vscode-api#DocumentFilter
+                label: `snp:${element.label.replace('\n', '').replace(' ', '-')}`,
+                insertText: new vscode.SnippetString(element.value),
+                detail: element.label,
+                kind: vscode.CompletionItemKind.Snippet,
+            },
+        ];
+    },
+},
+    // '' trigger character
+));
+
+// list completionItems
+const list: any = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider',
+    vscode.window.activeTextEditor?.document.uri,
+    new vscode.Position(0, 0));
+console.log(list.items);
+```
+
 Calling out known issues can help limit users opening duplicate issues against your extension.
 
 ## Release Notes
