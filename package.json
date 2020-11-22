@@ -54,6 +54,11 @@
 				"icon": "$(refresh)"
 			},
 			{
+				"command": "snippets.test",
+				"title": "Test Command",
+				"category": "Snippets"
+			},
+			{
 				"command": "snippets.openSnippet",
 				"title": "Open Snippet",
 				"category": "Snippets"

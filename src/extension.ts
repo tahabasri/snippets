@@ -7,15 +7,22 @@ import { EditSnippetFolder } from './views/editSnippetFolder';
 
 export function activate(context: vscode.ExtensionContext) {
 
+	vscode.commands.registerCommand('snippets.test', (snippet) => {
+		
+	});
+
 	vscode.commands.registerCommand('snippets.openSnippet', (snippet) => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
 			vscode.window.showInformationMessage("no editor is open");
 			return;
 		}
-		editor.edit(edit => {
-			edit.insert(editor.selection.start, snippet.value);
-		});
+		vscode.commands.executeCommand("editor.action.insertSnippet",
+			{
+				snippet: snippet.value
+			}
+		);
+		vscode.window.showTextDocument(editor.document);
 	});
 
 	vscode.commands.registerCommand('snippets.openSnippetInTerminal', (snippet) => {
