@@ -7,41 +7,43 @@ import { EditSnippetFolder } from './views/editSnippetFolder';
 
 export function activate(context: vscode.ExtensionContext) {
 
-	vscode.commands.registerCommand('snippets.openSnippet', async (snippet) => {
+	vscode.commands.registerCommand('snippetsCmd.openSnippet', async (snippet) => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
 			vscode.window.showInformationMessage("no editor is open");
 			return;
 		}
 		if (!snippet) {
-			// let snippets: Snippet[] = [];
-			// Snippet.flatten(snippetsProvider.snippets.children, snippets);
+			let snippets: Snippet[] = [];
+			Snippet.flatten(snippetsProvider.snippets.children, snippets);
 
-			// interface CustomQuickPick extends vscode.QuickPickItem {
-			// 	label: string;
-			// 	detail: string;
-			// 	value: string;
-			// }
+			interface CustomQuickPickItem extends vscode.QuickPickItem{
+				label: string;
+				detail: string,
+				value: Snippet
+			}
 
-			// const arr: CustomQuickPick[] = snippets.map(s => {
-			// 	return {
-			// 		label: s.label,
-			// 		detail: s.value?.slice(0, 10),
-			// 		value: s.value
-			// 	};
-			// });
+			const arr: CustomQuickPickItem[] = snippets.map(s => {
+				return {
+					label: s.label,
+					detail: s.value?.slice(0, 10) ?? "",
+					value: s
+				};
+			});
 
-			// const selection = await vscode.window.showQuickPick(arr, {
-			// 	placeHolder: 'Select a snippet which should be opened'
-			// });
+			const selection = await vscode.window.showQuickPick(arr, {
+				placeHolder: 'Select a snippet which should be opened'
+			});
 
-			// if (
-			// 	!selection ||
-			// 	!selection.detail) {
-			// 	console.log(`No valid selection made!`);
-			// 	return;
-			// }
-			
+			if (
+				!selection ||
+				!selection.value) {
+				console.log(`No valid selection made!`);
+				return;
+			}
+
+			// refer to selected snippet
+			snippet = selection.value;
 		}
 		vscode.commands.executeCommand("editor.action.insertSnippet",
 			{
@@ -51,11 +53,43 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showTextDocument(editor.document);
 	});
 
-	vscode.commands.registerCommand('snippets.openSnippetInTerminal', (snippet) => {
+	vscode.commands.registerCommand('snippetsCmd.openSnippetInTerminal', async (snippet) => {
 		const termianl = vscode.window.activeTerminal;
 		if (!termianl) {
 			vscode.window.showInformationMessage("no terminal is open");
 			return;
+		}
+		if (!snippet) {
+			let snippets: Snippet[] = [];
+			Snippet.flatten(snippetsProvider.snippets.children, snippets);
+
+			interface CustomQuickPickItem extends vscode.QuickPickItem{
+				label: string;
+				detail: string,
+				value: Snippet
+			}
+
+			const arr: CustomQuickPickItem[] = snippets.map(s => {
+				return {
+					label: s.label,
+					detail: s.value?.slice(0, 10) ?? "",
+					value: s
+				};
+			});
+
+			const selection = await vscode.window.showQuickPick(arr, {
+				placeHolder: 'Select a snippet which should be opened'
+			});
+
+			if (
+				!selection ||
+				!selection.value) {
+				console.log(`No valid selection made!`);
+				return;
+			}
+
+			// refer to selected snippet
+			snippet = selection.value;
 		}
 		termianl.sendText(snippet.value);
 	});
@@ -68,7 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
 		treeDataProvider: snippetsProvider
 	});
 
-	vscode.commands.registerCommand('snippetsExplorer.addSnippet', async (node) => {
+	vscode.commands.registerCommand('snippetsCmd.addSnippet', async (node) => {
 		const PARENT_ID = 1;
 		var text: string | undefined;
 
@@ -127,7 +161,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	vscode.commands.registerCommand('snippetsExplorer.addSnippetFromClipboard', async (node) => {
+	vscode.commands.registerCommand('snippetsCmd.addSnippetFromClipboard', async (node) => {
 		const PARENT_ID = 1;
 		let clipboardContent = await vscode.env.clipboard.readText();
 		if (!clipboardContent || clipboardContent.trim() === "") {
@@ -163,7 +197,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	vscode.commands.registerCommand('snippetsExplorer.addSnippetFolder', async (node) => {
+	vscode.commands.registerCommand('snippetsCmd.addSnippetFolder', async (node) => {
 		const PARENT_ID = 1;
 		// get snippet name
 		const name = await vscode.window.showInputBox({
@@ -194,7 +228,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	vscode.commands.registerCommand('snippetsExplorer.editSnippet', (snippet: Snippet) => {
+	vscode.commands.registerCommand('snippetsCmd.editSnippet', (snippet: Snippet) => {
 		console.log(`Editing snippet [${snippet.label}]`);
 		// Create and show a new webview for editing snippet
 		const panel = vscode.window.createWebviewPanel(
@@ -233,7 +267,7 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 	});
 
-	vscode.commands.registerCommand('snippetsExplorer.editSnippetFolder', (snippet: Snippet) => {
+	vscode.commands.registerCommand('snippetsCmd.editSnippetFolder', (snippet: Snippet) => {
 		console.log(`Editing folder [${snippet.label}]`);
 		// Create and show a new webview for editing snippet
 		const panel = vscode.window.createWebviewPanel(
@@ -269,21 +303,21 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 	});
 
-	vscode.commands.registerCommand('snippetsExplorer.deleteSnippet', (snippet) => {
+	vscode.commands.registerCommand('snippetsCmd.deleteSnippet', (snippet) => {
 		console.log("Removing snippet");
 		snippetsProvider.removeSnippet(snippet);
 	});
 
-	vscode.commands.registerCommand('snippetsExplorer.deleteSnippetFolder', (snippetFolder) => {
+	vscode.commands.registerCommand('snippetsCmd.deleteSnippetFolder', (snippetFolder) => {
 		console.log("Removing snippet folder");
 		snippetsProvider.removeSnippet(snippetFolder);
 	});
 
-	vscode.commands.registerCommand('snippetsExplorer.refreshEntry', () =>
+	vscode.commands.registerCommand('snippetsCmd.refreshEntry', () =>
 		snippetsProvider.refresh()
 	);
 
-	vscode.commands.registerCommand('snippets.test', async (snippet) => {
+	vscode.commands.registerCommand('snippetsCmd.test', async (snippet) => {
 		let result: any[] = [];
 		Snippet.flatten(snippetsProvider.snippets.children, result);
 		console.log(result);

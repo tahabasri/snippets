@@ -48,63 +48,63 @@
 		],
 		"commands": [
 			{
-				"command": "snippetsExplorer.refreshEntry",
-				"title": "Refresh Snippets",
-				"category": "Tests",
-				"icon": "$(refresh)"
-			},
-			{
-				"command": "snippets.test",
+				"command": "snippetsCmd.test",
 				"title": "Test Command",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippets.openSnippet",
+				"command": "snippetsCmd.refreshEntry",
+				"title": "Refresh Snippets",
+				"category": "Snippets",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "snippetsCmd.openSnippet",
 				"title": "Open Snippet",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippets.openSnippetInTerminal",
+				"command": "snippetsCmd.openSnippetInTerminal",
 				"title": "Open Snippet in Terminal",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.addSnippet",
+				"command": "snippetsCmd.addSnippet",
 				"title": "New Snippet",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.addSnippetFromClipboard",
+				"command": "snippetsCmd.addSnippetFromClipboard",
 				"title": "New Snippet from Clipboard",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.addSnippetFolder",
+				"command": "snippetsCmd.addSnippetFolder",
 				"title": "Add Folder",
 				"icon": "$(new-folder)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.editSnippet",
+				"command": "snippetsCmd.editSnippet",
 				"title": "Edit Snippet",
 				"icon": "$(edit)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.deleteSnippet",
+				"command": "snippetsCmd.deleteSnippet",
 				"title": "Delete Snippet",
 				"icon": "$(remove)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.editSnippetFolder",
+				"command": "snippetsCmd.editSnippetFolder",
 				"title": "Edit Folder",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsExplorer.deleteSnippetFolder",
+				"command": "snippetsCmd.deleteSnippetFolder",
 				"title": "Delete Folder",
 				"icon": "$(remove)",
 				"category": "Snippets"
@@ -113,92 +113,92 @@
 		"menus": {
 			"commandPalette": [
 				{
-					"command": "snippets.openSnippet",
-					"when": "false"
+					"command": "snippetsCmd.openSnippet",
+					"when": "true"
 				}
 			],
 			"view/title": [
 				{
-					"command": "snippetsExplorer.addSnippet",
+					"command": "snippetsCmd.addSnippet",
 					"when": "view == snippetsExplorer",
 					"group": "navigation@1"
 				},
 				{
-					"command": "snippetsExplorer.addSnippetFolder",
+					"command": "snippetsCmd.addSnippetFolder",
 					"when": "view == snippetsExplorer",
 					"group": "navigation@2"
 				},
 				{
-					"command": "snippetsExplorer.refreshEntry",
+					"command": "snippetsCmd.refreshEntry",
 					"when": "view == snippetsExplorer",
 					"group": "navigation@3"
 				},
 				{
-					"command": "snippetsExplorer.addSnippetFromClipboard",
+					"command": "snippetsCmd.addSnippetFromClipboard",
 					"when": "view == snippetsExplorer",
 					"group": "other"
 				}
 			],
 			"view/item/context": [
 				{
-					"command": "snippetsExplorer.editSnippet",
+					"command": "snippetsCmd.editSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "inline"
 				},
 				{
-					"command": "snippetsExplorer.deleteSnippet",
+					"command": "snippetsCmd.deleteSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "inline"
 				},
 				{
-					"command": "snippets.openSnippet",
+					"command": "snippetsCmd.openSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "1_snippets@1"
 				},
 				{
-					"command": "snippets.openSnippetInTerminal",
+					"command": "snippetsCmd.openSnippetInTerminal",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "1_snippets@2"
 				},
 				{
-					"command": "snippetsExplorer.addSnippet",
+					"command": "snippetsCmd.addSnippet",
 					"when": "view == snippetsExplorer",
 					"group": "2_snippetManagement@1"
 				},
 				{
-					"command": "snippetsExplorer.addSnippetFromClipboard",
+					"command": "snippetsCmd.addSnippetFromClipboard",
 					"when": "view == snippetsExplorer",
 					"group": "2_snippetManagement@2"
 				},
 				{
-					"command": "snippetsExplorer.editSnippet",
+					"command": "snippetsCmd.editSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "2_snippetManagement@3"
 				},
 				{
-					"command": "snippetsExplorer.deleteSnippet",
+					"command": "snippetsCmd.deleteSnippet",
 					"when": "view == snippetsExplorer && viewItem == snippet",
 					"group": "2_snippetManagement@4"
 				},
 				{
-					"command": "snippetsExplorer.addSnippetFolder",
+					"command": "snippetsCmd.addSnippetFolder",
 					"when": "view == snippetsExplorer",
 					"group": "3_folderManagement@1"
 				},
 				{
-					"command": "snippetsExplorer.editSnippetFolder",
+					"command": "snippetsCmd.editSnippetFolder",
 					"when": "view == snippetsExplorer",
 					"group": "3_folderManagement@2"
 				},
 				{
-					"command": "snippetsExplorer.deleteSnippetFolder",
+					"command": "snippetsCmd.deleteSnippetFolder",
 					"when": "view == snippetsExplorer && viewItem == snippetFolder",
 					"group": "3_folderManagement@3"
 				}
 			],
 			"editor/context": [
 				{
-					"command": "snippetsExplorer.addSnippet",
+					"command": "snippetsCmd.addSnippet",
 					"when": "editorTextFocus",
 					"group": "snippets@1"
 				}
