@@ -34,7 +34,6 @@
 		"Bookmark"
 	],
 	"activationEvents": [
-		"onCommand:snippets.helloWorld",
 		"onView:snippetsExplorer"
 	],
 	"main": "./out/extension.js",
