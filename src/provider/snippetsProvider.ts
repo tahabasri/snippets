@@ -191,8 +191,8 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         if (snippet.folder && snippet.folder === true) {
             treeItem.contextValue = 'snippetFolder';
             treeItem.iconPath = {
-                light: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'light', 'folder.svg'),
-                dark: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'dark', 'folder.svg')
+                light: path.join(__filename, '..', '..', 'resources', 'icons', 'light', 'folder.svg'),
+                dark: path.join(__filename, '..', '..', 'resources', 'icons', 'dark', 'folder.svg')
             };
         } else {
             const maxLength = 20;
@@ -202,8 +202,8 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
                 : "''"}`;
             treeItem.contextValue = 'snippet';
             treeItem.iconPath = {
-                light: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'light', 'file.svg'),
-                dark: path.join(__filename, '..', '..', '..', 'resources', 'icons', 'dark', 'file.svg')
+                light: path.join(__filename, '..', '..', 'resources', 'icons', 'light', 'file.svg'),
+                dark: path.join(__filename, '..', '..', 'resources', 'icons', 'dark', 'file.svg')
             };
 
             // conditional in configuration
