@@ -54,8 +54,8 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('snippetsCmd.openSnippetInTerminal', async (snippet) => {
-		const termianl = vscode.window.activeTerminal;
-		if (!termianl) {
+		const terminal = vscode.window.activeTerminal;
+		if (!terminal) {
 			vscode.window.showInformationMessage("no terminal is open");
 			return;
 		}
@@ -91,7 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
 			// refer to selected snippet
 			snippet = selection.value;
 		}
-		termianl.sendText(snippet.value);
+		terminal.sendText(snippet.value);
 	});
 
 	const snippetsProvider = new SnippetsProvider(new DataAcess(context.globalStorageUri.fsPath), context);
