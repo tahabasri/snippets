@@ -2,7 +2,7 @@
     "id": 1,
     "parentId": -1,
     "label": "snippets",
-    "lastId": 17,
+    "lastId": 134,
     "children": [
         {
             "id": 2,
@@ -19,8 +19,8 @@
                         {
                             "id": 3,
                             "parentId": 16,
-                            "label": "Success Alert",
-                            "value": "<div class='alert alert-success' role='alert'></div>",
+                            "label": "Updated Success Alert",
+                            "value": "<div class='alert alert-success' role='alert'>\n   Test\n</div>",
                             "children": []
                         },
                         {
@@ -38,10 +38,17 @@
                             "children": []
                         },
                         {
-                            "id": 14,
+                            "id": 124,
                             "parentId": 16,
-                            "label": "new snippet",
-                            "value": "dev",
+                            "label": "some text",
+                            "value": "With Mac computers, only one piece of data is stored in the clipboard at a time. There is no standard command to remove the most recent item from the clipboard. Some users clear the clipboard by hitting the Space Bar to add a blank space, then selecting and copying it. Restarting the Mac will also clear the clipboard. To check the clipboard contents on a Mac, go to Finder on the top toolbar and select the Show Clipboard command on the Edit menu. The current contents of the clipboard will be displayed.\n\n",
+                            "children": []
+                        },
+                        {
+                            "id": 125,
+                            "parentId": 16,
+                            "label": "file",
+                            "value": "file.svg",
                             "children": []
                         }
                     ]
@@ -53,71 +60,80 @@
                     "folder": true,
                     "children": [
                         {
-                            "id": 12,
+                            "id": 30,
                             "parentId": 6,
-                            "label": "Primary Card",
-                            "value": "<div class='card text-white bg-primary mb-3' style='max-width: 18rem;'></div>",
+                            "label": "Cool Snippet",
+                            "value": "\"for (const ${2:element} of ${1:array}) {\n\\t$0\n}\"",
                             "children": []
                         },
                         {
-                            "id": 17,
+                            "id": 31,
                             "parentId": 6,
                             "label": "new snippet",
+                            "value": "dev",
+                            "children": []
+                        },
+                        {
+                            "id": 134,
+                            "parentId": 6,
+                            "label": "test",
                             "value": "dev",
                             "children": []
                         }
                     ]
                 },
                 {
-                    "id": 13,
+                    "id": 127,
                     "parentId": 2,
-                    "label": "new snippet",
-                    "value": "dev",
-                    "children": []
+                    "label": "Terminal Commands",
+                    "folder": true,
+                    "children": [
+                        {
+                            "id": 128,
+                            "parentId": 127,
+                            "label": "List files",
+                            "value": "ls ..\n# ls\nls",
+                            "children": []
+                        },
+                        {
+                            "id": 129,
+                            "parentId": 127,
+                            "label": "unknown",
+                            "value": "snippet.value",
+                            "children": []
+                        },
+                        {
+                            "id": 130,
+                            "parentId": 127,
+                            "label": "test",
+                            "folder": true,
+                            "children": [
+                                {
+                                    "id": 131,
+                                    "parentId": 130,
+                                    "label": "test",
+                                    "value": "test",
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": 133,
+                            "parentId": 127,
+                            "label": "lkj",
+                            "value": "lmkj",
+                            "children": []
+                        }
+                    ]
                 },
                 {
-                    "id": 15,
+                    "id": 132,
                     "parentId": 2,
-                    "label": "new snippet",
-                    "value": "x",
+                    "label": "pss",
+                    "value": "pss",
                     "children": []
                 }
             ]
-        },
-        {
-            "id": 7,
-            "parentId": 1,
-            "label": "new snippet",
-            "value": "dev",
-            "children": []
-        },
-        {
-            "id": 8,
-            "parentId": 1,
-            "label": "new snippet",
-            "value": "ts is good",
-            "children": []
-        },
-        {
-            "id": 9,
-            "parentId": 1,
-            "label": "new snippet",
-            "value": "dev",
-            "children": []
-        },
-        {
-            "id": 10,
-            "parentId": 1,
-            "label": "new snippet",
-            "value": "dev",
-            "children": []
-        },
-        {
-            "id": 11,
-            "parentId": 1,
-            "label": "new snippet",
-            "value": "dev",
-            "children": []
         }
     ]
 }

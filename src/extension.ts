@@ -313,6 +313,16 @@ export function activate(context: vscode.ExtensionContext) {
 		snippetsProvider.removeSnippet(snippetFolder);
 	});
 
+	vscode.commands.registerCommand('snippetsCmd.moveSnippetUp', (snippet) => {
+		console.log("Moving Snippet Up");
+		snippetsProvider.moveSnippetUp(snippet);
+	});
+
+	vscode.commands.registerCommand('snippetsCmd.moveSnippetDown', (snippet) => {
+		console.log("Moving Snippet Down");
+		snippetsProvider.moveSnippetDown(snippet);
+	});
+
 	vscode.commands.registerCommand('snippetsCmd.refreshEntry', () =>
 		snippetsProvider.refresh()
 	);
