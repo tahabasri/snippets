@@ -215,7 +215,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
 			console.log("No item is selected in the treeView, appending folder to root of tree");
-			//snippetsProvider.addSnippetFolder();
+			snippetsProvider.addSnippetFolder(name, PARENT_ID);
 		} else {
 			const selectedItem = node ? node : snippetsExplorer.selection[0];
 			if (selectedItem.folder && selectedItem.folder === true) {
