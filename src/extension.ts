@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { SnippetsProvider } from './provider/snippetsProvider';
 import { DataAcess } from './data/dataAccess';
 import { Snippet } from './interface/snippet';
@@ -17,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 			let snippets: Snippet[] = [];
 			Snippet.flatten(snippetsProvider.snippets.children, snippets);
 
-			interface CustomQuickPickItem extends vscode.QuickPickItem{
+			interface CustomQuickPickItem extends vscode.QuickPickItem {
 				label: string;
 				detail: string,
 				value: Snippet
@@ -63,7 +64,7 @@ export function activate(context: vscode.ExtensionContext) {
 			let snippets: Snippet[] = [];
 			Snippet.flatten(snippetsProvider.snippets.children, snippets);
 
-			interface CustomQuickPickItem extends vscode.QuickPickItem{
+			interface CustomQuickPickItem extends vscode.QuickPickItem {
 				label: string;
 				detail: string,
 				value: Snippet
@@ -234,12 +235,20 @@ export function activate(context: vscode.ExtensionContext) {
 		const panel = vscode.window.createWebviewPanel(
 			'editSnippet', // Identifies the type of the webview. Used internally
 			`Edit Snippet [${snippet.label}]`, // Title of the panel displayed to the user
-			vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+			{
+				viewColumn: vscode.ViewColumn.One,  // Editor column to show the new webview panel in.
+				preserveFocus: true
+			},
 			{
 				enableScripts: true,
 				retainContextWhenHidden: true
 			}
 		);
+
+		panel.iconPath = {
+			light: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'icons', 'light', 'file.svg')),
+			dark: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'icons', 'dark', 'file.svg'))
+		};
 
 		panel.webview.html = EditSnippet.getWebviewContent(snippet);
 
@@ -273,12 +282,20 @@ export function activate(context: vscode.ExtensionContext) {
 		const panel = vscode.window.createWebviewPanel(
 			'editSnippetFolder', // Identifies the type of the webview. Used internally
 			`Edit Folder [${snippet.label}]`, // Title of the panel displayed to the user
-			vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+			{
+				viewColumn: vscode.ViewColumn.One,  // Editor column to show the new webview panel in.
+				preserveFocus: true
+			},
 			{
 				enableScripts: true,
 				retainContextWhenHidden: true
 			}
 		);
+
+		panel.iconPath = {
+			light: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'icons', 'light', 'folder.svg')),
+			dark: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'icons', 'dark', 'folder.svg'))
+		};
 
 		panel.webview.html = EditSnippetFolder.getWebviewContent(snippet);
 
@@ -328,9 +345,9 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	vscode.commands.registerCommand('snippetsCmd.test', async (snippet) => {
-		let result: any[] = [];
-		Snippet.flatten(snippetsProvider.snippets.children, result);
-		console.log(result);
+		// let result: any[] = [];
+		// Snippet.flatten(snippetsProvider.snippets.children, result);
+		// console.log(result);
 	});
 }
 
