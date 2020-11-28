@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src {{cspSource}}; script-src {{cspSource}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{snippet.label}}</title>
+    <link rel="stylesheet" href="{{resetCssUri}}">
+    <link rel="stylesheet" href="{{cssUri}}">
+</head>
+
+<body>
+    <form name="edit-snippet-form">
+        <div class="no-m"><label for="snippet-label">Snippet Label:</label></div>
+        <div><input type="text" id="snippet-label" value="{{snippet.label}}" required></div>
+        <div>
+            <label for="snippet-value">Snippet Content:</label>
+            <div class="popup" name="_snippets_syntax">
+                Snippet syntax was detected: see
+                <a href="{{docsUrl}}" target="_blank">docs</a>
+                for more information.
+            </div>
+        </div>
+        <div><textarea name="snippet-value" rows="10" required>{{snippet.value}}</textarea></div>
+        <div><input type="submit" value="Save"></div>
+    </form>
+</body>
+
+<script src="{{jsUri}}"></script>
+
+</html>

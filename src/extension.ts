@@ -232,48 +232,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('snippetsCmd.editSnippet', (snippet: Snippet) => {
 		console.log(`Editing snippet [${snippet.label}]`);
 		// Create and show a new webview for editing snippet
-		const panel = vscode.window.createWebviewPanel(
-			'editSnippet', // Identifies the type of the webview. Used internally
-			`Edit Snippet [${snippet.label}]`, // Title of the panel displayed to the user
-			{
-				viewColumn: vscode.ViewColumn.One,  // Editor column to show the new webview panel in.
-				preserveFocus: true
-			},
-			{
-				enableScripts: true,
-				retainContextWhenHidden: true
-			}
-		);
-
-		panel.iconPath = {
-			light: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'icons', 'light', 'file.svg')),
-			dark: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'icons', 'dark', 'file.svg'))
-		};
-
-		panel.webview.html = EditSnippet.getWebviewContent(snippet);
-
-		// Handle messages from the webview
-		panel.webview.onDidReceiveMessage(
-			message => {
-				switch (message.command) {
-					case 'edit-snippet':
-						console.log('Form returned ' + message);
-						const { label, value } = message.data;
-						// call provider only if there is data change
-						if (label) {
-							snippet.label = label;
-						}
-						if (value) {
-							snippet.value = value;
-						}
-						snippetsProvider.editSnippet(snippet);
-						panel.dispose();
-						return;
-				}
-			},
-			undefined,
-			context.subscriptions
-		);
+		new EditSnippet(context, snippet, snippetsProvider);
 	});
 
 	vscode.commands.registerCommand('snippetsCmd.editSnippetFolder', (snippet: Snippet) => {
