@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src {{cspSource}}; script-src {{cspSource}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{snippet.label}}</title>
+    <link rel="stylesheet" href="{{resetCssUri}}">
+    <link rel="stylesheet" href="{{cssUri}}">
+</head>
+
+<body>
+    <form name="edit-folder-form">
+        <div class="no-m"><label for="folder-name">Folder Name:</label></div>
+        <div><input type="text" id="folder-name" value="{{snippet.label}}" required></div>
+        <div><input type="submit" value="Save"></div>
+    </form>
+</body>
+
+<script src="{{jsUri}}"></script>
+</html>

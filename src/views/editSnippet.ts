@@ -37,7 +37,7 @@ export class EditSnippet {
             {
                 cspSource: this._panel.webview.cspSource,
                 resetCssUri: this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, EditSnippet.viewsFolder, 'css', 'reset.css'))),
-                cssUri: this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, EditSnippet.viewsFolder, 'css', `${resourceName}.css`))),
+                cssUri: this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, EditSnippet.viewsFolder, 'css', 'vscode-custom.css'))),
                 jsUri: this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, EditSnippet.viewsFolder, 'js', `${resourceName}.js`))),
                 snippet: snippet,
                 docsUrl: EditSnippet.docsUrl
