@@ -2,20 +2,11 @@ import * as vscode from 'vscode';
 import fs = require('fs');
 import * as path from 'path';
 import { Snippet } from '../interface/snippet';
-import { DataAcess } from '../data/dataAccess';
+import { Commands } from '../config/commands';
+import { SnippetService } from '../service/snippetService';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
-
-    context: vscode.ExtensionContext;
-    snippetsFlatten: string;
-    snippets: Snippet;
-
-    constructor(private dataAccess: DataAcess, context: vscode.ExtensionContext) {
-        this.context = context;
-        this.snippets = dataAccess.readFile();
-        this.snippetsFlatten = this.compact(this.snippets);
-        console.log(this.snippets);
-    }
+    constructor(private _snippetService: SnippetService, private _extensionPath: string) { }
 
     getTreeItem(element: Snippet): vscode.TreeItem {
         return this.snippetToTreeItem(element);
@@ -25,7 +16,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         if (element) {
             return Promise.resolve(element.children);
         } else {
-            return Promise.resolve(this.snippets.children);
+            return Promise.resolve(this._snippetService.getRootChildren());
         }
     }
 
@@ -34,148 +25,77 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
 
     refresh(): void {
         console.log("refreshing from fs");
-        //this.snippetsFlatten = this.compact(this.snippets);
-        if (this.compact(this.snippets) !== this.snippetsFlatten) {
-            this.dataAccess.writeToFile(this.snippets);
-        }
+        this._snippetService.saveSnippets();
         this._onDidChangeTreeData.fire();
     }
 
-    // custom methods
-
-    compact(snippets: Snippet): string {
-        return JSON.stringify(snippets);
-    }
-
     addSnippet(name: string, snippet: string, parentId: number) {
-        let lastId = (this.snippets.lastId ?? 0) + 1;
+        let lastId = this._snippetService.incrementLastId();
 
-        const newSnippet = {
-            id: lastId,
-            parentId: parentId,
-            label: name,
-            value: snippet,
-            children: []
-        };
-
-        parentId === 1
-            ? this.snippets.children.push(newSnippet)
-            : Snippet.findParent(parentId, this.snippets)?.children.push(newSnippet);
-
-        this.snippets.lastId = lastId;
+        this._snippetService.addSnippet(
+            {
+                id: lastId,
+                parentId: parentId,
+                label: name,
+                value: snippet,
+                children: []
+            }
+        );
 
         console.log("Snippet added, refreshing");
-        console.log(this.snippets);
         this.refresh();
     }
 
     addSnippetFolder(name: string, parentId: number) {
-        let lastId = (this.snippets.lastId ?? 0) + 1;
+        let lastId = this._snippetService.incrementLastId();
 
-        const newSnippet = {
-            id: lastId,
-            parentId: parentId,
-            label: name,
-            folder: true,
-            children: []
-        };
-
-        parentId === 1
-            ? this.snippets.children.push(newSnippet)
-            : Snippet.findParent(parentId, this.snippets)?.children.push(newSnippet);
-
-        this.snippets.lastId = lastId;
+        this._snippetService.addSnippet(
+            {
+                id: lastId,
+                parentId: parentId,
+                label: name,
+                folder: true,
+                children: []
+            }
+        );
 
         console.log("Snippet folder added, refreshing");
-        console.log(this.snippets);
         this.refresh();
     }
 
     editSnippet(snippet: Snippet) {
-        const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
+        this._snippetService.updateSnippet(snippet);
 
-        if (parentElement) {
-            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
-
-            if (index > -1) {
-                parentElement.children.map(obj =>
-                    obj.id === snippet.id ? {
-                        ...obj,
-                        label: snippet.label,
-                        value: snippet.value
-                    }
-                        : obj
-                );
-            }
-        }
         console.log("Snippet updated, refreshing");
-        console.log(this.snippets);
         this.refresh();
     }
 
     editSnippetFolder(snippet: Snippet) {
-        const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
+        this._snippetService.updateSnippet(snippet);
 
-        if (parentElement) {
-            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
-
-            if (index > -1) {
-                parentElement.children.map(obj =>
-                    obj.id === snippet.id ? {
-                        ...obj,
-                        label: snippet.label
-                    }
-                        : obj
-                );
-            }
-        }
         console.log("Snippet updated, refreshing");
-        console.log(this.snippets);
         this.refresh();
     }
 
     removeSnippet(snippet: Snippet) {
-        const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
+        this._snippetService.removeSnippet(snippet);
 
-        if (parentElement) {
-            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
-
-            if (index > -1) {
-                parentElement?.children.splice(index, 1);
-            }
-        }
         console.log("Snippet removed, refreshing");
-        console.log(this.snippets);
-        this.refresh();
-    }
-
-    private arrayMove(arr: Snippet[], oldIndex: number, newIndex: number) {
-        if (newIndex < arr.length) {
-            arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
-        }
-    };
-
-    private moveSnippet(snippet: Snippet, offset: number) {
-        const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
-
-        if (parentElement) {
-            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
-
-            if (index > -1 && parentElement.children) {
-                console.log(this.arrayMove(parentElement.children, index, index + offset));
-            }
-        }
-        console.log("Snippet reordered, refreshing");
-        console.log(this.snippets);
         this.refresh();
     }
 
     moveSnippetUp(snippet: Snippet) {
-        this.moveSnippet(snippet, -1);
+        this._snippetService.moveSnippet(snippet, -1);
+
+        console.log("Snippet reordered, refreshing");
+        this.refresh();
     }
 
     moveSnippetDown(snippet: Snippet) {
-        this.moveSnippet(snippet, 1);
+        this._snippetService.moveSnippet(snippet, 1);
+
+        console.log("Snippet reordered, refreshing");
+        this.refresh();
     }
 
     private snippetToTreeItem(snippet: Snippet): vscode.TreeItem {
@@ -191,8 +111,8 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         if (snippet.folder && snippet.folder === true) {
             treeItem.contextValue = 'snippetFolder';
             treeItem.iconPath = {
-                light: path.join(__filename, '..', '..', 'resources', 'icons', 'light', 'folder.svg'),
-                dark: path.join(__filename, '..', '..', 'resources', 'icons', 'dark', 'folder.svg')
+                light: path.join(this._extensionPath, 'resources', 'icons', 'light', 'folder.svg'),
+                dark: path.join(this._extensionPath, 'resources', 'icons', 'dark', 'folder.svg')
             };
         } else {
             const maxLength = 20;
@@ -202,19 +122,19 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
                 : "''"}`;
             treeItem.contextValue = 'snippet';
             treeItem.iconPath = {
-                light: path.join(__filename, '..', '..', 'resources', 'icons', 'light', 'file.svg'),
-                dark: path.join(__filename, '..', '..', 'resources', 'icons', 'dark', 'file.svg')
+                light: path.join(this._extensionPath, 'resources', 'icons', 'light', 'file.svg'),
+                dark: path.join(this._extensionPath, 'resources', 'icons', 'dark', 'file.svg')
             };
 
             // conditional in configuration
             treeItem.command = {
-                command: 'snippetsCmd.openSnippet',
+                command: Commands.openSnippet,
                 arguments: [snippet],
                 title: 'Open Snippet'
             };
         }
         // get parent element
-        const parentElement = Snippet.findParent(snippet.parentId ?? 1, this.snippets);
+        const parentElement = this._snippetService.getParent(snippet.parentId);
         if (parentElement) {
             const childrenCount = parentElement.children.length;
             // show order actions only if there is room for reorder

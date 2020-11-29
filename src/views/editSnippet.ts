@@ -4,20 +4,14 @@ import { SnippetsProvider } from '../provider/snippetsProvider';
 import { EditView } from './editView';
 
 export class EditSnippet extends EditView {
-    private _snippet: Snippet;
-    private _snippetsProvider: SnippetsProvider;
-
-    constructor(context: vscode.ExtensionContext, snippet: Snippet, snippetsProvider: SnippetsProvider) {
+    constructor(context: vscode.ExtensionContext, private _snippet: Snippet, private _snippetsProvider: SnippetsProvider) {
         super(
             context,
-            snippet,
+            _snippet,
             'editSnippet',
             'file',
             'Edit Snippet'
         );
-
-        this._snippet = snippet;
-        this._snippetsProvider = snippetsProvider;
     }
 
     handleReceivedMessage(message: any): any {

@@ -1,14 +1,12 @@
 import fs = require('fs');
+import * as path from 'path';
 import { Snippet } from '../interface/snippet';
 
 export class DataAcess {
+    private _encoding = 'utf8';
+    private _dataFile: string;
 
-    encoding = 'utf8';
-
-    dataFile: string;
-    // data: any;
-
-    constructor(private sourceParentPath: string) {
+    constructor(sourceParentPath: string) {
         if (!fs.existsSync(sourceParentPath)) {
             fs.mkdirSync(sourceParentPath);
             console.info("Data folder was initialized in : " + sourceParentPath);
@@ -16,7 +14,7 @@ export class DataAcess {
             console.info("Data folder already exists in path : " + sourceParentPath);
         }
 
-        this.dataFile = sourceParentPath + '/data.json';
+        this._dataFile = path.join(sourceParentPath, 'data.json');
     }
 
     isBlank(str: string): boolean {
@@ -26,25 +24,24 @@ export class DataAcess {
 
     readFile(): any {
         const defaultRootElement:Snippet = { id: 1, parentId: -1, label: 'snippets', lastId: 1, children: [] };
-        // or '/Users/tbasri/dev/snippets/resources/data/data.json'
-        if (!fs.existsSync(this.dataFile)) {
-            console.info("Creating new file for future snippets in : " + this.dataFile);
+        if (!fs.existsSync(this._dataFile)) {
+            console.info("Creating new file for future snippets in : " + this._dataFile);
             this.writeToFile(defaultRootElement);
         }
-        console.info("Reading from file : " + this.dataFile);
-        let rawdata = fs.readFileSync(this.dataFile, this.encoding);
+        console.info("Reading from file : " + this._dataFile);
+        let rawData = fs.readFileSync(this._dataFile, this._encoding);
         
-        if (this.isBlank(rawdata)) {
-            console.info("Creating new file for future snippets in : " + this.dataFile);
+        if (this.isBlank(rawData)) {
+            console.info("Creating new file for future snippets in : " + this._dataFile);
             this.writeToFile(defaultRootElement);
         }
 
-        rawdata = fs.readFileSync(this.dataFile, this.encoding);
-        return JSON.parse(rawdata);
+        rawData = fs.readFileSync(this._dataFile, this._encoding);
+        return JSON.parse(rawData);
     }
 
     writeToFile(data: Snippet): void {
-        fs.writeFileSync(this.dataFile, JSON.stringify(data));
+        fs.writeFileSync(this._dataFile, JSON.stringify(data));
     }
 
 }
