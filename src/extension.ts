@@ -6,47 +6,29 @@ import { Snippet } from './interface/snippet';
 import { EditSnippet } from './views/editSnippet';
 import { EditSnippetFolder } from './views/editSnippetFolder';
 import { SnippetService } from './service/snippetService';
+import { UIUtility } from './utility/uiUtility';
+import { Labels } from './config/Labels';
 
 export function activate(context: vscode.ExtensionContext) {
 	const snippetService = new SnippetService(new DataAcess(context.globalStorageUri.fsPath));
 	const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
 
+	let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
+		treeDataProvider: snippetsProvider
+	});
+
 	vscode.commands.registerCommand(Commands.openSnippet, async (snippet) => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
-			vscode.window.showInformationMessage("no editor is open");
+			vscode.window.showInformationMessage(Labels.noOpenEditor);
 			return;
 		}
+		// if command is not triggered from treeView, a snippet must be selected by final user
 		if (!snippet) {
-			let snippets= snippetService.getAllSnippets();
-
-			interface CustomQuickPickItem extends vscode.QuickPickItem {
-				label: string;
-				detail: string,
-				value: Snippet
-			}
-
-			const arr: CustomQuickPickItem[] = snippets.map(s => {
-				return {
-					label: s.label,
-					detail: s.value?.slice(0, 10) ?? "",
-					value: s
-				};
-			});
-
-			const selection = await vscode.window.showQuickPick(arr, {
-				placeHolder: 'Select a snippet which should be opened'
-			});
-
-			if (
-				!selection ||
-				!selection.value) {
-				console.log(`No valid selection made!`);
-				return;
-			}
-
-			// refer to selected snippet
-			snippet = selection.value;
+			snippet = UIUtility.requestSnippetFromUser(snippetService.getAllSnippets());
+		}
+		if (!snippet) {
+			return;
 		}
 		vscode.commands.executeCommand("editor.action.insertSnippet",
 			{
@@ -59,45 +41,17 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand(Commands.openSnippetInTerminal, async (snippet) => {
 		const terminal = vscode.window.activeTerminal;
 		if (!terminal) {
-			vscode.window.showInformationMessage("no terminal is open");
+			vscode.window.showInformationMessage(Labels.noOpenTerminal);
 			return;
 		}
+		// if command is not triggered from treeView, a snippet must be selected by final user
 		if (!snippet) {
-			let snippets = snippetService.getAllSnippets();
-
-			interface CustomQuickPickItem extends vscode.QuickPickItem {
-				label: string;
-				detail: string,
-				value: Snippet
-			}
-
-			const arr: CustomQuickPickItem[] = snippets.map(s => {
-				return {
-					label: s.label,
-					detail: s.value?.slice(0, 10) ?? "",
-					value: s
-				};
-			});
-
-			const selection = await vscode.window.showQuickPick(arr, {
-				placeHolder: 'Select a snippet which should be opened'
-			});
-
-			if (
-				!selection ||
-				!selection.value) {
-				console.log(`No valid selection made!`);
-				return;
-			}
-
-			// refer to selected snippet
-			snippet = selection.value;
+			snippet = UIUtility.requestSnippetFromUser(snippetService.getAllSnippets());
+		}
+		if (!snippet) {
+			return;
 		}
 		terminal.sendText(snippet.value);
-	});
-
-	let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
-		treeDataProvider: snippetsProvider
 	});
 
 	vscode.commands.registerCommand(Commands.addSnippet, async (node) => {
@@ -107,41 +61,29 @@ export function activate(context: vscode.ExtensionContext) {
 		// if no editor is open or editor has no text, get value from user
 		if (!editor || editor.document.getText(editor.selection) === "") {
 			// get snippet name
-			text = await vscode.window.showInputBox({
-				prompt: 'Snippet Value',
-				placeHolder: 'An example: <div>my cool div</div>',
-				validateInput: text => {
-					return text === "" ? 'Snippet value should not be empty' : null;
-				}
-			});
+			text = await UIUtility.requestSnippetValue();
 			if (!text || text.length === 0) {
-				vscode.window.showWarningMessage("no text was given");
+				vscode.window.showWarningMessage(Labels.noValueGiven);
 				return;
 			}
 		} else {
 			text = editor.document.getText(editor.selection);
 			if (text.length === 0) {
-				vscode.window.showWarningMessage("no text is selected");
+				vscode.window.showWarningMessage(Labels.noTextSelected);
 				return;
 			}
 		}
 		// get snippet name
-		const name = await vscode.window.showInputBox({
-			prompt: 'Snippet Name',
-			placeHolder: 'Some examples: Custom Navbar, CSS Alert Style, etc.',
-			validateInput: text => {
-				return text === "" ? 'Snippet name should not be empty' : null;
-			}
-		});
+		const name = await UIUtility.requestSnippetName();
 		if (name === undefined || name === "") {
-			vscode.window.showWarningMessage("Snippet must have a non-empty name.");
+			vscode.window.showErrorMessage(Labels.snippetNameErrorMsg);
 			return;
 		}
 		if (text === undefined || text === "") {
-			vscode.window.showWarningMessage("Snippet must have a non-empty value.");
+			vscode.window.showErrorMessage(Labels.snippetValueErrorMsg);
 			return;
 		}
-		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
+		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
 			console.log("No item is selected nor highlighted in the treeView, appending snippet to root of tree");
@@ -161,19 +103,13 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand(Commands.addSnippetFromClipboard, async (node) => {
 		let clipboardContent = await vscode.env.clipboard.readText();
 		if (!clipboardContent || clipboardContent.trim() === "") {
-			vscode.window.showWarningMessage("no content in your clipboard");
+			vscode.window.showWarningMessage(Labels.noClipboardContent);
 			return;
 		}
 		// get snippet name
-		const name = await vscode.window.showInputBox({
-			prompt: 'Snippet Name',
-			placeHolder: 'Some examples: Custom Navbar, CSS Alert Style, etc.',
-			validateInput: text => {
-				return text === "" ? 'Snippet name should not be empty' : null;
-			}
-		});
+		const name = await UIUtility.requestSnippetName();
 		if (name === undefined || name === "") {
-			vscode.window.showWarningMessage("Snippet must have a non-empty name.");
+			vscode.window.showErrorMessage(Labels.snippetNameErrorMsg);
 			return;
 		}
 		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
@@ -195,15 +131,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand(Commands.addSnippetFolder, async (node) => {
 		// get snippet name
-		const name = await vscode.window.showInputBox({
-			prompt: 'Snippet Folder Name',
-			placeHolder: 'Some examples: Alerts, JS Snippets, etc.',
-			validateInput: text => {
-				return text === "" ? 'Folder name should not be empty' : null;
-			}
-		});
+		const name = await UIUtility.requestSnippetFolderName();
 		if (name === undefined || name === "") {
-			vscode.window.showWarningMessage("Snippet folder must have a non-empty name.");
+			vscode.window.showErrorMessage(Labels.snippetFolderNameErrorMsg);
 			return;
 		}
 		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
