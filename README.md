@@ -1,8 +1,33 @@
-# snippets README
+# Snippets for VSCode
 
-This is the README for your extension "snippets". After writing up a brief description, we recommend including the following sections.
+Code snippets are great additions to anyone who wants to save time while developing. They make it easier to enter repeating code, such as loops, complex HTML structures or reusable methods.
+
+Visual Studio Code already has great support for snippets, including snippets appearance in IntelliSense `(Ctrl+Space)`, tab-completion, as well as a dedicated snippet picker `(Insert Snippet in the Command Palette)`.
+
+This extension takes snippets to another level bringing new features which will improve managing code snippets.
 
 ## Features
+
+### Create a Snippet
+
+- You can easily create a snippet from your open editor in VSCode.
+\!\[feature X\]\(images/feature-x.png\)
+
+- You can add code snippet directly from outside VSCode via your clipboard.
+\!\[feature X\]\(images/feature-x.png\)
+
+### Organize Snippets
+
+### Open a Snippet (terminal too)
+
+### Edit a Snippet
+
+### Create a Snippet
+
+### Misc
+
+- Quick preview
+
 
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
@@ -11,10 +36,6 @@ For example if there is an image subfolder under your extension project workspac
 \!\[feature X\]\(images/feature-x.png\)
 
 > Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
 ## Extension Settings
 
@@ -27,10 +48,14 @@ This extension contributes the following settings:
 * `myExtension.enable`: enable/disable this extension
 * `myExtension.thing`: set to `blah` to do something
 
+## Installation
+
+Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
+
 ## Known Issues
 
 - Provide snippets as completionItems (shown next to the built in snippets using ctrl+space).
-  - When initializing the application, we can successfully populate VSCode with snippets prefixed with 'snp:snippet-label'
+  - When initializing the application, we can successfully populate VSCode with snippets prefixed with `snp:snippet-label`
   - Problem starts to show up when we update existing snippets as the code bellow do not override existing ones but duplicate them
 ```typescript
 // see https://code.visualstudio.com/api/references/vscode-api#DocumentSelector
