@@ -2,12 +2,12 @@
     "id": 1,
     "parentId": -1,
     "label": "snippets",
-    "lastId": 134,
+    "lastId": 154,
     "children": [
         {
             "id": 2,
             "parentId": 1,
-            "label": "Bootstrap_Snippets",
+            "label": "Bootstrap Components",
             "folder": true,
             "children": [
                 {
@@ -17,17 +17,25 @@
                     "folder": true,
                     "children": [
                         {
-                            "id": 3,
+                            "id": 139,
                             "parentId": 16,
-                            "label": "Updated Success Alert",
-                            "value": "<div class='alert alert-success' role='alert'>\n   Test\n</div>",
-                            "children": []
+                            "label": "JS Behavior",
+                            "folder": true,
+                            "children": [
+                                {
+                                    "id": 140,
+                                    "parentId": 139,
+                                    "label": "Trigger Alert",
+                                    "value": "$('.alert').alert()",
+                                    "children": []
+                                }
+                            ]
                         },
                         {
-                            "id": 4,
+                            "id": 3,
                             "parentId": 16,
-                            "label": "Error Alert",
-                            "value": "<div class='alert error-success' role='alert'></div>",
+                            "label": "Primary Alert",
+                            "value": "<div class=\"alert alert-primary\" role=\"alert\">\n  This is a primary alert—check it out!\n</div>",
                             "children": []
                         },
                         {
@@ -38,17 +46,10 @@
                             "children": []
                         },
                         {
-                            "id": 124,
+                            "id": 4,
                             "parentId": 16,
-                            "label": "some text",
-                            "value": "With Mac computers, only one piece of data is stored in the clipboard at a time. There is no standard command to remove the most recent item from the clipboard. Some users clear the clipboard by hitting the Space Bar to add a blank space, then selecting and copying it. Restarting the Mac will also clear the clipboard. To check the clipboard contents on a Mac, go to Finder on the top toolbar and select the Show Clipboard command on the Edit menu. The current contents of the clipboard will be displayed.\n\n",
-                            "children": []
-                        },
-                        {
-                            "id": 125,
-                            "parentId": 16,
-                            "label": "file",
-                            "value": "file.svg",
+                            "label": "Additional Content",
+                            "value": "<div class=\"alert alert-success\" role=\"alert\">\n  <h4 class=\"alert-heading\">Well done!</h4>\n  <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>\n  <hr>\n  <p class=\"mb-0\">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>\n</div>",
                             "children": []
                         }
                     ]
@@ -67,70 +68,56 @@
                             "children": []
                         },
                         {
-                            "id": 31,
+                            "id": 142,
                             "parentId": 6,
-                            "label": "new snippet",
-                            "value": "dev",
-                            "children": []
-                        },
-                        {
-                            "id": 134,
-                            "parentId": 6,
-                            "label": "test",
-                            "value": "dev",
+                            "label": "Basic Card",
+                            "value": "<div class=\"card\" style=\"width: 18rem;\">\r\n  <img class=\"card-img-top\" src=\"...\" alt=\"Card image cap\">\r\n  <div class=\"card-body\">\r\n    <h5 class=\"card-title\">Card title</h5>\r\n    <p class=\"card-text\">Some quick example text to build on the card title and make up the bulk of the card's content.</p>\r\n    <a href=\"#\" class=\"btn btn-primary\">Go somewhere</a>\r\n  </div>\r\n</div>",
                             "children": []
                         }
                     ]
                 },
                 {
-                    "id": 127,
+                    "id": 145,
                     "parentId": 2,
-                    "label": "Terminal Commands",
+                    "label": "Dropbdowns",
+                    "folder": true,
+                    "children": []
+                },
+                {
+                    "id": 146,
+                    "parentId": 2,
+                    "label": "Navbar",
                     "folder": true,
                     "children": [
                         {
-                            "id": 128,
-                            "parentId": 127,
-                            "label": "List files",
-                            "value": "ls ..\n# ls\nls",
+                            "id": 147,
+                            "parentId": 146,
+                            "label": "Navbar with text and image",
+                            "value": "<!-- Image and text -->\r\n<nav class=\"navbar navbar-light bg-light\">\r\n  <a class=\"navbar-brand\" href=\"#\">\r\n    <img src=\"/docs/4.0/assets/brand/bootstrap-solid.svg\" width=\"30\" height=\"30\" class=\"d-inline-block align-top\" alt=\"\">\r\n    Bootstrap\r\n  </a>\r\n</nav>",
                             "children": []
                         },
                         {
-                            "id": 129,
-                            "parentId": 127,
-                            "label": "unknown",
-                            "value": "snippet.value",
-                            "children": []
-                        },
-                        {
-                            "id": 130,
-                            "parentId": 127,
-                            "label": "test",
-                            "folder": true,
-                            "children": [
-                                {
-                                    "id": 131,
-                                    "parentId": 130,
-                                    "label": "test",
-                                    "value": "test",
-                                    "children": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 133,
-                            "parentId": 127,
-                            "label": "lkj",
-                            "value": "lmkj",
+                            "id": 148,
+                            "parentId": 146,
+                            "label": "Responsive Navbar",
+                            "value": "<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\r\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo01\" aria-controls=\"navbarTogglerDemo01\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n    <span class=\"navbar-toggler-icon\"></span>\r\n  </button>\r\n  <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo01\">\r\n    <a class=\"navbar-brand\" href=\"#\">Hidden brand</a>\r\n    <ul class=\"navbar-nav mr-auto mt-2 mt-lg-0\">\r\n      <li class=\"nav-item active\">\r\n        <a class=\"nav-link\" href=\"#\">Home <span class=\"sr-only\">(current)</span></a>\r\n      </li>\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" href=\"#\">Link</a>\r\n      </li>\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link disabled\" href=\"#\">Disabled</a>\r\n      </li>\r\n    </ul>\r\n    <form class=\"form-inline my-2 my-lg-0\">\r\n      <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\r\n      <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\r\n    </form>\r\n  </div>\r\n</nav>",
                             "children": []
                         }
                     ]
-                },
+                }
+            ]
+        },
+        {
+            "id": 143,
+            "parentId": 1,
+            "label": "Terminal Commands",
+            "folder": true,
+            "children": [
                 {
-                    "id": 132,
-                    "parentId": 2,
-                    "label": "pss",
-                    "value": "pss",
+                    "id": 144,
+                    "parentId": 143,
+                    "label": "List files in parent folder",
+                    "value": "ls ..",
                     "children": []
                 }
             ]
