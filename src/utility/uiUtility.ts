@@ -13,17 +13,17 @@ export class UIUtility {
         const arr: CustomQuickPickItem[] = savedSnippets.map(s => {
             return {
                 label: s.label,
-                detail: s.value?.slice(0, 10) ?? "",
+                detail: s.value?.slice(0, 75) ?? "",
                 value: s
             };
         });
 
         const selection = await vscode.window.showQuickPick(arr, {
-            placeHolder: Labels.insertSnippetName
+            placeHolder: Labels.insertSnippetName,
+            matchOnDetail: true
         });
 
-        if (
-            !selection ||
+        if (!selection ||
             !selection.value) {
             console.log(`No valid selection made!`);
             return;

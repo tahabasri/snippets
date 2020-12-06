@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		// if command is not triggered from treeView, a snippet must be selected by final user
 		if (!snippet) {
-			snippet = UIUtility.requestSnippetFromUser(snippetService.getAllSnippets());
+			snippet = await UIUtility.requestSnippetFromUser(snippetService.getAllSnippets());
 		}
 		if (!snippet) {
 			return;
@@ -46,7 +46,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		// if command is not triggered from treeView, a snippet must be selected by final user
 		if (!snippet) {
-			snippet = UIUtility.requestSnippetFromUser(snippetService.getAllSnippets());
+			snippet = await UIUtility.requestSnippetFromUser(snippetService.getAllSnippets());
 		}
 		if (!snippet) {
 			return;
