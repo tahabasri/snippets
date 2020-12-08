@@ -8,60 +8,70 @@ This extension takes snippets to another level bringing new features which will 
 
 #### Table of contents  <!-- omit in toc -->
 - [Features](#features)
-  - [Create a Snippet](#create-a-snippet)
+  - [Create Snippet](#create-snippet)
   - [Organize Snippets](#organize-snippets)
-  - [Open a Snippet](#open-a-snippet)
-  - [Edit a Snippet](#edit-a-snippet)
+  - [Open Snippet](#open-snippet)
+  - [Edit Snippet](#edit-snippet)
 - [Extension Settings](#extension-settings)
 - [Installation](#installation)
 - [Release Notes](#release-notes)
-- [Extension Settings](#extension-settings)
 - [Feedback](#feedback)
 - [Credits](#credits)
 
 ## Features
 
-### Create a Snippet
+### Create Snippet
 
 You can easily create a snippet from your open editor in VSCode.
 
-![Image Create Snippet](images/features/01-new-snippet.gif)
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/01-new-snippet.gif" 
+alt="Create Snippet">
 
 You can add code snippet directly from outside VSCode via your clipboard.
 
-![Image Create Snippet Clipboard](images/features/02-new-snippet-clipboard.gif)
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/02-new-snippet-clipboard.gif" 
+alt="Create Snippet from Clipboard">
 
-If you have a command in mind, add it manually.
+If you have a command in mind, just add it manually.
 
-![Image Create Snippet Manually](images/features/03-new-snippet-manual.gif)
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/03-new-snippet-manual.gif" 
+alt="Create Snippet Manually">
 
 ### Organize Snippets
 
 You have the flexibility to reorder your snippets, there is no default order.
 
-![Image Reorder Snippets](images/features/04-snippets-reorder.gif)
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/04-snippets-reorder.gif" 
+alt="Reorder Snippets">
 
-### Open a Snippet
+### Open Snippet
 
 Add your snippet with a single click.
 
-![Image Open Snippet](images/features/05-open-snippet-click.gif)
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/05-open-snippet-click.gif" 
+alt="Open Snippet">
 
 Your snippet has variables ? No worries.
 
-![Image Snippet with Variables](images/features/06-open-intelligent-snippet.gif)
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/06-open-intelligent-snippet.gif" 
+alt="Open Snippet with Variables">
 
 Lots of snippets ? Use Command Palette to quickly search for the wanted one.
 
-![Image Snippets Command Palette](images/features/07-open-snippet-palette.gif)
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/07-open-snippet-palette.gif" 
+alt="Open Snippets from Command Palette">
 
 You have some commands for terminal ? Open them directly.
 
-![Image Open Snippet in Terminal](images/features/08-open-snippet-terminal.gif)
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/08-open-snippet-terminal.gif" 
+alt="Open Snippet in Terminal">
 
-### Edit a Snippet
+### Edit Snippet
 
 Edit your snippet easily.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/09-edit-snippet.gif" 
+alt="Edit Snippet">
 
 ![Image Edit Snippet](images/features/09-edit-snippet.gif)
 
@@ -70,8 +80,6 @@ Edit your snippet easily.
 ## Installation
 
 Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
 ## Release Notes
 
