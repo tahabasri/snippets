@@ -1,4 +1,4 @@
-# Snippets for VSCode
+# Snippets for VSCode <!-- omit in toc -->
 
 Code snippets are great additions to anyone who wants to save time while developing. They make it easier to enter repeating code, such as loops, complex HTML structures or reusable methods.
 
@@ -6,36 +6,66 @@ Visual Studio Code already has great support for snippets, including snippets ap
 
 This extension takes snippets to another level bringing new features which will improve managing code snippets.
 
+#### Table of contents  <!-- omit in toc -->
+- [Features](#features)
+  - [Create a Snippet](#create-a-snippet)
+  - [Organize Snippets](#organize-snippets)
+  - [Open a Snippet](#open-a-snippet)
+  - [Edit a Snippet](#edit-a-snippet)
+- [Extension Settings](#extension-settings)
+- [Installation](#installation)
+- [Release Notes](#release-notes)
+- [Extension Settings](#extension-settings)
+- [Feedback](#feedback)
+- [Credits](#credits)
+
 ## Features
 
 ### Create a Snippet
 
-- You can easily create a snippet from your open editor in VSCode.
-\!\[feature X\]\(images/feature-x.png\)
+You can easily create a snippet from your open editor in VSCode.
 
-- You can add code snippet directly from outside VSCode via your clipboard.
-\!\[feature X\]\(images/feature-x.png\)
+![Image Create Snippet](images/features/01-new-snippet.gif)
+
+You can add code snippet directly from outside VSCode via your clipboard.
+
+![Image Create Snippet Clipboard](images/features/02-new-snippet-clipboard.gif)
+
+If you have a command in mind, add it manually.
+
+![Image Create Snippet Manually](images/features/03-new-snippet-manual.gif)
 
 ### Organize Snippets
 
-### Open a Snippet (terminal too)
+You have the flexibility to reorder your snippets, there is no default order.
+
+![Image Reorder Snippets](images/features/04-snippets-reorder.gif)
+
+### Open a Snippet
+
+Add your snippet with a single click.
+
+![Image Open Snippet](images/features/05-open-snippet-click.gif)
+
+Your snippet has variables ? No worries.
+
+![Image Snippet with Variables](images/features/06-open-intelligent-snippet.gif)
+
+Lots of snippets ? Use Command Palette to quickly search for the wanted one.
+
+![Image Snippets Command Palette](images/features/07-open-snippet-palette.gif)
+
+You have some commands for terminal ? Open them directly.
+
+![Image Open Snippet in Terminal](images/features/08-open-snippet-terminal.gif)
 
 ### Edit a Snippet
 
-### Create a Snippet
+Edit your snippet easily.
 
-### Misc
+![Image Edit Snippet](images/features/09-edit-snippet.gif)
 
-- Quick preview
-
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+**Enjoy!**
 
 ## Extension Settings
 
@@ -51,37 +81,6 @@ This extension contributes the following settings:
 ## Installation
 
 Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
-
-## Known Issues
-
-- Provide snippets as completionItems (shown next to the built in snippets using ctrl+space).
-  - When initializing the application, we can successfully populate VSCode with snippets prefixed with `snp:snippet-label`
-  - Problem starts to show up when we update existing snippets as the code bellow do not override existing ones but duplicate them
-```typescript
-// see https://code.visualstudio.com/api/references/vscode-api#DocumentSelector
-this.context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-    '*', {
-    provideCompletionItems() {
-        return [
-            {
-                // see https://code.visualstudio.com/api/references/vscode-api#DocumentFilter
-                label: `snp:${element.label.replace('\n', '').replace(' ', '-')}`,
-                insertText: new vscode.SnippetString(element.value),
-                detail: element.label,
-                kind: vscode.CompletionItemKind.Snippet,
-            },
-        ];
-    },
-},
-    // '' trigger character
-));
-
-// list completionItems
-const list: any = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider',
-    vscode.window.activeTextEditor?.document.uri,
-    new vscode.Position(0, 0));
-console.log(list.items);
-```
 
 Calling out known issues can help limit users opening duplicate issues against your extension.
 
@@ -101,22 +100,10 @@ Fixed issue #.
 
 Added features X, Y, and Z.
 
------------------------------------------------------------------------------------------------------------
+## Feedback
 
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
+* [Request a feature](https://github.com/tahabasri/snippets/issues/new?labels=enhancement).
+* [File a bug](https://github.com/tahabasri/snippets/issues/new?labels=bug).
 
 ### Credits
 <div>Icons made by <a href="https://www.flaticon.com/authors/darius-dan" title="Darius Dan">Darius Dan</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
