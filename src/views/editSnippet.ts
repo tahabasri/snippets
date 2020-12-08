@@ -17,7 +17,6 @@ export class EditSnippet extends EditView {
     handleReceivedMessage(message: any): any {
         switch (message.command) {
             case 'edit-snippet':
-                console.log('Form returned ' + message);
                 const { label, value } = message.data;
                 // call provider only if there is data change
                 if (label) {

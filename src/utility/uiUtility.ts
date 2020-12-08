@@ -25,7 +25,6 @@ export class UIUtility {
 
         if (!selection ||
             !selection.value) {
-            console.log(`No valid selection made!`);
             return;
         }
 

@@ -9,11 +9,7 @@ export class DataAcess {
     constructor(sourceParentPath: string) {
         if (!fs.existsSync(sourceParentPath)) {
             fs.mkdirSync(sourceParentPath);
-            console.info("Data folder was initialized in : " + sourceParentPath);
-        } else {
-            console.info("Data folder already exists in path : " + sourceParentPath);
         }
-
         this._dataFile = path.join(sourceParentPath, 'data.json');
     }
 
@@ -25,14 +21,11 @@ export class DataAcess {
     readFile(): any {
         const defaultRootElement:Snippet = { id: 1, parentId: -1, label: 'snippets', lastId: 1, children: [] };
         if (!fs.existsSync(this._dataFile)) {
-            console.info("Creating new file for future snippets in : " + this._dataFile);
             this.writeToFile(defaultRootElement);
         }
-        console.info("Reading from file : " + this._dataFile);
         let rawData = fs.readFileSync(this._dataFile, this._encoding);
         
         if (this.isBlank(rawData)) {
-            console.info("Creating new file for future snippets in : " + this._dataFile);
             this.writeToFile(defaultRootElement);
         }
 

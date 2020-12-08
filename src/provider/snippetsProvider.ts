@@ -24,7 +24,6 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
     readonly onDidChangeTreeData: vscode.Event<Snippet | undefined | null | void> = this._onDidChangeTreeData.event;
 
     refresh(): void {
-        console.log("refreshing from fs");
         this._snippetService.saveSnippets();
         this._onDidChangeTreeData.fire();
     }
@@ -42,7 +41,6 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
             }
         );
 
-        console.log("Snippet added, refreshing");
         this.refresh();
     }
 
@@ -59,42 +57,36 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
             }
         );
 
-        console.log("Snippet folder added, refreshing");
         this.refresh();
     }
 
     editSnippet(snippet: Snippet) {
         this._snippetService.updateSnippet(snippet);
 
-        console.log("Snippet updated, refreshing");
         this.refresh();
     }
 
     editSnippetFolder(snippet: Snippet) {
         this._snippetService.updateSnippet(snippet);
 
-        console.log("Snippet updated, refreshing");
         this.refresh();
     }
 
     removeSnippet(snippet: Snippet) {
         this._snippetService.removeSnippet(snippet);
 
-        console.log("Snippet removed, refreshing");
         this.refresh();
     }
 
     moveSnippetUp(snippet: Snippet) {
         this._snippetService.moveSnippet(snippet, -1);
 
-        console.log("Snippet reordered, refreshing");
         this.refresh();
     }
 
     moveSnippetDown(snippet: Snippet) {
         this._snippetService.moveSnippet(snippet, 1);
 
-        console.log("Snippet reordered, refreshing");
         this.refresh();
     }
 

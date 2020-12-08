@@ -17,7 +17,6 @@ export class EditSnippetFolder extends EditView {
     handleReceivedMessage(message: any): any {
         switch (message.command) {
             case 'edit-folder':
-                console.log('Form returned ' + message);
                 const label = message.data.label;
                 // call provider only if there is data change
                 if (label) {
