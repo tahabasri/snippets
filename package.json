@@ -1,15 +1,15 @@
 {
 	"name": "snippets",
 	"displayName": "Snippets",
-	"description": "Manage your code snippets via collections without quitting your editor.",
-	"version": "0.0.1",
+	"description": "Manage your code snippets without quitting your editor.",
+	"version": "1.0.0",
 	"preview": true,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
 	"author": {
 		"name": "Taha BASRI"
 	},
-	"icon": "images/logo.png",
+	"icon": "images/logo/logo.png",
 	"homepage": "https://github.com/tahabasri/snippets/blob/main/README.md",
 	"repository": {
 		"type": "git",
@@ -34,6 +34,7 @@
 		"Bookmark"
 	],
 	"activationEvents": [
+		"onStartupFinished",
 		"onView:snippetsExplorer"
 	],
 	"main": "./dist/extension",
@@ -41,16 +42,10 @@
 		"viewsWelcome": [
 			{
 				"view": "snippetsExplorer",
-				"contents": "In order to use git features, you can open a folder containing a git repository or clone from a URL.\n[Open Folder](command:vscode.openFolder)\n[Clone Repository](command:git.clone)\nTo learn more about how to use git and source control in VS Code [read our docs](https://aka.ms/vscode-scm).",
-				"when": "workbenchState == empty"
+				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:snippetsCmd.addSnippet)\n[Add Snippet Folder](command:snippetsCmd.addSnippetFolder)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md)."
 			}
 		],
 		"commands": [
-			{
-				"command": "snippetsCmd.test",
-				"title": "Test Command",
-				"category": "Snippets"
-			},
 			{
 				"command": "snippetsCmd.refreshEntry",
 				"title": "Refresh Snippets",
@@ -124,8 +119,32 @@
 		"menus": {
 			"commandPalette": [
 				{
-					"command": "snippetsCmd.test",
-					"when": "true"
+					"command": "snippetsCmd.refreshEntry",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.editSnippet",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.deleteSnippet",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.moveSnippetUp",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.moveSnippetDown",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.editSnippetFolder",
+					"when": "false"
+				},
+				{
+					"command": "snippetsCmd.deleteSnippetFolder",
+					"when": "false"
 				}
 			],
 			"view/title": [

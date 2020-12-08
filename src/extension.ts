@@ -76,11 +76,11 @@ export function activate(context: vscode.ExtensionContext) {
 		// get snippet name
 		const name = await UIUtility.requestSnippetName();
 		if (name === undefined || name === "") {
-			vscode.window.showErrorMessage(Labels.snippetNameErrorMsg);
+			vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
 			return;
 		}
 		if (text === undefined || text === "") {
-			vscode.window.showErrorMessage(Labels.snippetValueErrorMsg);
+			vscode.window.showWarningMessage(Labels.snippetValueErrorMsg);
 			return;
 		}
 		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
@@ -109,7 +109,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// get snippet name
 		const name = await UIUtility.requestSnippetName();
 		if (name === undefined || name === "") {
-			vscode.window.showErrorMessage(Labels.snippetNameErrorMsg);
+			vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
 			return;
 		}
 		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
@@ -133,7 +133,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// get snippet name
 		const name = await UIUtility.requestSnippetFolderName();
 		if (name === undefined || name === "") {
-			vscode.window.showErrorMessage(Labels.snippetFolderNameErrorMsg);
+			vscode.window.showWarningMessage(Labels.snippetFolderNameErrorMsg);
 			return;
 		}
 		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
