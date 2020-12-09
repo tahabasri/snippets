@@ -73,8 +73,6 @@ Edit your snippet easily.
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/09-edit-snippet.gif" 
 alt="Edit Snippet">
 
-![Image Edit Snippet](images/features/09-edit-snippet.gif)
-
 **Enjoy!**
 
 ## Installation
