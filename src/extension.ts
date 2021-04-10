@@ -1,17 +1,76 @@
 import * as vscode from 'vscode';
+import fs = require('fs');
 import { Commands } from './config/commands';
 import { SnippetsProvider } from './provider/snippetsProvider';
-import { DataAcess } from './data/dataAccess';
+import { DataAccess } from './data/dataAccess';
 import { Snippet } from './interface/snippet';
 import { EditSnippet } from './views/editSnippet';
 import { EditSnippetFolder } from './views/editSnippetFolder';
 import { SnippetService } from './service/snippetService';
 import { UIUtility } from './utility/uiUtility';
+import { StringUtility } from './utility/stringUtility';
 import { Labels } from './config/Labels';
+import { ConfigurationTarget } from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
-	const snippetService = new SnippetService(new DataAcess(context.globalStorageUri.fsPath));
+	const defaultSnippetsPath = DataAccess.resolveFilename(context.globalStorageUri.fsPath);
+	const snippetsPathConfigKey = 'snippetsLocation';
+
+	// to be enabled whenever an explicit configuration update is requested (e.g getConfiguration#update)
+	let explicitUpdate = false;
+	let snippetsPath: string = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey) || "";
+
+	// revert back to default snippets path if there is no entry in settings or there is one but it is not a valid JSON file
+	const revertToDefaultLocation = snippetsPath === "" || !fs.existsSync(snippetsPath) || !fs.statSync(snippetsPath).isFile || !snippetsPath.endsWith(DataAccess.dataFileExt);
+	if (revertToDefaultLocation) {
+		vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, defaultSnippetsPath, ConfigurationTarget.Global);
+		explicitUpdate = true;
+		// show different message depending on the state of settings :
+		// - show Labels.snippetsDefaultPath if there was no entry in settings
+		// - show Labels.snippetsInvalidPath if there was an entry but it is not a valid JSON file
+		vscode.window.showInformationMessage(
+			StringUtility.formatString(
+				snippetsPath === "" ? Labels.snippetsDefaultPath : Labels.snippetsInvalidPath,
+				defaultSnippetsPath)
+		);
+
+		snippetsPath = defaultSnippetsPath;
+	}
+
+	const dataAccess = new DataAccess(snippetsPath);
+	const snippetService = new SnippetService(dataAccess);
 	const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
+
+	vscode.workspace.onDidChangeConfiguration(event => {
+		let affected = event.affectsConfiguration(`snippets.${snippetsPathConfigKey}`);
+		if (affected && !explicitUpdate) {
+			let newPath: string | undefined = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey);
+			if (newPath) {
+				try {
+					fs.renameSync(snippetsPath, newPath);
+					snippetsPath = newPath;
+					vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsChangedPath, snippetsPath));
+				} catch (error) {
+					// new path is not valid, fall back to old location
+					vscode.window.showErrorMessage(error.message);
+					vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, snippetsPath, ConfigurationTarget.Global);
+					explicitUpdate = true;
+					vscode.window.showWarningMessage(StringUtility.formatString(Labels.snippetsInvalidNewPath, snippetsPath));
+				}
+			} else {
+				// no new path given, fall back to default location
+				fs.renameSync(snippetsPath, defaultSnippetsPath);
+				snippetsPath = defaultSnippetsPath;
+				vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, snippetsPath, ConfigurationTarget.Global);
+				explicitUpdate = true;
+				vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsNoNewPath, snippetsPath));
+			}
+			// update dataFile in DataAccess object
+			dataAccess.setDataFile(snippetsPath);
+		} else if (explicitUpdate) {
+			explicitUpdate = false;
+		}
+	});
 
 	let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
 		treeDataProvider: snippetsProvider
