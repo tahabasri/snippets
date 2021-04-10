@@ -250,6 +250,20 @@
 					"name": "Snippets Explorer"
 				}
 			]
+		},
+		"configuration": {
+			"title": "Snippets",
+			"properties": {
+				"snippets.snippetsLocation": {
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null,
+					"format": "uri",
+					"description": "Specifies the folder path where to save snippets. For instance, this can be used to sync your snippets in the cloud."
+				}
+			}
 		}
 	},
 	"scripts": {
@@ -277,7 +291,8 @@
 		"typescript": "^4.0.2",
 		"vscode-test": "^1.4.0",
 		"webpack": "^5.8.0",
-		"webpack-cli": "^4.2.0"
+		"webpack-cli": "^4.2.0",
+		"y18n": ">=4.0.1"
 	},
 	"dependencies": {
 		"@types/mustache": "^4.0.1",

@@ -1,10 +1,10 @@
-import { DataAcess } from "../data/dataAccess";
+import { DataAccess } from "../data/dataAccess";
 import { Snippet } from "../interface/snippet";
 
 export class SnippetService {
     private _rootSnippet: Snippet;
 
-    constructor(private _dataAccess: DataAcess) {
+    constructor(private _dataAccess: DataAccess) {
         this._rootSnippet = _dataAccess.readFile();
     }
 

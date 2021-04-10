@@ -20,5 +20,11 @@ export const enum Labels {
 	snippetNameFolderPrompt = "Snippet Folder Name",
 	snippetNameFolderPlaceholder = "Some examples: Alerts, JS Snippets, etc.",
 	snippetFolderNameValidationMsg = "Folder name should not be empty.",
-	snippetFolderNameErrorMsg = "Snippet folder must have a non-empty name."
+	snippetFolderNameErrorMsg = "Snippet folder must have a non-empty name.",
+
+	snippetsDefaultPath = "Snippets will be saved to default location [{0}].",
+	snippetsInvalidPath = "Snippets path is not a valid JSON file, will revert back to default location [{0}].",
+	snippetsChangedPath = "Snippets location changed to [{0}]",
+	snippetsInvalidNewPath = "Snippets path is not a valid JSON file, will revert back to old location [{0}].",
+	snippetsNoNewPath = "Snippets will be saved to old location [{0}].",
 }
