@@ -12,6 +12,7 @@ This extension takes snippets to another level bringing new features which will 
   - [Organize Snippets](#organize-snippets)
   - [Open Snippet](#open-snippet)
   - [Edit Snippet](#edit-snippet)
+  - [Backup your Snippets outside VSCode](#backup-your-snippets-outside-vscode)
 - [Extension Settings](#extension-settings)
 - [Installation](#installation)
 - [Release Notes](#release-notes)
