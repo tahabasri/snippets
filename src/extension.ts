@@ -41,6 +41,11 @@ export function activate(context: vscode.ExtensionContext) {
 	const snippetService = new SnippetService(dataAccess);
 	const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
 
+	// watch changes on snippets file, this will prevent de-sync between multiple open workspaces
+	fs.watchFile(snippetsPath, () => {
+		snippetsProvider.refresh();
+	});
+
 	vscode.workspace.onDidChangeConfiguration(event => {
 		let affected = event.affectsConfiguration(`snippets.${snippetsPathConfigKey}`);
 		if (affected && !explicitUpdate) {

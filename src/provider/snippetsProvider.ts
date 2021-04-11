@@ -23,9 +23,16 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
     private _onDidChangeTreeData: vscode.EventEmitter<Snippet | undefined | null | void> = new vscode.EventEmitter<Snippet | undefined | null | void>();
     readonly onDidChangeTreeData: vscode.Event<Snippet | undefined | null | void> = this._onDidChangeTreeData.event;
 
+    // only read from data file
     refresh(): void {
-        this._snippetService.saveSnippets();
+        this._snippetService.refresh();
         this._onDidChangeTreeData.fire();
+    }
+
+    // save state of snippets, then refresh
+    sync(): void {
+        this._snippetService.saveSnippets();
+        this.refresh();
     }
 
     addSnippet(name: string, snippet: string, parentId: number) {
@@ -41,7 +48,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
             }
         );
 
-        this.refresh();
+        this.sync();
     }
 
     addSnippetFolder(name: string, parentId: number) {
@@ -57,37 +64,37 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
             }
         );
 
-        this.refresh();
+        this.sync();
     }
 
     editSnippet(snippet: Snippet) {
         this._snippetService.updateSnippet(snippet);
 
-        this.refresh();
+        this.sync();
     }
 
     editSnippetFolder(snippet: Snippet) {
         this._snippetService.updateSnippet(snippet);
 
-        this.refresh();
+        this.sync();
     }
 
     removeSnippet(snippet: Snippet) {
         this._snippetService.removeSnippet(snippet);
 
-        this.refresh();
+        this.sync();
     }
 
     moveSnippetUp(snippet: Snippet) {
         this._snippetService.moveSnippet(snippet, -1);
 
-        this.refresh();
+        this.sync();
     }
 
     moveSnippetDown(snippet: Snippet) {
         this._snippetService.moveSnippet(snippet, 1);
 
-        this.refresh();
+        this.sync();
     }
 
     private snippetToTreeItem(snippet: Snippet): vscode.TreeItem {
