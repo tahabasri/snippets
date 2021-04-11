@@ -5,7 +5,7 @@ export class SnippetService {
     private _rootSnippet: Snippet;
 
     constructor(private _dataAccess: DataAccess) {
-        this._rootSnippet = _dataAccess.readFile();
+        this._rootSnippet = this.loadSnippets();
     }
 
     // static utility methods
@@ -66,6 +66,14 @@ export class SnippetService {
     }
     
     // public service methods
+
+    refresh(): void {
+        this._rootSnippet = this.loadSnippets();
+    }
+
+    loadSnippets(): Snippet {
+        return this._dataAccess.readFile();
+    }
     
     saveSnippets(): void {
         this._dataAccess.writeToFile(this._rootSnippet);
@@ -76,6 +84,8 @@ export class SnippetService {
     }
 
     getAllSnippets(): Snippet[] {
+        // sync snippets
+        this._rootSnippet = this.loadSnippets();
         let snippets: Snippet[] = [];
         SnippetService.flatten(this._rootSnippet.children, snippets);
         return snippets;
