@@ -56,7 +56,7 @@ Your snippet has variables ? No worries.
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/06-open-intelligent-snippet.gif" 
 alt="Open Snippet with Variables">
 
-Lots of snippets ? Use Command Palette to quickly search for the wanted one.
+Lot of snippets ? Use Command Palette to quickly search for the wanted one.
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/07-open-snippet-palette.gif" 
 alt="Open Snippets from Command Palette">
@@ -68,10 +68,17 @@ alt="Open Snippet in Terminal">
 
 ### Edit Snippet
 
-Edit your snippet easily.
+Edit your snippet easily and benefit from support of VSCode built-in [Snippet Syntax](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax).
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/09-edit-snippet.gif" 
 alt="Edit Snippet">
+
+### Backup your Snippets outside VSCode
+
+Easily backup your snippets by changing their default location. This can be useful when combined with a Cloud client on your machine.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/10-backup-snippets.png" 
+alt="Backup Snippets">
 
 **Enjoy!**
 
@@ -80,6 +87,12 @@ alt="Edit Snippet">
 Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
 
 ## Release Notes
+
+## 1.1.0
+
+- Sync snippets across open workspaces.
+- Enable/disable snippets syntax resolving.
+- Change default snippets location using settings property `snippets.snippetsLocation`.
 
 ### 1.0.0
 
