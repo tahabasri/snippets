@@ -8,6 +8,7 @@ export class Snippet {
   children: Array<Snippet>;
   value?: string;
   lastId?: number;
+  resolveSyntax?: boolean;
 
   constructor(
     id: number,

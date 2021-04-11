@@ -89,11 +89,19 @@ export function activate(context: vscode.ExtensionContext) {
 		if (!snippet) {
 			return;
 		}
-		vscode.commands.executeCommand("editor.action.insertSnippet",
-			{
-				snippet: snippet.value
-			}
-		);
+		// note: enable syntax resolving by default if property is not yet defined in JSON
+		if (snippet.resolveSyntax === undefined) {
+			snippet.resolveSyntax = true;
+		}
+		if (snippet.resolveSyntax) {
+			vscode.commands.executeCommand("editor.action.insertSnippet", { snippet: snippet.value }
+			);
+		} else {
+			editor.edit(edit => {
+				edit.insert(editor.selection.start, snippet.value);
+			});
+		}
+
 		vscode.window.showTextDocument(editor.document);
 	}));
 
@@ -204,6 +212,10 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand(Commands.editSnippet, (snippet: Snippet) => {
+		// note: enable syntax resolving by default if property is not yet defined in JSON
+		if (snippet.resolveSyntax === undefined) {
+			snippet.resolveSyntax = true;
+		}
 		// Create and show a new webview for editing snippet
 		new EditSnippet(context, snippet, snippetsProvider);
 	}));

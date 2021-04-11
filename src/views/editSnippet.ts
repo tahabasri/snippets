@@ -17,13 +17,17 @@ export class EditSnippet extends EditView {
     handleReceivedMessage(message: any): any {
         switch (message.command) {
             case 'edit-snippet':
-                const { label, value } = message.data;
+                const { label, value, resolveSyntax } = message.data;
                 // call provider only if there is data change
-                if (label) {
+                if (label !== undefined) {
                     this._snippet.label = label;
                 }
-                if (value) {
+                if (value !== undefined) {
                     this._snippet.value = value;
+                }
+                // test against undefined so we don't mess with variable's state if user introduces an explicit value 'false'
+                if (resolveSyntax !== undefined) {
+                    this._snippet.resolveSyntax = resolveSyntax;
                 }
                 this._snippetsProvider.editSnippet(this._snippet);
                 this._panel.dispose();
