@@ -15,6 +15,7 @@ This extension takes snippets to another level bringing new features which will 
   - [Backup your Snippets outside VSCode](#backup-your-snippets-outside-vscode)
 - [Extension Settings](#extension-settings)
 - [Installation](#installation)
+- [Known Issues](#known-issues)
 - [Release Notes](#release-notes)
 - [Feedback](#feedback)
 - [Credits](#credits)
@@ -87,7 +88,19 @@ alt="Backup Snippets">
 
 Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
 
+## Known Issues
+
+- There is an issue regarding permissions when trying to change snippets location. In Windows in particular, changing location to some restricted folders (e.g `C:\\`) will cause the extension to rollback to default path. This is due to lack of permissions on files from within VSCode itself.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/issues/01-issue-windows-permissions.png" 
+alt="Permissions issue">
+
+
 ## Release Notes
+
+## 1.1.1
+
+- Make default snippets path available after fresh installation.
 
 ## 1.1.0
 
