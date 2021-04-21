@@ -89,6 +89,10 @@ Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
 
 ## Release Notes
 
+## 1.1.1
+
+- Make default snippets path available after fresh installation.
+
 ## 1.1.0
 
 - Sync snippets across open workspaces.
