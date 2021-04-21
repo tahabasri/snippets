@@ -14,6 +14,11 @@ import { ConfigurationTarget } from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
 	const defaultSnippetsPath = DataAccess.resolveFilename(context.globalStorageUri.fsPath);
+	// default snippets path should always be available
+	if (!fs.existsSync(context.globalStorageUri.fsPath)) {
+		fs.mkdirSync(context.globalStorageUri.fsPath);
+	}
+
 	const snippetsPathConfigKey = 'snippetsLocation';
 
 	// to be enabled whenever an explicit configuration update is requested (e.g getConfiguration#update)
@@ -27,12 +32,18 @@ export function activate(context: vscode.ExtensionContext) {
 		explicitUpdate = true;
 		// show different message depending on the state of settings :
 		// - show Labels.snippetsDefaultPath if there was no entry in settings
+		// - show Labels.snippetsDefaultPath if default path was mentionned in settings but wasn't available
 		// - show Labels.snippetsInvalidPath if there was an entry but it is not a valid JSON file
-		vscode.window.showInformationMessage(
-			StringUtility.formatString(
-				snippetsPath === "" ? Labels.snippetsDefaultPath : Labels.snippetsInvalidPath,
-				defaultSnippetsPath)
-		);
+		if (snippetsPath === "" || snippetsPath === defaultSnippetsPath) {
+			vscode.window.showInformationMessage(
+				StringUtility.formatString(Labels.snippetsDefaultPath, defaultSnippetsPath)
+			);
+		}else{
+			vscode.window.showInformationMessage(
+				StringUtility.formatString(Labels.snippetsInvalidPath, snippetsPath, defaultSnippetsPath)
+			);
+		}
+		
 
 		snippetsPath = defaultSnippetsPath;
 	}
@@ -60,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
 					vscode.window.showErrorMessage(error.message);
 					vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, snippetsPath, ConfigurationTarget.Global);
 					explicitUpdate = true;
-					vscode.window.showWarningMessage(StringUtility.formatString(Labels.snippetsInvalidNewPath, snippetsPath));
+					vscode.window.showWarningMessage(StringUtility.formatString(Labels.snippetsInvalidNewPath, newPath, snippetsPath));
 				}
 			} else {
 				// no new path given, fall back to default location
