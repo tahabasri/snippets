@@ -38,12 +38,12 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showInformationMessage(
 				StringUtility.formatString(Labels.snippetsDefaultPath, defaultSnippetsPath)
 			);
-		}else{
+		} else {
 			vscode.window.showInformationMessage(
 				StringUtility.formatString(Labels.snippetsInvalidPath, snippetsPath, defaultSnippetsPath)
 			);
 		}
-		
+
 
 		snippetsPath = defaultSnippetsPath;
 	}
@@ -89,7 +89,8 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
-		treeDataProvider: snippetsProvider
+		treeDataProvider: snippetsProvider,
+		showCollapseAll: true
 	});
 
 	context.subscriptions.push(vscode.commands.registerCommand(Commands.openSnippet, async (snippet) => {

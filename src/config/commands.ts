@@ -10,6 +10,5 @@ export const enum Commands {
 	deleteSnippetFolder = "snippetsCmd.deleteSnippetFolder",
 	moveSnippetUp = "snippetsCmd.moveSnippetUp",
 	moveSnippetDown = "snippetsCmd.moveSnippetDown",
-	refresh = "snippetsCmd.refreshEntry",
-	test = "snippetsCmd.test"
+	refresh = "snippetsCmd.refreshEntry"
 }
