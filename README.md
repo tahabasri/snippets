@@ -82,6 +82,13 @@ Easily backup your snippets by changing their default location. This can be usef
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/10-backup-snippets.png" 
 alt="Backup Snippets">
 
+
+Or save them inside your workspace folder by adding this to your settings.
+```
+"snippets.useWorkspaceFolder": true,
+"snippets.snippetsLocation": ".vscode/snippets.json",
+```
+
 **Enjoy!**
 
 ## Installation

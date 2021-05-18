@@ -254,6 +254,11 @@
 		"configuration": {
 			"title": "Snippets",
 			"properties": {
+				"snippets.useWorkspaceFolder": {
+					"type": "boolean",
+					"default": false,
+					"description": "Use the workspace folder as root to save snippets instead of user settings. Can be specified with the snippet location setting"
+				},
 				"snippets.snippetsLocation": {
 					"type": [
 						"string",

@@ -13,39 +13,61 @@ import { Labels } from './config/Labels';
 import { ConfigurationTarget } from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
-	const defaultSnippetsPath = DataAccess.resolveFilename(context.globalStorageUri.fsPath);
-	// default snippets path should always be available
-	if (!fs.existsSync(context.globalStorageUri.fsPath)) {
-		fs.mkdirSync(context.globalStorageUri.fsPath);
-	}
-
+	let settings = vscode.workspace.getConfiguration("snippets");
 	const snippetsPathConfigKey = 'snippetsLocation';
 
 	// to be enabled whenever an explicit configuration update is requested (e.g getConfiguration#update)
 	let explicitUpdate = false;
 	let snippetsPath: string = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey) || "";
+	let defaultSnippetsPath = DataAccess.resolveFilename(context.globalStorageUri.fsPath);
 
-	// revert back to default snippets path if there is no entry in settings or there is one but it is not a valid JSON file
-	const revertToDefaultLocation = snippetsPath === "" || !fs.existsSync(snippetsPath) || !fs.statSync(snippetsPath).isFile || !snippetsPath.endsWith(DataAccess.dataFileExt);
-	if (revertToDefaultLocation) {
-		vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, defaultSnippetsPath, ConfigurationTarget.Global);
-		explicitUpdate = true;
-		// show different message depending on the state of settings :
-		// - show Labels.snippetsDefaultPath if there was no entry in settings
-		// - show Labels.snippetsDefaultPath if default path was mentionned in settings but wasn't available
-		// - show Labels.snippetsInvalidPath if there was an entry but it is not a valid JSON file
-		if (snippetsPath === "" || snippetsPath === defaultSnippetsPath) {
+	if (settings.useWorkspaceFolder && vscode.workspace.workspaceFolders) {
+		snippetsPath = vscode.workspace.workspaceFolders[0].uri.fsPath + '/' + snippetsPath;
+	} else {
+		// default snippets path should always be available
+		if (!fs.existsSync(context.globalStorageUri.fsPath)) {
+			fs.mkdirSync(context.globalStorageUri.fsPath);
+		}
+	}
+
+
+	if (settings.useWorkspaceFolder) {
+		if (snippetsPath.endsWith(DataAccess.dataFileExt)) {
 			vscode.window.showInformationMessage(
-				StringUtility.formatString(Labels.snippetsDefaultPath, defaultSnippetsPath)
+				StringUtility.formatString(Labels.snippetsWorkspacePath, snippetsPath)
 			);
-		} else {
+		}
+		else {
+			vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, defaultSnippetsPath, ConfigurationTarget.Global);
+			explicitUpdate = true;
 			vscode.window.showInformationMessage(
 				StringUtility.formatString(Labels.snippetsInvalidPath, snippetsPath, defaultSnippetsPath)
 			);
+			snippetsPath = defaultSnippetsPath;
 		}
+	}
 
-
-		snippetsPath = defaultSnippetsPath;
+	else {
+		// revert back to default snippets path if there is no entry in settings or there is one but it is not a valid JSON file
+		const revertToDefaultLocation = snippetsPath === "" || !fs.existsSync(snippetsPath) || !fs.statSync(snippetsPath).isFile || !snippetsPath.endsWith(DataAccess.dataFileExt);
+		if (revertToDefaultLocation) {
+			vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, defaultSnippetsPath, ConfigurationTarget.Global);
+			explicitUpdate = true;
+			// show different message depending on the state of settings :
+			// - show Labels.snippetsDefaultPath if there was no entry in settings
+			// - show Labels.snippetsDefaultPath if default path was mentioned in settings but wasn't available
+			// - show Labels.snippetsInvalidPath if there was an entry but it is not a valid JSON file
+			if (snippetsPath === "" || snippetsPath === defaultSnippetsPath) {
+				vscode.window.showInformationMessage(
+					StringUtility.formatString(Labels.snippetsDefaultPath, defaultSnippetsPath)
+				);
+			} else {
+				vscode.window.showInformationMessage(
+					StringUtility.formatString(Labels.snippetsInvalidPath, snippetsPath, defaultSnippetsPath)
+				);
+			}
+			snippetsPath = defaultSnippetsPath;
+		}
 	}
 
 	const dataAccess = new DataAccess(snippetsPath);
@@ -193,7 +215,7 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
 			return;
 		}
-		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
+		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
 			snippetsProvider.addSnippet(name, clipboardContent, Snippet.PARENT_ID);
@@ -214,7 +236,7 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showWarningMessage(Labels.snippetFolderNameErrorMsg);
 			return;
 		}
-		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
+		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
 			snippetsProvider.addSnippetFolder(name, Snippet.PARENT_ID);
