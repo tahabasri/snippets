@@ -24,7 +24,9 @@ export const enum Labels {
 
 	snippetsDefaultPath = "Snippets will be saved to default location [{0}].",
 	snippetsWorkspacePath = "Snippets will be saved to workspace location [{0}].",
-	snippetsWorkspaceInvalidPath = "Snippets will be saved to workspace location [{0}].",
+	snippetsWorkspaceCreateFileOption = "Workspace snippets is enabled but no snippets file is found",
+	snippetsWorkspaceCreateFileOptionMakeJson = "Make new file",
+	snippetsWorkspaceCreateFileOptionUseGlobal = "Use global snippets",
 	snippetsInvalidPath = "Snippets path [{0}] is not a valid JSON file, will revert back to default location [{1}].",
 	snippetsChangedPath = "Snippets location changed to [{0}]",
 	snippetsInvalidNewPath = "Snippets path [{0}] is not a valid JSON file, will revert back to old location [{1}].",

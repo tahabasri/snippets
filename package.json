@@ -257,7 +257,7 @@
 				"snippets.useWorkspaceFolder": {
 					"type": "boolean",
 					"default": false,
-					"description": "Use the workspace folder as root to save snippets instead of user settings. Can be specified with the snippet location setting"
+					"description": "Use the workspace .vscode folder to save snippets as a snippets.json file (overrides the snippetsLocation)"
 				},
 				"snippets.snippetsLocation": {
 					"type": [

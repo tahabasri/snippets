@@ -21,8 +21,9 @@ export function activate(context: vscode.ExtensionContext) {
 	let snippetsPath: string = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey) || "";
 	let defaultSnippetsPath = DataAccess.resolveFilename(context.globalStorageUri.fsPath);
 
+	// check if a workspace is open and if use workspace is enabled
 	if (settings.useWorkspaceFolder && vscode.workspace.workspaceFolders) {
-		snippetsPath = vscode.workspace.workspaceFolders[0].uri.fsPath + '/' + snippetsPath;
+		snippetsPath = vscode.workspace.workspaceFolders[0].uri.fsPath + '/' + ".vscode/snippets.json";
 	} else {
 		// default snippets path should always be available
 		if (!fs.existsSync(context.globalStorageUri.fsPath)) {
@@ -31,20 +32,23 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 
-	if (settings.useWorkspaceFolder) {
-		if (snippetsPath.endsWith(DataAccess.dataFileExt)) {
-			vscode.window.showInformationMessage(
-				StringUtility.formatString(Labels.snippetsWorkspacePath, snippetsPath)
-			);
-		}
-		else {
-			vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, defaultSnippetsPath, ConfigurationTarget.Global);
-			explicitUpdate = true;
-			vscode.window.showInformationMessage(
-				StringUtility.formatString(Labels.snippetsInvalidPath, snippetsPath, defaultSnippetsPath)
-			);
-			snippetsPath = defaultSnippetsPath;
-		}
+	if (settings.useWorkspaceFolder && !fs.existsSync(snippetsPath)) {
+		vscode.window.showWarningMessage(Labels.snippetsWorkspaceCreateFileOption, Labels.snippetsWorkspaceCreateFileOptionMakeJson, Labels.snippetsWorkspaceCreateFileOptionUseGlobal).then(selection => {
+			if (selection == Labels.snippetsWorkspaceCreateFileOptionMakeJson) {
+				new DataAccess(snippetsPath).setDataFile(snippetsPath);
+				vscode.window.showInformationMessage(
+					StringUtility.formatString(Labels.snippetsWorkspacePath, snippetsPath)
+				);
+			}
+			else if (selection == Labels.snippetsWorkspaceCreateFileOptionUseGlobal) {
+				snippetsPath = defaultSnippetsPath
+				vscode.window.showInformationMessage(
+					StringUtility.formatString(Labels.snippetsDefaultPath, snippetsPath)
+				);
+			}
+			activate_extension(context, snippetsPath, defaultSnippetsPath, snippetsPathConfigKey, explicitUpdate)
+		});
+		return;
 	}
 
 	else {
@@ -69,10 +73,15 @@ export function activate(context: vscode.ExtensionContext) {
 			snippetsPath = defaultSnippetsPath;
 		}
 	}
+	activate_extension(context, snippetsPath, defaultSnippetsPath, snippetsPathConfigKey, explicitUpdate)
+}
 
+//changed continue function, needed to wait for user input if needed.
+export function activate_extension(context: vscode.ExtensionContext, snippetsPath: string, defaultSnippetsPath: string, snippetsPathConfigKey: string, explicitUpdate: boolean) {
 	const dataAccess = new DataAccess(snippetsPath);
 	const snippetService = new SnippetService(dataAccess);
 	const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
+	let settings = vscode.workspace.getConfiguration("snippets");
 
 	// watch changes on snippets file, this will prevent de-sync between multiple open workspaces
 	fs.watchFile(snippetsPath, () => {
@@ -103,8 +112,10 @@ export function activate(context: vscode.ExtensionContext) {
 				explicitUpdate = true;
 				vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsNoNewPath, snippetsPath));
 			}
-			// update dataFile in DataAccess object
-			dataAccess.setDataFile(snippetsPath);
+			// update dataFile in DataAccess object if not using the workspace folder.
+			if (!settings.useWorkspaceFolder) {
+				dataAccess.setDataFile(snippetsPath);
+			}
 		} else if (explicitUpdate) {
 			explicitUpdate = false;
 		}
