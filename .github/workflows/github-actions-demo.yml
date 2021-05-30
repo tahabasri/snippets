@@ -6,8 +6,8 @@ jobs:
     steps:
       - name: Checkout Actions
         uses: actions/checkout@v2
-      - name: Install
-        run: npm install --production
+      - name: Install modules
+        run: npm install
       - run: echo "Scanning code of branch ${{ github.ref }}."
       - name: Run ESLint
-        run: npm run lint
+        run: npx eslint src --ext ts
