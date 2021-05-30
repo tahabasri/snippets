@@ -34,5 +34,4 @@ export const enum Labels {
 	snippetsMigrateRequest = "You have some old snippets saved in [{0}], do you want to restore them ? (Original file will be removed).",
 	snippetsDataRestored = "{0} snippets restored. Deleted file [{1}].",
 	snippetsNoDataRestored = "No data was provided from file to restore.",
-	DUMMY = "",
 }
