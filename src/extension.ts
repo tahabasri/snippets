@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import fs = require('fs');
 import { Commands } from './config/commands';
 import { SnippetsProvider } from './provider/snippetsProvider';
-import { DataAccess } from './data/dataAccess';
+import { MementoDataAccess } from './data/mementoDataAccess';
 import { Snippet } from './interface/snippet';
 import { EditSnippet } from './views/editSnippet';
 import { EditSnippetFolder } from './views/editSnippetFolder';
@@ -10,83 +10,61 @@ import { SnippetService } from './service/snippetService';
 import { UIUtility } from './utility/uiUtility';
 import { StringUtility } from './utility/stringUtility';
 import { Labels } from './config/Labels';
-import { ConfigurationTarget } from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
-	const defaultSnippetsPath = DataAccess.resolveFilename(context.globalStorageUri.fsPath);
-	// default snippets path should always be available
-	if (!fs.existsSync(context.globalStorageUri.fsPath)) {
-		fs.mkdirSync(context.globalStorageUri.fsPath);
-	}
+	context.globalState.setKeysForSync([MementoDataAccess.snippetsMementoPrefix]);
 
-	const snippetsPathConfigKey = 'snippetsLocation';
-
-	// to be enabled whenever an explicit configuration update is requested (e.g getConfiguration#update)
-	let explicitUpdate = false;
-	let snippetsPath: string = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey) || "";
-
-	// revert back to default snippets path if there is no entry in settings or there is one but it is not a valid JSON file
-	const revertToDefaultLocation = snippetsPath === "" || !fs.existsSync(snippetsPath) || !fs.statSync(snippetsPath).isFile || !snippetsPath.endsWith(DataAccess.dataFileExt);
-	if (revertToDefaultLocation) {
-		vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, defaultSnippetsPath, ConfigurationTarget.Global);
-		explicitUpdate = true;
-		// show different message depending on the state of settings :
-		// - show Labels.snippetsDefaultPath if there was no entry in settings
-		// - show Labels.snippetsDefaultPath if default path was mentionned in settings but wasn't available
-		// - show Labels.snippetsInvalidPath if there was an entry but it is not a valid JSON file
-		if (snippetsPath === "" || snippetsPath === defaultSnippetsPath) {
-			vscode.window.showInformationMessage(
-				StringUtility.formatString(Labels.snippetsDefaultPath, defaultSnippetsPath)
-			);
-		} else {
-			vscode.window.showInformationMessage(
-				StringUtility.formatString(Labels.snippetsInvalidPath, snippetsPath, defaultSnippetsPath)
-			);
-		}
-
-
-		snippetsPath = defaultSnippetsPath;
-	}
-
-	const dataAccess = new DataAccess(snippetsPath);
+	const dataAccess = new MementoDataAccess(context.globalState);
 	const snippetService = new SnippetService(dataAccess);
 	const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
 
-	// watch changes on snippets file, this will prevent de-sync between multiple open workspaces
-	fs.watchFile(snippetsPath, () => {
-		snippetsProvider.refresh();
-	});
-
-	vscode.workspace.onDidChangeConfiguration(event => {
-		let affected = event.affectsConfiguration(`snippets.${snippetsPathConfigKey}`);
-		if (affected && !explicitUpdate) {
-			let newPath: string | undefined = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey);
-			if (newPath) {
-				try {
-					fs.renameSync(snippetsPath, newPath);
-					snippetsPath = newPath;
-					vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsChangedPath, snippetsPath));
-				} catch (error) {
-					// new path is not valid, fall back to old location
-					vscode.window.showErrorMessage(error.message);
-					vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, snippetsPath, ConfigurationTarget.Global);
-					explicitUpdate = true;
-					vscode.window.showWarningMessage(StringUtility.formatString(Labels.snippetsInvalidNewPath, newPath, snippetsPath));
-				}
-			} else {
-				// no new path given, fall back to default location
-				fs.renameSync(snippetsPath, defaultSnippetsPath);
-				snippetsPath = defaultSnippetsPath;
-				vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, snippetsPath, ConfigurationTarget.Global);
-				explicitUpdate = true;
-				vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsNoNewPath, snippetsPath));
-			}
-			// update dataFile in DataAccess object
-			dataAccess.setDataFile(snippetsPath);
-		} else if (explicitUpdate) {
-			explicitUpdate = false;
+	// refresh windows whenever it gains focus
+	// this will prevent de-sync between multiple open workspaces
+	vscode.window.onDidChangeWindowState((event) => {
+		if (event.focused) {
+			snippetsProvider.refresh();
 		}
 	});
+
+	const snippetsPathConfigKey = 'snippetsLocation';
+	let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey) || "";
+
+	if(oldSnippetsPath && fs.existsSync(oldSnippetsPath)) {
+		let rawData = fs.readFileSync(oldSnippetsPath, 'utf8');
+		// true if is blank
+		let noData = !rawData || /^\s*$/.test(rawData);
+
+		// request data restore only if :
+		// - there are no new snippets in new location (globalState)
+		// - there is an old file locally with some snippets
+		if(dataAccess.hasNoChild() && !noData) {
+			const migrateData = "Restore data";
+			const discardData = "Discard data";
+			vscode.window
+			.showInformationMessage(
+				StringUtility.formatString("[Snippets 2+] Detected some old Snippets outside VSCode [{0}], do you want to restore them ?", oldSnippetsPath),
+				...[migrateData, discardData])
+			.then(selection => {
+				switch (selection) {
+					case migrateData:
+						let oldSnippets : Snippet = JSON.parse(rawData);
+						if (oldSnippets && oldSnippets.children && oldSnippets.children.length > 0) {
+							let newSnippets : Snippet = dataAccess.load();
+							newSnippets.children = oldSnippets.children;
+							dataAccess.save(newSnippets);
+							snippetsProvider.sync();
+
+							console.log("data restored");
+						}else{
+							console.log("no data to restore");
+						}
+					case discardData:
+						console.log("Deleted old file");
+						break;
+				}
+			});
+		}
+	}
 
 	let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
 		treeDataProvider: snippetsProvider,

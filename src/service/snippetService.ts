@@ -72,11 +72,11 @@ export class SnippetService {
     }
 
     loadSnippets(): Snippet {
-        return this._dataAccess.readFile();
+        return this._dataAccess.load();
     }
     
     saveSnippets(): void {
-        this._dataAccess.writeToFile(this._rootSnippet);
+        this._dataAccess.save(this._rootSnippet);
     }
 
     getRootChildren(): Snippet[] {

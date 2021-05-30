@@ -2,7 +2,7 @@
 	"name": "snippets",
 	"displayName": "Snippets",
 	"description": "Manage your code snippets without quitting your editor.",
-	"version": "1.2.0",
+	"version": "2.0.0",
 	"preview": true,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
@@ -255,6 +255,7 @@
 			"title": "Snippets",
 			"properties": {
 				"snippets.snippetsLocation": {
+					"deprecationMessage": "Snippets starting version 2.0 are saved by default in VSCode globalState in order to enable sync across multiple machines, no need to set this setting anymore.",
 					"type": [
 						"string",
 						"null"
