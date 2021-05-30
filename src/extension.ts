@@ -34,24 +34,22 @@ export function activate(context: vscode.ExtensionContext) {
 
 	if (settings.useWorkspaceFolder && !fs.existsSync(snippetsPath)) {
 		vscode.window.showWarningMessage(Labels.snippetsWorkspaceCreateFileOption, Labels.snippetsWorkspaceCreateFileOptionMakeJson, Labels.snippetsWorkspaceCreateFileOptionUseGlobal).then(selection => {
-			if (selection == Labels.snippetsWorkspaceCreateFileOptionMakeJson) {
+			if (selection === Labels.snippetsWorkspaceCreateFileOptionMakeJson) {
 				new DataAccess(snippetsPath).setDataFile(snippetsPath);
 				vscode.window.showInformationMessage(
 					StringUtility.formatString(Labels.snippetsWorkspacePath, snippetsPath)
 				);
 			}
-			else if (selection == Labels.snippetsWorkspaceCreateFileOptionUseGlobal) {
-				snippetsPath = defaultSnippetsPath
+			else if (selection === Labels.snippetsWorkspaceCreateFileOptionUseGlobal) {
+				snippetsPath = defaultSnippetsPath;
 				vscode.window.showInformationMessage(
 					StringUtility.formatString(Labels.snippetsDefaultPath, snippetsPath)
 				);
 			}
-			activate_extension(context, snippetsPath, defaultSnippetsPath, snippetsPathConfigKey, explicitUpdate)
+			activateExtension(context, snippetsPath, defaultSnippetsPath, snippetsPathConfigKey, explicitUpdate);
 		});
 		return;
-	}
-
-	else {
+	} else {
 		// revert back to default snippets path if there is no entry in settings or there is one but it is not a valid JSON file
 		const revertToDefaultLocation = snippetsPath === "" || !fs.existsSync(snippetsPath) || !fs.statSync(snippetsPath).isFile || !snippetsPath.endsWith(DataAccess.dataFileExt);
 		if (revertToDefaultLocation) {
@@ -73,11 +71,12 @@ export function activate(context: vscode.ExtensionContext) {
 			snippetsPath = defaultSnippetsPath;
 		}
 	}
-	activate_extension(context, snippetsPath, defaultSnippetsPath, snippetsPathConfigKey, explicitUpdate)
+
+	activateExtension(context, snippetsPath, defaultSnippetsPath, snippetsPathConfigKey, explicitUpdate);
 }
 
 //changed continue function, needed to wait for user input if needed.
-export function activate_extension(context: vscode.ExtensionContext, snippetsPath: string, defaultSnippetsPath: string, snippetsPathConfigKey: string, explicitUpdate: boolean) {
+export function activateExtension(context: vscode.ExtensionContext, snippetsPath: string, defaultSnippetsPath: string, snippetsPathConfigKey: string, explicitUpdate: boolean) {
 	const dataAccess = new DataAccess(snippetsPath);
 	const snippetService = new SnippetService(dataAccess);
 	const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
