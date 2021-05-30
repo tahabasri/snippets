@@ -4,8 +4,10 @@ jobs:
   ESLint:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Scanning code of branch ${{ github.ref }}."
+      - name: Checkout Actions
+        uses: actions/checkout@v2
       - name: Install
-        run: npm install
+        run: npm install --production
+      - run: echo "Scanning code of branch ${{ github.ref }}."
       - name: Run ESLint
         run: npm run lint
