@@ -7,6 +7,9 @@ export const enum Labels {
 	
 	insertSnippetName = "Select the snippet you want to open ...",
 
+	migrateData = "Restore data",
+	discardData = "Discard data",
+
 	snippetValuePrompt = "Snippet Value",
 	snippetValuePlaceholder = "An example: <div>my cool div</div> ...",
 	snippetValueValidationMsg = "Snippet value should not be empty.",
@@ -27,4 +30,8 @@ export const enum Labels {
 	snippetsChangedPath = "Snippets location changed to [{0}]",
 	snippetsInvalidNewPath = "Snippets path [{0}] is not a valid JSON file, will revert back to old location [{1}].",
 	snippetsNoNewPath = "Snippets will be saved to old location [{0}].",
+
+	snippetsMigrateRequest = "You have some old snippets saved in [{0}], do you want to restore them ? (Original file will be removed).",
+	snippetsDataRestored = "{0} snippets restored. Deleted file [{1}].",
+	snippetsNoDataRestored = "No data was provided from file to restore.",
 }

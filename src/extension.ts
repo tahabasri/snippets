@@ -26,6 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	// upgrade from 1.x to 2.x
 	const snippetsPathConfigKey = 'snippetsLocation';
 	let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey) || "";
 
@@ -38,11 +39,10 @@ export function activate(context: vscode.ExtensionContext) {
 		// - there are no new snippets in new location (globalState)
 		// - there is an old file locally with some snippets
 		if(dataAccess.hasNoChild() && !noData) {
-			const migrateData = "Restore data";
-			const discardData = "Discard data";
-			vscode.window
-			.showInformationMessage(
-				StringUtility.formatString("[Snippets 2+] Detected some old Snippets outside VSCode [{0}], do you want to restore them ?", oldSnippetsPath),
+			const migrateData = Labels.migrateData;
+			const discardData = Labels.discardData;
+			vscode.window.showInformationMessage(
+				StringUtility.formatString(Labels.snippetsMigrateRequest, oldSnippetsPath),
 				...[migrateData, discardData])
 			.then(selection => {
 				switch (selection) {
@@ -53,13 +53,12 @@ export function activate(context: vscode.ExtensionContext) {
 							newSnippets.children = oldSnippets.children;
 							dataAccess.save(newSnippets);
 							snippetsProvider.sync();
-
-							console.log("data restored");
+							vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsDataRestored, 
+								`${oldSnippets.children.length}`, oldSnippetsPath));
 						}else{
-							console.log("no data to restore");
+							vscode.window.showInformationMessage(Labels.snippetsNoDataRestored);
 						}
 					case discardData:
-						console.log("Deleted old file");
 						break;
 				}
 			});
@@ -148,13 +147,13 @@ export function activate(context: vscode.ExtensionContext) {
 		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
-			snippetsProvider.addSnippet(name, text, Snippet.PARENT_ID);
+			snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
 		} else {
 			const selectedItem = node ? node : snippetsExplorer.selection[0];
 			if (selectedItem.folder && selectedItem.folder === true) {
 				snippetsProvider.addSnippet(name, text, selectedItem.id);
 			} else {
-				snippetsProvider.addSnippet(name, text, selectedItem.parentId ?? Snippet.PARENT_ID);
+				snippetsProvider.addSnippet(name, text, selectedItem.parentId ?? Snippet.rootParentId);
 			}
 		}
 	}));
@@ -174,13 +173,13 @@ export function activate(context: vscode.ExtensionContext) {
 		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
-			snippetsProvider.addSnippet(name, clipboardContent, Snippet.PARENT_ID);
+			snippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
 		} else {
 			const selectedItem = node ? node : snippetsExplorer.selection[0];
 			if (selectedItem.folder && selectedItem.folder === true) {
 				snippetsProvider.addSnippet(name, clipboardContent, selectedItem.id);
 			} else {
-				snippetsProvider.addSnippet(name, clipboardContent, selectedItem.parentId ?? Snippet.PARENT_ID);
+				snippetsProvider.addSnippet(name, clipboardContent, selectedItem.parentId ?? Snippet.rootParentId);
 			}
 		}
 	}));
@@ -195,13 +194,13 @@ export function activate(context: vscode.ExtensionContext) {
 		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
-			snippetsProvider.addSnippetFolder(name, Snippet.PARENT_ID);
+			snippetsProvider.addSnippetFolder(name, Snippet.rootParentId);
 		} else {
 			const selectedItem = node ? node : snippetsExplorer.selection[0];
 			if (selectedItem.folder && selectedItem.folder === true) {
 				snippetsProvider.addSnippetFolder(name, selectedItem.id);
 			} else {
-				snippetsProvider.addSnippetFolder(name, selectedItem.parentId ?? Snippet.PARENT_ID);
+				snippetsProvider.addSnippetFolder(name, selectedItem.parentId ?? Snippet.rootParentId);
 			}
 		}
 	}));
