@@ -3,7 +3,6 @@
 	"displayName": "Snippets",
 	"description": "Manage your code snippets without quitting your editor.",
 	"version": "1.2.1",
-	"preview": true,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
 	"author": {
