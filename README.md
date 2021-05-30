@@ -13,10 +13,13 @@ This extension takes snippets to another level bringing new features which will 
   - [Open Snippet](#open-snippet)
   - [Edit Snippet](#edit-snippet)
   - [Backup your Snippets outside VSCode](#backup-your-snippets-outside-vscode)
-- [Extension Settings](#extension-settings)
 - [Installation](#installation)
 - [Known Issues](#known-issues)
 - [Release Notes](#release-notes)
+- [1.2.0](#120)
+- [1.1.1](#111)
+- [1.1.0](#110)
+- [1.0.0](#100)
 - [Feedback](#feedback)
 - [Credits](#credits)
 
@@ -98,6 +101,10 @@ alt="Permissions issue">
 
 ## Release Notes
 
+## 1.2.0
+
+- Set workspace specific snippets and allows snippets to sync via git with your `.vscode` folder.
+
 ## 1.1.1
 
 - Make default snippets path available after fresh installation.
@@ -108,7 +115,7 @@ alt="Permissions issue">
 - Enable/disable snippets syntax resolving.
 - Change default snippets location using settings property `snippets.snippetsLocation`.
 
-### 1.0.0
+## 1.0.0
 
 Initial release of the extension.
 

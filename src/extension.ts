@@ -170,7 +170,7 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
 			return;
 		}
-		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
+		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
 			snippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
@@ -191,7 +191,7 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showWarningMessage(Labels.snippetFolderNameErrorMsg);
 			return;
 		}
-		// When trigerring the command with right-click the parameter node of type Tree Node will be tested.
+		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 		if (snippetsExplorer.selection.length === 0 && !node) {
 			snippetsProvider.addSnippetFolder(name, Snippet.rootParentId);

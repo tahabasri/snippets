@@ -1,10 +1,10 @@
 export const enum Labels {
-    noOpenEditor = "No open editor was found.",
+	noOpenEditor = "No open editor was found.",
 	noOpenTerminal = "No open terminal was found.",
 	noValueGiven = "No value was given.",
 	noTextSelected = "No text was selected from active editor.",
 	noClipboardContent = "No content was found in the clipboard.",
-	
+
 	insertSnippetName = "Select the snippet you want to open ...",
 
 	migrateData = "Restore data",
