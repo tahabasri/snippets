@@ -8,4 +8,4 @@ jobs:
       - name: Install
         run: npm install
       - name: Run ESLint
-        run: eslint src --ext ts
+        run: npm run lint
