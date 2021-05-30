@@ -4,12 +4,8 @@ jobs:
   ESLint:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "Scanning code of branch ${{ github.repository }}/${{ github.ref }}."
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - name: Lint Action
-        uses: wearerequired/lint-action@v1.10.0
+      - run: echo "Scanning code of branch ${{ github.ref }}."
+      - name: Install
+        run: npm install
+      - name: Run ESLint
+        run: eslint src --ext ts
