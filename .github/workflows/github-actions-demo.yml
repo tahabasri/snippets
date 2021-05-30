@@ -1,0 +1,11 @@
+name: Code Analysis
+on: [pull_request]
+jobs:
+  ESLint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: npm install
+      - name: Run ESLint
+        run: npx eslint src --ext ts --max-warnings=0
