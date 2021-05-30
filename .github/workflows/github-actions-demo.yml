@@ -11,6 +11,5 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - name: Code Analysis
-        run: |
-          npm run lint
+      - name: Lint Action
+        uses: wearerequired/lint-action@v1.10.0
