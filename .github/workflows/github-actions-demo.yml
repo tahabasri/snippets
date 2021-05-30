@@ -1,13 +1,15 @@
 name: Code Analysis
-on: [pull_request]
+on: 
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 jobs:
   ESLint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Actions
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Install modules
         run: npm install
-      - run: echo "Scanning code of branch ${{ github.ref }}."
       - name: Run ESLint
-        run: npx eslint src --ext ts
+        run: npx eslint src --ext ts --max-warnings=0
