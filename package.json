@@ -2,7 +2,7 @@
 	"name": "snippets",
 	"displayName": "Snippets",
 	"description": "Manage your code snippets without quitting your editor.",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"preview": true,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
@@ -254,6 +254,11 @@
 		"configuration": {
 			"title": "Snippets",
 			"properties": {
+				"snippets.useWorkspaceFolder": {
+					"type": "boolean",
+					"default": false,
+					"description": "Use the workspace .vscode folder to save snippets as a snippets.json file (overrides the snippetsLocation)"
+				},
 				"snippets.snippetsLocation": {
 					"type": [
 						"string",
