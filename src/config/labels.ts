@@ -7,6 +7,12 @@ export const enum Labels {
 
 	insertSnippetName = "Select the snippet you want to open ...",
 
+	viewType = "Select where to save the new snippet ...",
+	noViewTypeSelected = "No target was selected for new Snippet.",
+
+	globalSnippets = "Global Snippets",
+	wsSnippets = "Workspace Snippets",
+
 	migrateData = "Restore data",
 	discardData = "Discard data",
 
@@ -34,4 +40,9 @@ export const enum Labels {
 	snippetsMigrateRequest = "You have some old snippets saved in [{0}], do you want to restore them ? (Original file will be removed).",
 	snippetsDataRestored = "{0} snippets restored. Deleted file [{1}].",
 	snippetsNoDataRestored = "No data was provided from file to restore.",
+
+	snippetsWorkspaceCreateFileRequest = "You enabled `useWorkspaceFolder` but you have no file `snippets.json`, do you want to create it ?",
+	snippetsWorkspaceCreateFileRequestConfirm = "Create file",
+	snippetsWorkspaceCreateFileRequestIgnore = "Always ignore for this folder",
+	snippetsWorkspaceFileCreated = "File was successfully created in [{0}]",
 }

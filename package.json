@@ -35,200 +35,413 @@
 	],
 	"activationEvents": [
 		"onStartupFinished",
-		"onView:snippetsExplorer"
+		"onView:snippetsExplorer",
+		"onView:wsSnippetsExplorer"
 	],
 	"main": "./dist/extension",
 	"contributes": {
 		"viewsWelcome": [
 			{
 				"view": "snippetsExplorer",
-				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:snippetsCmd.addSnippet)\n[Add Snippet Folder](command:snippetsCmd.addSnippetFolder)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md)."
+				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:globalSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:globalSnippetsCmd.addSnippetFolder)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md)."
+			},
+			{
+				"view": "wsSnippetsExplorer",
+				"when": "config.snippets.useWorkspaceFolder && snippets.workspaceState != fileAvailable",
+				"contents": "In order to use snippets in current workspace, you should initialize `snippets.json` file in workspace folder `.vscode`.\n[Request to Initialize File](command:miscCmd.requestWSConfig)"
+			},
+			{
+				"view": "wsSnippetsExplorer",
+				"when": "snippets.workspaceState == fileAvailable",
+				"contents": "Snippets in current workspace are available. Save some code locally.\n[Add Snippet](command:wsSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:wsSnippetsCmd.addSnippetFolder)"
 			}
 		],
 		"commands": [
 			{
-				"command": "snippetsCmd.refreshEntry",
+				"command": "miscCmd.requestWSConfig",
+				"title": "Init WS Config"
+			},
+			{
+				"command": "commonSnippetsCmd.refreshEntry",
 				"title": "Refresh Snippets",
 				"category": "Snippets",
 				"icon": "$(refresh)"
 			},
 			{
-				"command": "snippetsCmd.openSnippet",
+				"command": "globalSnippetsCmd.openSnippet",
 				"title": "Open Snippet",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.openSnippetInTerminal",
+				"command": "globalSnippetsCmd.openSnippetInTerminal",
 				"title": "Open Snippet in Terminal",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.addSnippet",
+				"command": "commonSnippetsCmd.addSnippet",
 				"title": "New Snippet",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.addSnippetFromClipboard",
+				"command": "globalSnippetsCmd.addSnippet",
+				"title": "New Snippet",
+				"icon": "$(search-new-editor)",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.addSnippet",
+				"title": "New Snippet",
+				"icon": "$(search-new-editor)",
+				"category": "Snippets"
+			},
+			{
+				"command": "commonSnippetsCmd.addSnippetFromClipboard",
 				"title": "New Snippet from Clipboard",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.addSnippetFolder",
+				"command": "globalSnippetsCmd.addSnippetFromClipboard",
+				"title": "New Snippet from Clipboard",
+				"icon": "$(search-new-editor)",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.addSnippetFromClipboard",
+				"title": "New Snippet from Clipboard",
+				"icon": "$(search-new-editor)",
+				"category": "Snippets"
+			},
+			{
+				"command": "commonSnippetsCmd.addSnippetFolder",
 				"title": "Add Folder",
 				"icon": "$(new-folder)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.editSnippet",
+				"command": "globalSnippetsCmd.addSnippetFolder",
+				"title": "Add Folder",
+				"icon": "$(new-folder)",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.addSnippetFolder",
+				"title": "Add Folder",
+				"icon": "$(new-folder)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.editSnippet",
 				"title": "Edit Snippet",
 				"icon": "$(edit)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.deleteSnippet",
+				"command": "wsSnippetsCmd.editSnippet",
+				"title": "Edit Snippet",
+				"icon": "$(edit)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.editSnippetFolder",
+				"title": "Edit Folder",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.editSnippetFolder",
+				"title": "Edit Folder",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.deleteSnippet",
 				"title": "Delete Snippet",
 				"icon": "$(remove)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.moveSnippetUp",
+				"command": "wsSnippetsCmd.deleteSnippet",
+				"title": "Delete Snippet",
+				"icon": "$(remove)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.deleteSnippetFolder",
+				"title": "Delete Folder",
+				"icon": "$(remove)",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.deleteSnippetFolder",
+				"title": "Delete Folder",
+				"icon": "$(remove)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.moveSnippetUp",
 				"title": "Move Snippet Up",
 				"icon": "$(marker-navigation-previous)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.moveSnippetDown",
+				"command": "wsSnippetsCmd.moveSnippetUp",
+				"title": "Move Snippet Up",
+				"icon": "$(marker-navigation-previous)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.moveSnippetDown",
 				"title": "Move Snippet Down",
 				"icon": "$(marker-navigation-next)",
 				"category": "Snippets"
 			},
 			{
-				"command": "snippetsCmd.editSnippetFolder",
-				"title": "Edit Folder",
-				"category": "Snippets"
-			},
-			{
-				"command": "snippetsCmd.deleteSnippetFolder",
-				"title": "Delete Folder",
-				"icon": "$(remove)",
+				"command": "wsSnippetsCmd.moveSnippetDown",
+				"title": "Move Snippet Down",
+				"icon": "$(marker-navigation-next)",
 				"category": "Snippets"
 			}
 		],
 		"menus": {
 			"commandPalette": [
 				{
-					"command": "snippetsCmd.refreshEntry",
+					"command": "miscCmd.requestWSConfig",
 					"when": "false"
 				},
 				{
-					"command": "snippetsCmd.editSnippet",
+					"command": "commonSnippetsCmd.refreshEntry",
 					"when": "false"
 				},
 				{
-					"command": "snippetsCmd.deleteSnippet",
+					"command": "globalSnippetsCmd.addSnippet",
 					"when": "false"
 				},
 				{
-					"command": "snippetsCmd.moveSnippetUp",
+					"command": "wsSnippetsCmd.addSnippet",
 					"when": "false"
 				},
 				{
-					"command": "snippetsCmd.moveSnippetDown",
+					"command": "globalSnippetsCmd.addSnippetFromClipboard",
 					"when": "false"
 				},
 				{
-					"command": "snippetsCmd.editSnippetFolder",
+					"command": "wsSnippetsCmd.addSnippetFromClipboard",
 					"when": "false"
 				},
 				{
-					"command": "snippetsCmd.deleteSnippetFolder",
+					"command": "globalSnippetsCmd.addSnippetFolder",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.addSnippetFolder",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.editSnippet",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.editSnippet",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.editSnippetFolder",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.editSnippetFolder",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.deleteSnippet",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.deleteSnippet",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.deleteSnippetFolder",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.deleteSnippetFolder",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.moveSnippetUp",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.moveSnippetUp",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.moveSnippetDown",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.moveSnippetDown",
 					"when": "false"
 				}
 			],
 			"view/title": [
 				{
-					"command": "snippetsCmd.addSnippet",
+					"command": "globalSnippetsCmd.addSnippet",
 					"when": "view == snippetsExplorer",
 					"group": "navigation@1"
 				},
 				{
-					"command": "snippetsCmd.addSnippetFolder",
+					"command": "wsSnippetsCmd.addSnippet",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
+					"group": "navigation@1"
+				},
+				{
+					"command": "globalSnippetsCmd.addSnippetFolder",
 					"when": "view == snippetsExplorer",
 					"group": "navigation@2"
 				},
 				{
-					"command": "snippetsCmd.refreshEntry",
+					"command": "wsSnippetsCmd.addSnippetFolder",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
+					"group": "navigation@2"
+				},
+				{
+					"command": "commonSnippetsCmd.refreshEntry",
 					"when": "view == snippetsExplorer",
 					"group": "navigation@3"
 				},
 				{
-					"command": "snippetsCmd.addSnippetFromClipboard",
+					"command": "globalSnippetsCmd.addSnippetFromClipboard",
 					"when": "view == snippetsExplorer",
 					"group": "other"
+				},
+				{
+					"command": "wsSnippetsCmd.addSnippetFromClipboard",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
+					"group": "other"
+				},
+				{
+					"command": "commonSnippetsCmd.refreshEntry",
+					"when": "view == wsSnippetsExplorer",
+					"group": "navigation@3"
 				}
 			],
 			"view/item/context": [
 				{
-					"command": "snippetsCmd.openSnippet",
+					"command": "globalSnippetsCmd.openSnippet",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
 					"group": "1_snippets@1"
 				},
 				{
-					"command": "snippetsCmd.openSnippetInTerminal",
+					"command": "globalSnippetsCmd.openSnippetInTerminal",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
 					"group": "1_snippets@2"
 				},
 				{
-					"command": "snippetsCmd.addSnippet",
+					"command": "globalSnippetsCmd.addSnippet",
 					"when": "view == snippetsExplorer",
 					"group": "2_snippetManagement@1"
 				},
 				{
-					"command": "snippetsCmd.addSnippetFromClipboard",
+					"command": "wsSnippetsCmd.addSnippet",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
+					"group": "2_snippetManagement@1"
+				},
+				{
+					"command": "globalSnippetsCmd.addSnippetFromClipboard",
 					"when": "view == snippetsExplorer",
 					"group": "2_snippetManagement@2"
 				},
 				{
-					"command": "snippetsCmd.editSnippet",
+					"command": "wsSnippetsCmd.addSnippetFromClipboard",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
+					"group": "2_snippetManagement@2"
+				},
+				{
+					"command": "globalSnippetsCmd.editSnippet",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
 					"group": "2_snippetManagement@3"
 				},
 				{
-					"command": "snippetsCmd.deleteSnippet",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
-					"group": "2_snippetManagement@4"
+					"command": "wsSnippetsCmd.editSnippet",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "2_snippetManagement@3"
 				},
 				{
-					"command": "snippetsCmd.moveSnippetUp",
-					"when": "view == snippetsExplorer && viewItem =~ /^\\S*:(up|up&down)$/",
-					"group": "inline"
-				},
-				{
-					"command": "snippetsCmd.moveSnippetDown",
-					"when": "view == snippetsExplorer && viewItem =~ /^\\S*:(down|up&down)$/",
-					"group": "inline"
-				},
-				{
-					"command": "snippetsCmd.addSnippetFolder",
-					"when": "view == snippetsExplorer",
-					"group": "4_folderManagement@1"
-				},
-				{
-					"command": "snippetsCmd.editSnippetFolder",
+					"command": "globalSnippetsCmd.editSnippetFolder",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/",
 					"group": "4_folderManagement@2"
 				},
 				{
-					"command": "snippetsCmd.deleteSnippetFolder",
+					"command": "wsSnippetsCmd.editSnippetFolder",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "4_folderManagement@2"
+				},
+				{
+					"command": "globalSnippetsCmd.deleteSnippet",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "2_snippetManagement@4"
+				},
+				{
+					"command": "wsSnippetsCmd.deleteSnippet",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "2_snippetManagement@4"
+				},
+				{
+					"command": "globalSnippetsCmd.deleteSnippetFolder",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/",
 					"group": "4_folderManagement@3"
+				},
+				{
+					"command": "wsSnippetsCmd.deleteSnippetFolder",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "4_folderManagement@3"
+				},
+				{
+					"command": "globalSnippetsCmd.moveSnippetUp",
+					"when": "view == snippetsExplorer && viewItem =~ /^\\S*:(up|up&down)$/",
+					"group": "inline"
+				},
+				{
+					"command": "wsSnippetsCmd.moveSnippetUp",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^\\S*:(up|up&down)$/ && snippets.workspaceState == fileAvailable",
+					"group": "inline"
+				},
+				{
+					"command": "globalSnippetsCmd.moveSnippetDown",
+					"when": "view == snippetsExplorer && viewItem =~ /^\\S*:(down|up&down)$/",
+					"group": "inline"
+				},
+				{
+					"command": "wsSnippetsCmd.moveSnippetDown",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^\\S*:(down|up&down)$/ && snippets.workspaceState == fileAvailable",
+					"group": "inline"
+				},
+				{
+					"command": "globalSnippetsCmd.addSnippetFolder",
+					"when": "view == snippetsExplorer",
+					"group": "4_folderManagement@1"
+				},
+				{
+					"command": "wsSnippetsCmd.addSnippetFolder",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
+					"group": "4_folderManagement@1"
+				},
+				{
+					"command": "globalSnippetsCmd.openSnippet",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "1_snippets@1"
+				},
+				{
+					"command": "globalSnippetsCmd.openSnippetInTerminal",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "1_snippets@2"
 				}
 			],
 			"editor/context": [
 				{
-					"command": "snippetsCmd.addSnippet",
+					"command": "commonSnippetsCmd.addSnippet",
 					"when": "editorTextFocus",
 					"group": "snippets@1"
 				}
@@ -247,13 +460,23 @@
 			"snippets-explorer": [
 				{
 					"id": "snippetsExplorer",
-					"name": "Snippets Explorer"
+					"name": "Global Snippets"
+				},
+				{
+					"id": "wsSnippetsExplorer",
+					"name": "Workspace Snippets",
+					"when": "config.snippets.useWorkspaceFolder"
 				}
 			]
 		},
 		"configuration": {
 			"title": "Snippets",
 			"properties": {
+				"snippets.useWorkspaceFolder": {
+					"type": "boolean",
+					"default": false,
+					"description": "Use folder `.vscode` in current workspace to save snippets as a `snippets.json` file."
+				},
 				"snippets.snippetsLocation": {
 					"deprecationMessage": "Snippets starting version 2.0 are saved by default in VSCode globalState in order to enable sync across multiple machines, no need to set this setting anymore.",
 					"type": [

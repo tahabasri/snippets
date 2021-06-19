@@ -1,7 +1,7 @@
 import fs = require('fs');
 import * as path from 'path';
 import { Snippet } from '../interface/snippet';
-import { DataAccess } from './dataAccess';
+import { DataAccess, DataAccessConsts } from './dataAccess';
 
 export class FileDataAccess implements DataAccess {
     static dataFileExt = '.json';
@@ -28,14 +28,13 @@ export class FileDataAccess implements DataAccess {
     }
 
     load(): any {
-        const defaultRootElement:Snippet = { id: 1, parentId: -1, label: 'snippets', lastId: 1, children: [] };
         if (!fs.existsSync(this._dataFile)) {
-            this.save(defaultRootElement);
+            this.save(DataAccessConsts.defaultRootElement);
         }
         let rawData = fs.readFileSync(this._dataFile, this._encoding);
         
         if (this.isBlank(rawData)) {
-            this.save(defaultRootElement);
+            this.save(DataAccessConsts.defaultRootElement);
         }
 
         rawData = fs.readFileSync(this._dataFile, this._encoding);
