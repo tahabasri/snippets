@@ -46,7 +46,6 @@ export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSni
 		// get snippet name
 		text = await UIUtility.requestSnippetValue();
 		if (!text || text.length === 0) {
-			vscode.window.showWarningMessage(Labels.noValueGiven);
 			return;
 		}
 	} else {
@@ -77,7 +76,6 @@ export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSni
 			snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
 		}else if (targetView === Labels.wsSnippets) {
 			wsSnippetsProvider.addSnippet(name, text, Snippet.rootParentId);
-
 		}
 	}else{
 		snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
@@ -93,7 +91,6 @@ export async function addSnippet(snippetsExplorer: vscode.TreeView<Snippet>, sni
 		// get snippet name
 		text = await UIUtility.requestSnippetValue();
 		if (!text || text.length === 0) {
-			vscode.window.showWarningMessage(Labels.noValueGiven);
 			return;
 		}
 	} else {

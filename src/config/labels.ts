@@ -1,7 +1,6 @@
 export const enum Labels {
 	noOpenEditor = "No open editor was found.",
 	noOpenTerminal = "No open terminal was found.",
-	noValueGiven = "No value was given.",
 	noTextSelected = "No text was selected from active editor.",
 	noClipboardContent = "No content was found in the clipboard.",
 
@@ -45,4 +44,6 @@ export const enum Labels {
 	snippetsWorkspaceCreateFileRequestConfirm = "Create file",
 	snippetsWorkspaceCreateFileRequestIgnore = "Always ignore for this folder",
 	snippetsWorkspaceFileCreated = "File was successfully created in [{0}]",
+
+	genericError = "[{0}]. You may refresh current window to fix issue.",
 }
