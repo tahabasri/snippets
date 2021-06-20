@@ -61,4 +61,18 @@ export class UIUtility {
             }
         });
     }
+
+	static async requestTargetSnippetsView(): Promise<string | undefined> {
+        const selection = await vscode.window.showQuickPick([Labels.globalSnippets, Labels.wsSnippets], {
+            placeHolder: Labels.viewType,
+            matchOnDetail: true
+        });
+
+        if (!selection) {
+            return;
+        }
+
+        // refer to selected snippet
+        return selection;
+	}
 }

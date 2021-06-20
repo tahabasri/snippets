@@ -72,11 +72,11 @@ export class SnippetService {
     }
 
     loadSnippets(): Snippet {
-        return this._dataAccess.readFile();
+        return this._dataAccess.load();
     }
     
     saveSnippets(): void {
-        this._dataAccess.writeToFile(this._rootSnippet);
+        this._dataAccess.save(this._rootSnippet);
     }
 
     getRootChildren(): Snippet[] {
@@ -96,7 +96,7 @@ export class SnippetService {
     }
 
     getParent(parentId: number | undefined): Snippet | undefined {
-        return SnippetService.findParent(parentId ?? Snippet.PARENT_ID, this._rootSnippet);
+        return SnippetService.findParent(parentId ?? Snippet.rootParentId, this._rootSnippet);
     }
 
     compact(): string {
@@ -106,15 +106,15 @@ export class SnippetService {
     // snippet management services
 
     addSnippet(newSnippet: Snippet): void {
-        newSnippet.parentId === Snippet.PARENT_ID
+        newSnippet.parentId === Snippet.rootParentId
             ? this._rootSnippet.children.push(newSnippet)
-            : SnippetService.findParent(newSnippet.parentId ?? Snippet.PARENT_ID, this._rootSnippet)?.children.push(newSnippet);
+            : SnippetService.findParent(newSnippet.parentId ?? Snippet.rootParentId, this._rootSnippet)?.children.push(newSnippet);
 
         this._updateLastId(newSnippet.id);
     }
 
     updateSnippet(snippet: Snippet): void {
-        const parentElement = SnippetService.findParent(snippet.parentId ?? Snippet.PARENT_ID, this._rootSnippet);
+        const parentElement = SnippetService.findParent(snippet.parentId ?? Snippet.rootParentId, this._rootSnippet);
 
         if (parentElement) {
             const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
@@ -135,7 +135,7 @@ export class SnippetService {
     }
 
     removeSnippet(snippet: Snippet): void {
-        const parentElement = SnippetService.findParent(snippet.parentId ?? Snippet.PARENT_ID, this._rootSnippet);
+        const parentElement = SnippetService.findParent(snippet.parentId ?? Snippet.rootParentId, this._rootSnippet);
 
         if (parentElement) {
             const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
@@ -147,7 +147,7 @@ export class SnippetService {
     }
 
     moveSnippet(snippet: Snippet, offset: number) {
-        const parentElement = SnippetService.findParent(snippet.parentId ?? Snippet.PARENT_ID, this._rootSnippet);
+        const parentElement = SnippetService.findParent(snippet.parentId ?? Snippet.rootParentId, this._rootSnippet);
 
         if (parentElement) {
             const index = parentElement.children.findIndex((obj => obj.id === snippet.id));

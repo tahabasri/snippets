@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import fs = require('fs');
 import * as path from 'path';
 import { Snippet } from '../interface/snippet';
-import { Commands } from '../config/commands';
+import { CommandsConsts } from '../config/commands';
 import { SnippetService } from '../service/snippetService';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
@@ -127,7 +127,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
 
             // conditional in configuration
             treeItem.command = {
-                command: Commands.openSnippet,
+                command: CommandsConsts.commonOpenSnippet,
                 arguments: [snippet],
                 title: 'Open Snippet'
             };

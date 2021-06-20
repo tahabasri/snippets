@@ -1,5 +1,5 @@
 export class Snippet {
-  static readonly PARENT_ID = 1;
+  static readonly rootParentId = 1;
 
   id: number;
   parentId?: number;
