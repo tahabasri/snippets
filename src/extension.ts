@@ -20,10 +20,10 @@ export function activate(context: vscode.ExtensionContext) {
 	//** variables **//
 		// global settings
 		const snippetsConfigKey = "snippets";
-		let settings = vscode.workspace.getConfiguration(snippetsConfigKey);
 		// global config
 		let snippetsPath: string;
 		// workspace config
+		const useWorkspaceFolderKey = "useWorkspaceFolder";
 		const workspaceFileName = ".vscode/snippets.json";
 		let workspaceSnippetsAvailable = false;
 		let wsSnippetService : SnippetService;
@@ -46,7 +46,8 @@ export function activate(context: vscode.ExtensionContext) {
 		const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
 
 		//** upgrade from 1.x to 2.x **//
-			let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get('snippetsLocation') || "";
+			let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get('snippetsLocation') 
+				|| path.join(context.globalStorageUri.fsPath, "data.json");
 			if(oldSnippetsPath && fs.existsSync(oldSnippetsPath)) {
 				let rawData = fs.readFileSync(oldSnippetsPath, 'utf8');
 				// true if is blank
@@ -68,10 +69,21 @@ export function activate(context: vscode.ExtensionContext) {
 								if (oldSnippets && oldSnippets.children && oldSnippets.children.length > 0) {
 									let newSnippets : Snippet = dataAccess.load();
 									newSnippets.children = oldSnippets.children;
+									newSnippets.lastId = oldSnippets.lastId;
 									dataAccess.save(newSnippets);
 									snippetsProvider.sync();
-									vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsDataRestored, 
-										`${oldSnippets.children.length}`, oldSnippetsPath));
+									fs.unlink(oldSnippetsPath, (err) => {
+										if (err) {
+											vscode.window.showInformationMessage(
+												StringUtility.formatString(Labels.snippetsDataRestoredButFileNotRemoved, oldSnippetsPath)
+											);
+										}else {
+											//file removed
+											vscode.window.showInformationMessage(
+												StringUtility.formatString(Labels.snippetsDataRestored, oldSnippetsPath)
+											);
+										}
+									});
 								}else{
 									vscode.window.showInformationMessage(Labels.snippetsNoDataRestored);
 								}
@@ -95,9 +107,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// refresh UI when updating workspace setting
 		vscode.workspace.onDidChangeConfiguration(event => {
-			let affected = event.affectsConfiguration(`${snippetsConfigKey}.useWorkspaceFolder`);
+			let affected = event.affectsConfiguration(`${snippetsConfigKey}.${useWorkspaceFolderKey}`);
 			if (affected) {
-				if (settings.useWorkspaceFolder) {
+				if (vscode.workspace.getConfiguration(snippetsConfigKey).get(useWorkspaceFolderKey)) {
 					requestWSConfigSetup();
 				}
 				refreshUI();
@@ -127,7 +139,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		
 		async function requestWSConfigSetup(requestInput=true) {
-			if (vscode.workspace.workspaceFolders && settings.useWorkspaceFolder) {
+			if (vscode.workspace.workspaceFolders && vscode.workspace.getConfiguration(snippetsConfigKey).get(useWorkspaceFolderKey)) {
 				snippetsPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, workspaceFileName);
 				// request creation of file `.vscode/snippets.json` if :
 				// - file not found

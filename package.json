@@ -48,7 +48,7 @@
 			{
 				"view": "wsSnippetsExplorer",
 				"when": "config.snippets.useWorkspaceFolder && snippets.workspaceState != fileAvailable",
-				"contents": "In order to use snippets in current workspace, you should initialize `snippets.json` file in workspace folder `.vscode`.\n[Request to Initialize File](command:miscCmd.requestWSConfig)"
+				"contents": "In order to use snippets in current workspace, you should initialize `snippets.json` file inside folder `.vscode`.\n[Request to Initialize File](command:miscCmd.requestWSConfig)"
 			},
 			{
 				"view": "wsSnippetsExplorer",

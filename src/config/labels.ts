@@ -37,7 +37,8 @@ export const enum Labels {
 	snippetsNoNewPath = "Snippets will be saved to old location [{0}].",
 
 	snippetsMigrateRequest = "You have some old snippets saved in [{0}], do you want to restore them ? (Original file will be removed).",
-	snippetsDataRestored = "{0} snippets restored. Deleted file [{1}].",
+	snippetsDataRestored = "Snippets restored. Deleted file [{0}].",
+	snippetsDataRestoredButFileNotRemoved = "Snippets restored. But couldn't delete file [{0}], please remove it manually.",
 	snippetsNoDataRestored = "No data was provided from file to restore.",
 
 	snippetsWorkspaceCreateFileRequest = "You enabled `useWorkspaceFolder` but you have no file `snippets.json`, do you want to create it ?",
