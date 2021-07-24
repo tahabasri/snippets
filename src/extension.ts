@@ -1,296 +1,389 @@
-import * as vscode from 'vscode';
 import fs = require('fs');
-import { Commands } from './config/commands';
+import * as vscode from 'vscode';
+import * as path from 'path';
+import * as commands from './config/commands';
 import { SnippetsProvider } from './provider/snippetsProvider';
-import { DataAccess } from './data/dataAccess';
+import { MementoDataAccess } from './data/mementoDataAccess';
 import { Snippet } from './interface/snippet';
-import { EditSnippet } from './views/editSnippet';
 import { EditSnippetFolder } from './views/editSnippetFolder';
 import { SnippetService } from './service/snippetService';
 import { UIUtility } from './utility/uiUtility';
 import { StringUtility } from './utility/stringUtility';
 import { Labels } from './config/Labels';
-import { ConfigurationTarget } from 'vscode';
+import { FileDataAccess } from './data/fileDataAccess';
 
+/**
+ * Activate extension by initializing views for snippets and feature commands.
+ * @param context 
+ */
 export function activate(context: vscode.ExtensionContext) {
-	let settings = vscode.workspace.getConfiguration("snippets");
-	const snippetsPathConfigKey = 'snippetsLocation';
+	//** variables **//
+		// global settings
+		const snippetsConfigKey = "snippets";
+		// global config
+		let snippetsPath: string;
+		// workspace config
+		const useWorkspaceFolderKey = "useWorkspaceFolder";
+		const workspaceFileName = ".vscode/snippets.json";
+		let workspaceSnippetsAvailable = false;
+		let wsSnippetService : SnippetService;
+		let wsSnippetsProvider : SnippetsProvider;
+		let wsSnippetsExplorer : vscode.TreeView<Snippet>;
+		// context config (shared between package.json and this function)
+		const setContextCmd = 'setContext';
+		const contextWSStateKey = "snippets.workspaceState";
+			const contextWSFileAvailable = "fileAvailable";
+			const contextWSFileNotAvailable = "fileNotAvailable";
+	//** variables **//
 
-	// to be enabled whenever an explicit configuration update is requested (e.g getConfiguration#update)
-	let explicitUpdate = false;
-	let snippetsPath: string = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey) || "";
-	let defaultSnippetsPath = DataAccess.resolveFilename(context.globalStorageUri.fsPath);
+	//** pre-initialization **//
+		// sync global snippets
+		context.globalState.setKeysForSync([MementoDataAccess.snippetsMementoPrefix]);
 
-	// check if a workspace is open and if use workspace is enabled
-	if (settings.useWorkspaceFolder && vscode.workspace.workspaceFolders) {
-		snippetsPath = vscode.workspace.workspaceFolders[0].uri.fsPath + '/' + ".vscode/snippets.json";
-	} else {
-		// default snippets path should always be available
-		if (!fs.existsSync(context.globalStorageUri.fsPath)) {
-			fs.mkdirSync(context.globalStorageUri.fsPath);
-		}
-	}
+		// initialize global snippets
+		const dataAccess = new MementoDataAccess(context.globalState);
+		const snippetService = new SnippetService(dataAccess);
+		const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
 
+		//** upgrade from 1.x to 2.x **//
+			let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get('snippetsLocation') 
+				|| path.join(context.globalStorageUri.fsPath, "data.json");
+			if(oldSnippetsPath && fs.existsSync(oldSnippetsPath)) {
+				let rawData = fs.readFileSync(oldSnippetsPath, 'utf8');
+				// true if is blank
+				let noData = StringUtility.isBlank(rawData);
 
-	if (settings.useWorkspaceFolder && !fs.existsSync(snippetsPath)) {
-		vscode.window.showWarningMessage(Labels.snippetsWorkspaceCreateFileOption, Labels.snippetsWorkspaceCreateFileOptionMakeJson, Labels.snippetsWorkspaceCreateFileOptionUseGlobal).then(selection => {
-			if (selection === Labels.snippetsWorkspaceCreateFileOptionMakeJson) {
-				new DataAccess(snippetsPath).setDataFile(snippetsPath);
-				vscode.window.showInformationMessage(
-					StringUtility.formatString(Labels.snippetsWorkspacePath, snippetsPath)
-				);
+				// request data restore only if :
+				// - there are no new snippets in new location (globalState)
+				// - there is an old file locally with some snippets
+				if(dataAccess.hasNoChild() && !noData) {
+					const migrateData = Labels.migrateData;
+					const discardData = Labels.discardData;
+					vscode.window.showInformationMessage(
+						StringUtility.formatString(Labels.snippetsMigrateRequest, oldSnippetsPath),
+						...[migrateData, discardData])
+					.then(selection => {
+						switch (selection) {
+							case migrateData:
+								let oldSnippets : Snippet = JSON.parse(rawData);
+								if (oldSnippets && oldSnippets.children && oldSnippets.children.length > 0) {
+									let newSnippets : Snippet = dataAccess.load();
+									newSnippets.children = oldSnippets.children;
+									newSnippets.lastId = oldSnippets.lastId;
+									dataAccess.save(newSnippets);
+									snippetsProvider.sync();
+									fs.unlink(oldSnippetsPath, (err) => {
+										if (err) {
+											vscode.window.showInformationMessage(
+												StringUtility.formatString(Labels.snippetsDataRestoredButFileNotRemoved, oldSnippetsPath)
+											);
+										}else {
+											//file removed
+											vscode.window.showInformationMessage(
+												StringUtility.formatString(Labels.snippetsDataRestored, oldSnippetsPath)
+											);
+										}
+									});
+								}else{
+									vscode.window.showInformationMessage(Labels.snippetsNoDataRestored);
+								}
+							case discardData:
+								break;
+						}
+					});
+				}
 			}
-			else if (selection === Labels.snippetsWorkspaceCreateFileOptionUseGlobal) {
-				snippetsPath = defaultSnippetsPath;
-				vscode.window.showInformationMessage(
-					StringUtility.formatString(Labels.snippetsDefaultPath, snippetsPath)
-				);
+		//** upgrade from 1.x to 2.x **//
+	//** pre-initialization **//
+
+	//** initialization **//
+		// refresh windows whenever it gains focus
+		// this will prevent de-sync between multiple open workspaces
+		vscode.window.onDidChangeWindowState((event) => {
+			if (event.focused) {
+				refreshUI();
 			}
-			activateExtension(context, snippetsPath, defaultSnippetsPath, snippetsPathConfigKey, explicitUpdate);
 		});
-		return;
-	} else {
-		// revert back to default snippets path if there is no entry in settings or there is one but it is not a valid JSON file
-		const revertToDefaultLocation = snippetsPath === "" || !fs.existsSync(snippetsPath) || !fs.statSync(snippetsPath).isFile || !snippetsPath.endsWith(DataAccess.dataFileExt);
-		if (revertToDefaultLocation) {
-			vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, defaultSnippetsPath, ConfigurationTarget.Global);
-			explicitUpdate = true;
-			// show different message depending on the state of settings :
-			// - show Labels.snippetsDefaultPath if there was no entry in settings
-			// - show Labels.snippetsDefaultPath if default path was mentioned in settings but wasn't available
-			// - show Labels.snippetsInvalidPath if there was an entry but it is not a valid JSON file
-			if (snippetsPath === "" || snippetsPath === defaultSnippetsPath) {
-				vscode.window.showInformationMessage(
-					StringUtility.formatString(Labels.snippetsDefaultPath, defaultSnippetsPath)
-				);
-			} else {
-				vscode.window.showInformationMessage(
-					StringUtility.formatString(Labels.snippetsInvalidPath, snippetsPath, defaultSnippetsPath)
-				);
+
+		// refresh UI when updating workspace setting
+		vscode.workspace.onDidChangeConfiguration(event => {
+			let affected = event.affectsConfiguration(`${snippetsConfigKey}.${useWorkspaceFolderKey}`);
+			if (affected) {
+				if (vscode.workspace.getConfiguration(snippetsConfigKey).get(useWorkspaceFolderKey)) {
+					requestWSConfigSetup();
+				}
+				refreshUI();
 			}
-			snippetsPath = defaultSnippetsPath;
+		});
+		
+		let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
+			treeDataProvider: snippetsProvider,
+			showCollapseAll: true
+		});
+
+		// refresh UI to initialize all required config for workspace panel
+		requestWSConfigSetup(false);
+
+	//** initialization **//
+
+	//** common logic **//
+		function refreshUI() {
+			snippetsProvider.refresh();
+			// re-check if .vscode/snippets.json is always available (use case when deleting file after enabling workspace in settings)
+			requestWSConfigSetup(false);
+			if (workspaceSnippetsAvailable) {
+				wsSnippetsProvider.refresh();
+			} else {
+				vscode.commands.executeCommand(setContextCmd, contextWSStateKey, contextWSFileNotAvailable);
+			}
 		}
-	}
+		
+		async function requestWSConfigSetup(requestInput=true) {
+			if (vscode.workspace.workspaceFolders && vscode.workspace.getConfiguration(snippetsConfigKey).get(useWorkspaceFolderKey)) {
+				snippetsPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, workspaceFileName);
+				// request creation of file `.vscode/snippets.json` if :
+				// - file not found
+				// - user didn't request to ignore this phase (information persisted at workspace level)
+				const ignoreCreateSnippetsFileKey = "ignoreCreateSnippetsFile";
+				let ignoreCreateSnippetsFile = context.workspaceState.get<boolean>(ignoreCreateSnippetsFileKey);
 
-	activateExtension(context, snippetsPath, defaultSnippetsPath, snippetsPathConfigKey, explicitUpdate);
-}
+				const snippetsPathExists = fs.existsSync(snippetsPath);
 
-//changed continue function, needed to wait for user input if needed.
-export function activateExtension(context: vscode.ExtensionContext, snippetsPath: string, defaultSnippetsPath: string, snippetsPathConfigKey: string, explicitUpdate: boolean) {
-	const dataAccess = new DataAccess(snippetsPath);
-	const snippetService = new SnippetService(dataAccess);
-	const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
-	let settings = vscode.workspace.getConfiguration("snippets");
+				// requestInput=true means that we user requested setup, extension will ask for user feedback if file is unavailable
+				if (requestInput && !ignoreCreateSnippetsFile && !snippetsPathExists) {
+					await vscode.window.showWarningMessage(
+						Labels.snippetsWorkspaceCreateFileRequest, 
+						Labels.snippetsWorkspaceCreateFileRequestConfirm, 
+						Labels.snippetsWorkspaceCreateFileRequestIgnore
+						).then(selection => {
+						if (selection === Labels.snippetsWorkspaceCreateFileRequestConfirm) {
+							// create parent folder if it doesn't exist (.vscode/)
+							const snippetsPathParent = path.dirname(snippetsPath);
+							if (!fs.existsSync(snippetsPathParent)){
+								fs.mkdirSync(snippetsPathParent);
+							}
+							// create empty file
+							fs.closeSync(fs.openSync(snippetsPath, 'w'));
+							// mark useWorkspaceFolder as enabled
+							workspaceSnippetsAvailable = true;
+						}else if (selection === Labels.snippetsWorkspaceCreateFileRequestIgnore) {
+							// ignore at workspace level
+							context.workspaceState.update(ignoreCreateSnippetsFileKey, true);
+						}
+					});
+				}else if (snippetsPathExists){
+					// file already exists, just mark useWorkspaceFolder as enabled
+					workspaceSnippetsAvailable = true;
+				}else {
+					workspaceSnippetsAvailable = false;
+				}
 
-	// watch changes on snippets file, this will prevent de-sync between multiple open workspaces
-	fs.watchFile(snippetsPath, () => {
-		snippetsProvider.refresh();
-	});
+				// finish with a boolean to detect if we're using workspaceFolder (option enabled + workspace open + snippets.json available)
+				if (workspaceSnippetsAvailable) {
+					// send flag to context in order to change viewWelcome (see contributes > viewsWelcome in package.json)
+					vscode.commands.executeCommand(setContextCmd, contextWSStateKey, contextWSFileAvailable);
 
-	vscode.workspace.onDidChangeConfiguration(event => {
-		let affected = event.affectsConfiguration(`snippets.${snippetsPathConfigKey}`);
-		if (affected && !explicitUpdate) {
-			let newPath: string | undefined = vscode.workspace.getConfiguration('snippets').get(snippetsPathConfigKey);
-			if (newPath) {
-				try {
-					fs.renameSync(snippetsPath, newPath);
-					snippetsPath = newPath;
-					vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsChangedPath, snippetsPath));
-				} catch (error) {
-					// new path is not valid, fall back to old location
-					vscode.window.showErrorMessage(error.message);
-					vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, snippetsPath, ConfigurationTarget.Global);
-					explicitUpdate = true;
-					vscode.window.showWarningMessage(StringUtility.formatString(Labels.snippetsInvalidNewPath, newPath, snippetsPath));
+					// initialize workspace snippets
+					if (!wsSnippetsExplorer) {
+						const wsDataAccess = new FileDataAccess(snippetsPath);
+						wsSnippetService = new SnippetService(wsDataAccess);
+						wsSnippetsProvider = new SnippetsProvider(wsSnippetService, context.extensionPath);
+	
+						wsSnippetsExplorer = vscode.window.createTreeView('wsSnippetsExplorer', {
+							treeDataProvider: wsSnippetsProvider,
+							showCollapseAll: true
+						});
+					}
+				}else {
+					vscode.commands.executeCommand(setContextCmd, contextWSStateKey, contextWSFileNotAvailable);
 				}
 			} else {
-				// no new path given, fall back to default location
-				fs.renameSync(snippetsPath, defaultSnippetsPath);
-				snippetsPath = defaultSnippetsPath;
-				vscode.workspace.getConfiguration('snippets').update(snippetsPathConfigKey, snippetsPath, ConfigurationTarget.Global);
-				explicitUpdate = true;
-				vscode.window.showInformationMessage(StringUtility.formatString(Labels.snippetsNoNewPath, snippetsPath));
+				workspaceSnippetsAvailable = false;
 			}
-			// update dataFile in DataAccess object if not using the workspace folder.
-			if (!settings.useWorkspaceFolder) {
-				dataAccess.setDataFile(snippetsPath);
-			}
-		} else if (explicitUpdate) {
-			explicitUpdate = false;
 		}
-	});
 
-	let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
-		treeDataProvider: snippetsProvider,
-		showCollapseAll: true
-	});
-
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.openSnippet, async (snippet) => {
-		const editor = vscode.window.activeTextEditor;
-		if (!editor) {
-			vscode.window.showInformationMessage(Labels.noOpenEditor);
-			return;
-		}
-		// if command is not triggered from treeView, a snippet must be selected by final user
-		if (!snippet) {
-			snippet = await UIUtility.requestSnippetFromUser(snippetService.getAllSnippets());
-		}
-		if (!snippet) {
-			return;
-		}
-		// note: enable syntax resolving by default if property is not yet defined in JSON
-		if (snippet.resolveSyntax === undefined) {
-			snippet.resolveSyntax = true;
-		}
-		if (snippet.resolveSyntax) {
-			vscode.commands.executeCommand("editor.action.insertSnippet", { snippet: snippet.value }
-			);
-		} else {
-			editor.edit(edit => {
-				edit.insert(editor.selection.start, snippet.value);
+		// generic error handler for most commands
+		// command: Promise<any>
+		function handleCommand(callback: (...args: any[]) => any) {
+			new Promise(callback).catch(error => {
+				vscode.window.showErrorMessage(StringUtility.formatString(Labels.genericError, error.message));
+				refreshUI();
 			});
 		}
+	//** common logic **//
 
-		vscode.window.showTextDocument(editor.document);
+	//** common commands **//
+	//** COMMAND : INITIALIZE WS CONFIG **/*
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.miscRequestWSConfig, async _ => {
+		// check if a workspace is open and if useWorkspaceFolder is enabled
+		requestWSConfigSetup();
 	}));
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.openSnippetInTerminal, async (snippet) => {
-		const terminal = vscode.window.activeTerminal;
-		if (!terminal) {
-			vscode.window.showInformationMessage(Labels.noOpenTerminal);
-			return;
-		}
-		// if command is not triggered from treeView, a snippet must be selected by final user
-		if (!snippet) {
-			snippet = await UIUtility.requestSnippetFromUser(snippetService.getAllSnippets());
-		}
-		if (!snippet) {
-			return;
-		}
-		terminal.sendText(snippet.value);
-	}));
+	//** COMMAND : OPEN SNIPPET **/
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.addSnippet, async (node) => {
-		var text: string | undefined;
-
-		const editor = vscode.window.activeTextEditor;
-		// if no editor is open or editor has no text, get value from user
-		if (!editor || editor.document.getText(editor.selection) === "") {
-			// get snippet name
-			text = await UIUtility.requestSnippetValue();
-			if (!text || text.length === 0) {
-				vscode.window.showWarningMessage(Labels.noValueGiven);
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonOpenSnippet, 
+		async (snippet) => handleCommand(async () => {
+			const editor = vscode.window.activeTextEditor;
+			if (!editor) {
+				vscode.window.showInformationMessage(Labels.noOpenEditor);
 				return;
 			}
-		} else {
-			text = editor.document.getText(editor.selection);
-			if (text.length === 0) {
-				vscode.window.showWarningMessage(Labels.noTextSelected);
+			// if command is not triggered from treeView, a snippet must be selected by final user
+			if (!snippet) {
+				let allSnippets = snippetService.getAllSnippets();
+				if (workspaceSnippetsAvailable){
+					allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+				}
+				snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+			}
+			if (!snippet) {
 				return;
 			}
-		}
-		// get snippet name
-		const name = await UIUtility.requestSnippetName();
-		if (name === undefined || name === "") {
-			vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
-			return;
-		}
-		if (text === undefined || text === "") {
-			vscode.window.showWarningMessage(Labels.snippetValueErrorMsg);
-			return;
-		}
-		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
-		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
-		if (snippetsExplorer.selection.length === 0 && !node) {
-			snippetsProvider.addSnippet(name, text, Snippet.PARENT_ID);
-		} else {
-			const selectedItem = node ? node : snippetsExplorer.selection[0];
-			if (selectedItem.folder && selectedItem.folder === true) {
-				snippetsProvider.addSnippet(name, text, selectedItem.id);
-			} else {
-				snippetsProvider.addSnippet(name, text, selectedItem.parentId ?? Snippet.PARENT_ID);
+			// note: enable syntax resolving by default if property is not yet defined in JSON
+			if (snippet.resolveSyntax === undefined) {
+				snippet.resolveSyntax = true;
 			}
-		}
-	}));
-
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.addSnippetFromClipboard, async (node) => {
-		let clipboardContent = await vscode.env.clipboard.readText();
-		if (!clipboardContent || clipboardContent.trim() === "") {
-			vscode.window.showWarningMessage(Labels.noClipboardContent);
-			return;
-		}
-		// get snippet name
-		const name = await UIUtility.requestSnippetName();
-		if (name === undefined || name === "") {
-			vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
-			return;
-		}
-		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
-		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
-		if (snippetsExplorer.selection.length === 0 && !node) {
-			snippetsProvider.addSnippet(name, clipboardContent, Snippet.PARENT_ID);
-		} else {
-			const selectedItem = node ? node : snippetsExplorer.selection[0];
-			if (selectedItem.folder && selectedItem.folder === true) {
-				snippetsProvider.addSnippet(name, clipboardContent, selectedItem.id);
+			if (snippet.resolveSyntax) {
+				vscode.commands.executeCommand("editor.action.insertSnippet", { snippet: snippet.value }
+				);
 			} else {
-				snippetsProvider.addSnippet(name, clipboardContent, selectedItem.parentId ?? Snippet.PARENT_ID);
+				editor.edit(edit => {
+					edit.insert(editor.selection.start, snippet.value);
+				});
 			}
-		}
-	}));
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.addSnippetFolder, async (node) => {
-		// get snippet name
-		const name = await UIUtility.requestSnippetFolderName();
-		if (name === undefined || name === "") {
-			vscode.window.showWarningMessage(Labels.snippetFolderNameErrorMsg);
-			return;
-		}
-		// When triggering the command with right-click the parameter node of type Tree Node will be tested.
-		// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
-		if (snippetsExplorer.selection.length === 0 && !node) {
-			snippetsProvider.addSnippetFolder(name, Snippet.PARENT_ID);
-		} else {
-			const selectedItem = node ? node : snippetsExplorer.selection[0];
-			if (selectedItem.folder && selectedItem.folder === true) {
-				snippetsProvider.addSnippetFolder(name, selectedItem.id);
-			} else {
-				snippetsProvider.addSnippetFolder(name, selectedItem.parentId ?? Snippet.PARENT_ID);
+			vscode.window.showTextDocument(editor.document);
+		})
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonOpenSnippetInTerminal,
+		async (snippet) => handleCommand(async () => {
+			const terminal = vscode.window.activeTerminal;
+			if (!terminal) {
+				vscode.window.showInformationMessage(Labels.noOpenTerminal);
+				return;
 			}
-		}
-	}));
+			// if command is not triggered from treeView, a snippet must be selected by final user
+			if (!snippet) {
+				let allSnippets = snippetService.getAllSnippets();
+				if (workspaceSnippetsAvailable){
+					allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+				}
+				snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+			}
+			if (!snippet) {
+				return;
+			}
+			terminal.sendText(snippet.value);
+		})
+	));
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.editSnippet, (snippet: Snippet) => {
-		// note: enable syntax resolving by default if property is not yet defined in JSON
-		if (snippet.resolveSyntax === undefined) {
-			snippet.resolveSyntax = true;
-		}
-		// Create and show a new webview for editing snippet
-		new EditSnippet(context, snippet, snippetsProvider);
-	}));
+	//** COMMAND : ADD SNIPPET **/
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.editSnippetFolder, (snippet: Snippet) => {
-		// Create and show a new webview for editing snippet folder
-		new EditSnippetFolder(context, snippet, snippetsProvider);
-	}));
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddSnippet,
+		async _ => handleCommand(() => commands.commonAddSnippet(snippetsProvider, wsSnippetsProvider, workspaceSnippetsAvailable))
+	));
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.deleteSnippet, (snippet) => {
-		snippetsProvider.removeSnippet(snippet);
-	}));
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalAddSnippet, 
+		async (node) => handleCommand(() => commands.addSnippet(snippetsExplorer, snippetsProvider, node))
+	));
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.deleteSnippetFolder, (snippetFolder) => {
-		snippetsProvider.removeSnippet(snippetFolder);
-	}));
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsAddSnippet,
+		async (node) => handleCommand(() => commands.addSnippet(wsSnippetsExplorer, wsSnippetsProvider, node))
+	));
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.moveSnippetUp, (snippet) => {
-		snippetsProvider.moveSnippetUp(snippet);
-	}));
+	//** COMMAND : ADD SNIPPET FROM CLIPBOARD **/
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.moveSnippetDown, (snippet) => {
-		snippetsProvider.moveSnippetDown(snippet);
-	}));
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddSnippetFromClipboard, 
+		async _ => handleCommand(() => commands.commonAddSnippetFromClipboard(snippetsProvider, wsSnippetsProvider, workspaceSnippetsAvailable))
+	));
 
-	context.subscriptions.push(vscode.commands.registerCommand(Commands.refresh, () => snippetsProvider.refresh()));
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalAddSnippetFromClipboard,
+		async (node) => handleCommand(() => commands.addSnippetFromClipboard(snippetsExplorer, snippetsProvider, node))
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsAddSnippetFromClipboard,
+		async (node) => handleCommand(() => commands.addSnippetFromClipboard(wsSnippetsExplorer, wsSnippetsProvider, node)
+	)));
+
+	//** COMMAND : ADD SNIPPET FOLDER **/
+	
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddSnippetFolder,
+		async _ => handleCommand(() => commands.commonAddSnippetFolder(snippetsProvider, wsSnippetsProvider, workspaceSnippetsAvailable))
+	));
+	
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalAddSnippetFolder,
+		async (node) => handleCommand(() => commands.addSnippetFolder(snippetsExplorer, snippetsProvider, node))
+	));
+	
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsAddSnippetFolder,
+		async (node) => handleCommand(() => commands.addSnippetFolder(wsSnippetsExplorer, wsSnippetsProvider, node))
+	));
+	
+	//** COMMAND : EDIT SNIPPET **/
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalEditSnippet,
+		(snippet: Snippet) => handleCommand(() => commands.editSnippet(context, snippet, snippetsProvider))
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsEditSnippet,
+		(snippet: Snippet) => handleCommand(() => commands.editSnippet(context, snippet, wsSnippetsProvider))
+	));
+
+	//** COMMAND : EDIT SNIPPET FOLDER **/
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalEditSnippetFolder,
+		(snippet: Snippet) => handleCommand(() => new EditSnippetFolder(context, snippet, snippetsProvider))
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsEditSnippetFolder,
+		(snippet: Snippet) => handleCommand(() => new EditSnippetFolder(context, snippet, wsSnippetsProvider))
+	));
+
+	//** COMMAND : REMOVE SNIPPET **/
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalDeleteSnippet,
+		(snippet) => handleCommand(() => snippetsProvider.removeSnippet(snippet))
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsDeleteSnippet, 
+		(snippet) => handleCommand(() => wsSnippetsProvider.removeSnippet(snippet))
+	));
+
+	//** COMMAND : REMOVE SNIPPET FOLDER **/
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalDeleteSnippetFolder, 
+		(snippetFolder) => handleCommand(() => snippetsProvider.removeSnippet(snippetFolder))
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsDeleteSnippetFolder, 
+		(snippetFolder) => handleCommand(() => wsSnippetsProvider.removeSnippet(snippetFolder))
+	));
+
+	//** COMMAND : MOVE SNIPPET UP **/
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalMoveSnippetUp, 
+		(snippet) => handleCommand(() => snippetsProvider.moveSnippetUp(snippet))
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsMoveSnippetUp, 
+		(snippet) => handleCommand(() => wsSnippetsProvider.moveSnippetUp(snippet))
+	));
+
+	//** COMMAND : MOVE SNIPPET DOWN **/
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalMoveSnippetDown, 
+		(snippet) => handleCommand(() => snippetsProvider.moveSnippetDown(snippet))
+	));
+
+	context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsMoveSnippetDown, 
+		(snippet) => handleCommand(() => wsSnippetsProvider.moveSnippetDown(snippet))
+	));
+
+	//** COMMAND : REFRESH **/
+
+	context.subscriptions.push(vscode.commands.registerCommand("commonSnippetsCmd.refreshEntry", _ => refreshUI()));
+	//** common commands **//
 }
 
 export function deactivate() { }

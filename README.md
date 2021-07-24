@@ -12,17 +12,16 @@ This extension takes snippets to another level bringing new features which will 
   - [Organize Snippets](#organize-snippets)
   - [Open Snippet](#open-snippet)
   - [Edit Snippet](#edit-snippet)
-  - [Backup your Snippets outside VSCode](#backup-your-snippets-outside-vscode)
-  - [Backup your Snippets inside your workspace](#backup-your-snippets-inside-your-workspace)
+  - [Sync your Snippets](#sync-your-snippets)
 - [Installation](#installation)
 - [Known Issues](#known-issues)
 - [Release Notes](#release-notes)
-- [1.2.0](#120)
-- [1.1.1](#111)
-- [1.1.0](#110)
-- [1.0.0](#100)
+  - [1.2.0](#120)
+  - [1.1.1](#111)
+  - [1.1.0](#110)
+  - [1.0.0](#100)
 - [Feedback](#feedback)
-  - [Credits](#credits)
+- [Credits](#credits)
 
 ## Features
 
@@ -79,21 +78,23 @@ Edit your snippet easily and benefit from support of VSCode built-in [Snippet Sy
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/09-edit-snippet.gif" 
 alt="Edit Snippet">
 
-### Backup your Snippets outside VSCode
+### Sync your Snippets
 
-Easily backup your snippets by changing their default location. This can be useful when combined with a Cloud client on your machine.
+#### Sync your Snippets with VSCode
 
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/10-backup-snippets.png" 
-alt="Backup Snippets">
+> **Experimental feature** feel free to [file a bug](https://github.com/tahabasri/snippets/issues/new?labels=bug) as this is still an experimental change.
 
-### Backup your Snippets inside your workspace
+Starting with version 2.0 and up, *Snippets* supports backup using **VSCode Settings Sync** feature. **This means that you will no longer need to deal with snippets location in your file local machine**. Your snippets will be saved alongside your VSCode data no matter your operating system.
 
-To save snippets inside your workspace folder, add this to your workspace settings.
-```
-"snippets.useWorkspaceFolder": true,
-```
-This will use the snippets in that specific workspace. Your global snippets will not be used.
-To only use the snippets of the workspace it's recommended not to enable this setting in your user setting.
+Check the [docs](https://code.visualstudio.com/docs/editor/settings-sync) to know more about Settings Sync feature and how to use it.
+
+> Note: **Settings Sync** is still a VSCode preview feature.
+
+#### Sync your Snippets with Version Control System
+
+A huge number of users use a VCS (e.g Git) and they may want to bind snippets to a specific project (e.g share project specific snippets with team members). This is doable using the option `snippets.useWorkspaceFolder`. Once this option is enabled, the extension will read/write snippets from/in `.vscode/snippets.json` if that file is available (extension will ask to create the file for you the first time you enable the option).
+
+> Note: Enabling the option `snippets.useWorkspaceFolder` will omit synchronization via **Settings Sync**. You'll be responsible of backing up the file `.vscode/snippets.json` using your favorite VSC.
 
 **Enjoy!**
 
@@ -103,7 +104,9 @@ Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
 
 ## Known Issues
 
-- There is an issue regarding permissions when trying to change snippets location. In Windows in particular, changing location to some restricted folders (e.g `C:\\`) will cause the extension to rollback to default path. This is due to lack of permissions on files from within VSCode itself.
+- **With version 1.2 and bellow**, there is an issue regarding permissions when trying to change snippets location. In Windows in particular, changing location to some restricted folders (e.g `C:\\`) will cause the extension to rollback to default path. This is due to lack of permissions on files from within VSCode itself.
+
+We recommend **upgrading to version 2+** to fix such issues.
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/issues/01-issue-windows-permissions.png" 
 alt="Permissions issue">
@@ -111,20 +114,33 @@ alt="Permissions issue">
 
 ## Release Notes
 
-## 1.2.0
+### 2.0.0
+
+- Use `globalState` as default snippets location. No more files in filesystem !
+- Enable sync using VSCode API.
+- Polish the usability of option `snippets.useWorkspaceFolder`.
+- Refresh snippets across multiple open workspaces in more efficient way.
+- Add GitHub Actions to automate Code Analysis.
+
+### 1.2.1
+
+- Fix typos in code + ESLint warnings.
+
+### 1.2.0
 
 - Set workspace specific snippets and allows snippets to sync via git with your `.vscode` folder.
-## 1.1.1
+
+### 1.1.1
 
 - Make default snippets path available after fresh installation.
 
-## 1.1.0
+### 1.1.0
 
 - Sync snippets across open workspaces.
 - Enable/disable snippets syntax resolving.
 - Change default snippets location using settings property `snippets.snippetsLocation`.
 
-## 1.0.0
+### 1.0.0
 
 Initial release of the extension.
 
