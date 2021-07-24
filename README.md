@@ -78,11 +78,13 @@ Edit your snippet easily and benefit from support of VSCode built-in [Snippet Sy
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/09-edit-snippet.gif" 
 alt="Edit Snippet">
 
-### Backup your Snippets
+### Sync your Snippets
 
 #### Sync your Snippets with VSCode
 
-Starting with version 2.0 and up, *Snippets* supports backup using **VSCode Settings Sync** feature. **This means that you will no more need to deal with snippets location in your file local machine**. Your snippets will be saved alongside your VSCode data no matter your operating system.
+> **Experimental feature** feel free to [file a bug](https://github.com/tahabasri/snippets/issues/new?labels=bug) as this is still an experimental change.
+
+Starting with version 2.0 and up, *Snippets* supports backup using **VSCode Settings Sync** feature. **This means that you will no longer need to deal with snippets location in your file local machine**. Your snippets will be saved alongside your VSCode data no matter your operating system.
 
 Check the [docs](https://code.visualstudio.com/docs/editor/settings-sync) to know more about Settings Sync feature and how to use it.
 
@@ -104,7 +106,7 @@ Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
 
 - **With version 1.2 and bellow**, there is an issue regarding permissions when trying to change snippets location. In Windows in particular, changing location to some restricted folders (e.g `C:\\`) will cause the extension to rollback to default path. This is due to lack of permissions on files from within VSCode itself.
 
-**Upgrade to version 2+** to fix such issues related to filesystem.
+We recommend **upgrading to version 2+** to fix such issues.
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/issues/01-issue-windows-permissions.png" 
 alt="Permissions issue">
