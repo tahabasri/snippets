@@ -16,6 +16,7 @@ This extension takes snippets to another level bringing new features which will 
 - [Installation](#installation)
 - [Known Issues](#known-issues)
 - [Release Notes](#release-notes)
+  - [2.0.0](#200)
   - [1.2.0](#120)
   - [1.1.1](#111)
   - [1.1.0](#110)
