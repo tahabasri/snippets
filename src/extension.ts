@@ -72,15 +72,15 @@ export function activate(context: vscode.ExtensionContext) {
 									newSnippets.lastId = oldSnippets.lastId;
 									dataAccess.save(newSnippets);
 									snippetsProvider.sync();
-									fs.unlink(oldSnippetsPath, (err) => {
+									fs.rename(oldSnippetsPath, `${oldSnippetsPath}_bak`, (err) => {
 										if (err) {
 											vscode.window.showInformationMessage(
-												StringUtility.formatString(Labels.snippetsDataRestoredButFileNotRemoved, oldSnippetsPath)
+												StringUtility.formatString(Labels.snippetsDataRestoredButFileNotRenamed, `${oldSnippetsPath}_bak`)
 											);
 										}else {
 											//file removed
 											vscode.window.showInformationMessage(
-												StringUtility.formatString(Labels.snippetsDataRestored, oldSnippetsPath)
+												StringUtility.formatString(Labels.snippetsDataRestored, `${oldSnippetsPath}_bak`)
 											);
 										}
 									});

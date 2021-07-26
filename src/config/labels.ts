@@ -36,9 +36,9 @@ export const enum Labels {
 	snippetsInvalidNewPath = "Snippets path [{0}] is not a valid JSON file, will revert back to old location [{1}].",
 	snippetsNoNewPath = "Snippets will be saved to old location [{0}].",
 
-	snippetsMigrateRequest = "You have some old snippets saved in [{0}], do you want to restore them ? (Original file will be removed).",
-	snippetsDataRestored = "Snippets restored. Deleted file [{0}].",
-	snippetsDataRestoredButFileNotRemoved = "Snippets restored. But couldn't delete file [{0}], please remove it manually.",
+	snippetsMigrateRequest = "You have some old snippets saved in [{0}], do you want to restore them ? (Original file will be saved in case of error).",
+	snippetsDataRestored = "Snippets restored. Kept original file as [{0}].",
+	snippetsDataRestoredButFileNotRenamed = "Snippets restored. But couldn't rename file [{0}], please rename it manually.",
 	snippetsNoDataRestored = "No data was provided from file to restore.",
 
 	snippetsWorkspaceCreateFileRequest = "You enabled `useWorkspaceFolder` but you have no file `snippets.json`, do you want to create it ?",
