@@ -36,8 +36,10 @@ export const enum Labels {
 	snippetsInvalidNewPath = "Snippets path [{0}] is not a valid JSON file, will revert back to old location [{1}].",
 	snippetsNoNewPath = "Snippets will be saved to old location [{0}].",
 
+	snippetsBackupRequest = "Please keep a copy of your snippets file before proceeding with the restore. Yours is located in [{0}]",
 	snippetsMigrateRequest = "You have some old snippets saved in [{0}], do you want to restore them ? (Original file will be saved in case of error).",
 	snippetsDataRestored = "Snippets restored. Kept original file as [{0}].",
+	snippetsDataNotRestored = "Snippets were not restored. We kept original file in [{0}]. Please reload window and try again !",
 	snippetsDataRestoredButFileNotRenamed = "Snippets restored. But couldn't rename file [{0}], please rename it manually.",
 	snippetsNoDataRestored = "No data was provided from file to restore.",
 

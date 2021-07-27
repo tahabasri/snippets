@@ -59,6 +59,9 @@ export function activate(context: vscode.ExtensionContext) {
 				if(dataAccess.hasNoChild() && !noData) {
 					const migrateData = Labels.migrateData;
 					const discardData = Labels.discardData;
+					vscode.window.showWarningMessage(
+						StringUtility.formatString(Labels.snippetsBackupRequest, oldSnippetsPath)
+					);
 					vscode.window.showInformationMessage(
 						StringUtility.formatString(Labels.snippetsMigrateRequest, oldSnippetsPath),
 						...[migrateData, discardData])
@@ -72,18 +75,24 @@ export function activate(context: vscode.ExtensionContext) {
 									newSnippets.lastId = oldSnippets.lastId;
 									dataAccess.save(newSnippets);
 									snippetsProvider.sync();
-									fs.rename(oldSnippetsPath, `${oldSnippetsPath}_bak`, (err) => {
-										if (err) {
-											vscode.window.showInformationMessage(
-												StringUtility.formatString(Labels.snippetsDataRestoredButFileNotRenamed, `${oldSnippetsPath}_bak`)
-											);
-										}else {
-											//file removed
-											vscode.window.showInformationMessage(
-												StringUtility.formatString(Labels.snippetsDataRestored, `${oldSnippetsPath}_bak`)
-											);
-										}
-									});
+									if (dataAccess.hasNoChild() || !newSnippets.children || newSnippets.children.length !== oldSnippets.children.length) {
+										vscode.window.showErrorMessage(
+											StringUtility.formatString(Labels.snippetsDataNotRestored, oldSnippetsPath)
+										);
+									}else {
+										fs.rename(oldSnippetsPath, `${oldSnippetsPath}_bak`, (err) => {
+											if (err) {
+												vscode.window.showInformationMessage(
+													StringUtility.formatString(Labels.snippetsDataRestoredButFileNotRenamed, `${oldSnippetsPath}_bak`)
+												);
+											}else {
+												//file removed
+												vscode.window.showInformationMessage(
+													StringUtility.formatString(Labels.snippetsDataRestored, `${oldSnippetsPath}_bak`)
+												);
+											}
+										});
+									}
 								}else{
 									vscode.window.showInformationMessage(Labels.snippetsNoDataRestored);
 								}
