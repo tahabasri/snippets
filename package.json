@@ -477,6 +477,11 @@
 					"default": false,
 					"description": "Use folder `.vscode` in current workspace to save snippets as a `snippets.json` file."
 				},
+				"snippets.showSuggestions": {
+					"type": "boolean",
+					"default": true,
+					"description": "Show Snippets suggestions when typing `>` or when using your IntelliSense default trigger."
+				},
 				"snippets.snippetsLocation": {
 					"deprecationMessage": "This is deprecated, the new default storage is VSCode globalState. This enables to sync snippets accross multiple machines. To keep using the file system as storage unit, consider using `#snippets.useWorkspaceFolder#`.",
 					"type": [
