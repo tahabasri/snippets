@@ -144,10 +144,10 @@ export function activate(context: vscode.ExtensionContext) {
         requestWSConfigSetup(false);
         if (workspaceSnippetsAvailable) {
             wsSnippetsProvider.refresh();
-            registerCIPSnnipets();
         } else {
             vscode.commands.executeCommand(setContextCmd, contextWSStateKey, contextWSFileNotAvailable);
         }
+        registerCIPSnippets();
     }
 
     async function requestWSConfigSetup(requestInput = true) {
@@ -230,6 +230,30 @@ export function activate(context: vscode.ExtensionContext) {
         // check if a workspace is open and if useWorkspaceFolder is enabled
         requestWSConfigSetup();
     }));
+
+    //** COMMAND : INITIALIZE GENERIC COMPLETION ITEM PROVIDER **/*
+
+    let triggerCharacter = ">";
+    const registerCIPSnippets = () => cipDisposable = vscode.languages.registerCompletionItemProvider(
+        '*', {
+            provideCompletionItems(document, position) {
+                let isTriggeredByChar = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
+                return snippetService.getAllSnippets().map(element =>
+                    <vscode.CompletionItem>{
+                        label: `snp:${element.label.replace('\n', '').replace(' ', '-')}`,
+                        insertText: new vscode.SnippetString(element.value),
+                        detail: element.label,
+                        kind: vscode.CompletionItemKind.Snippet,
+                        // replace trigger character with the chosen suggestion
+                        additionalTextEdits: isTriggeredByChar
+                            ? [vscode.TextEdit.delete(new vscode.Range(position.with(position.line, position.character - 1), position))]
+                            : []
+                    });
+            },
+        }, triggerCharacter
+    );
+
+    context.subscriptions.push(registerCIPSnippets());
 
     //** COMMAND : OPEN SNIPPET **/
 
@@ -395,33 +419,6 @@ export function activate(context: vscode.ExtensionContext) {
     //** COMMAND : REFRESH **/
 
     context.subscriptions.push(vscode.commands.registerCommand("commonSnippetsCmd.refreshEntry", _ => refreshUI()));
-    //** common commands **//
-
-    // see https://code.visualstudio.com/api/references/vscode-api#DocumentSelector
-
-    const registerCIPSnnipets = () => cipDisposable = vscode.languages.registerCompletionItemProvider('*', {
-        provideCompletionItems() {
-            return snippetService.getAllSnippets().map(element =>
-                <vscode.CompletionItem>{
-                    // see https://code.visualstudio.com/api/references/vscode-api#DocumentFilter
-                    label: `snp:${element.label.replace('\n', '').replace(' ', '-')}`,
-                    insertText: new vscode.SnippetString(element.value),
-                    detail: element.label,
-                    kind: vscode.CompletionItemKind.Snippet,
-                })
-        },
-    },
-        // '' trigger character
-    );
-
-    context.subscriptions.push(registerCIPSnnipets());
-
-    // list completionItems
-    // const list: any = await vscode.commands.executeCommand('vscode.executeCompletionItemProvider',
-    //     vscode.window.activeTextEditor?.document.uri,
-    //     new vscode.Position(0, 0));
-    // console.log(list.items);
-
 }
 
 export function deactivate() { }
