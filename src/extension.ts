@@ -237,6 +237,9 @@ export function activate(context: vscode.ExtensionContext) {
     const registerCIPSnippets = () => cipDisposable = vscode.languages.registerCompletionItemProvider(
         '*', {
             provideCompletionItems(document, position) {
+                if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
+                    return;
+                }
                 let isTriggeredByChar = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
                 return snippetService.getAllSnippets().map(element =>
                     <vscode.CompletionItem>{
