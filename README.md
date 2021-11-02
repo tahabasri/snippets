@@ -16,6 +16,8 @@ This extension takes snippets to another level bringing new features which will 
 - [Installation](#installation)
 - [Known Issues](#known-issues)
 - [Release Notes](#release-notes)
+  - [2.1.0](#210)
+  - [2.0.2](#202)
   - [2.0.0](#200)
   - [1.2.0](#120)
   - [1.1.1](#111)
@@ -56,6 +58,11 @@ Add your snippet with a single click.
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/05-open-snippet-click.gif" 
 alt="Open Snippet">
+
+You're a keyboard guru ? Open your snippets using magic key `>` or using IntelliSense (`Ctrl+Space`).
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/051-open-snippet-suggestion.gif" 
+alt="Open Snippet using Suggestions">
 
 Your snippet has variables ? No worries.
 
@@ -114,6 +121,16 @@ alt="Permissions issue">
 
 
 ## Release Notes
+
+### 2.1.0
+
+- Provide snippets as suggestions via IntelliSense or by typing character '`>`'.
+- Update vulnerable dependencies.
+
+### 2.0.2
+
+- Provide safer logic when dealing with restore process.
+- Rename backup instead of deleting it.
 
 ### 2.0.0
 

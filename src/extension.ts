@@ -241,11 +241,22 @@ export function activate(context: vscode.ExtensionContext) {
                     return;
                 }
                 let isTriggeredByChar = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
-                return snippetService.getAllSnippets().map(element =>
+                // append workspace snippets if WS is available
+                let candidates = snippetService.getAllSnippets();
+                if (workspaceSnippetsAvailable) {
+                    // add suffix for all workspace items
+                    candidates = candidates.concat(wsSnippetService.getAllSnippets().map(
+                        elt => {
+                            elt.label = `${elt.label}__(ws)`;
+                            return elt;
+                        }
+                    ));
+                }
+                return candidates.map(element =>
                     <vscode.CompletionItem>{
-                        label: `snp:${element.label.replace('\n', '').replace(' ', '-')}`,
+                        label: `snp:${element.label.replace('\n', '').replace(' ', '-').replace("__(ws)", " (ws)")}`,
                         insertText: new vscode.SnippetString(element.value),
-                        detail: element.label,
+                        detail: element.label.replace("__(ws)", " (snippet from workspace)"),
                         kind: vscode.CompletionItemKind.Snippet,
                         // replace trigger character with the chosen suggestion
                         additionalTextEdits: isTriggeredByChar
