@@ -2,8 +2,8 @@
 	"name": "snippets",
 	"displayName": "Snippets",
 	"description": "Manage your code snippets without quitting your editor.",
-	"version": "2.1.0",
-	"preview": false,
+	"version": "2.2.0",
+	"preview": true,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
 	"author": {
@@ -43,7 +43,7 @@
 		"viewsWelcome": [
 			{
 				"view": "snippetsExplorer",
-				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:globalSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:globalSnippetsCmd.addSnippetFolder)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md)."
+				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:globalSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:globalSnippetsCmd.addSnippetFolder)\n[Import Snippets](command:globalSnippetsCmd.importSnippets)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md)."
 			},
 			{
 				"view": "wsSnippetsExplorer",
@@ -200,6 +200,18 @@
 				"title": "Move Snippet Down",
 				"icon": "$(marker-navigation-next)",
 				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.exportSnippets",
+				"title": "Export Snippets",
+				"icon": "$(cloud-upload)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.importSnippets",
+				"title": "Import Snippets",
+				"icon": "$(cloud-download)",
+				"category": "Snippets"
 			}
 		],
 		"menus": {
@@ -314,7 +326,17 @@
 				{
 					"command": "globalSnippetsCmd.addSnippetFromClipboard",
 					"when": "view == snippetsExplorer",
-					"group": "other"
+					"group": "other@1"
+				},
+				{
+					"command": "globalSnippetsCmd.exportSnippets",
+					"when": "view == snippetsExplorer",
+					"group": "other@2"
+				},
+				{
+					"command": "globalSnippetsCmd.importSnippets",
+					"when": "view == snippetsExplorer",
+					"group": "other@3"
 				},
 				{
 					"command": "wsSnippetsCmd.addSnippetFromClipboard",

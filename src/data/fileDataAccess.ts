@@ -33,7 +33,7 @@ export class FileDataAccess implements DataAccess {
         }
         let rawData = fs.readFileSync(this._dataFile, this._encoding);
         
-        if (this.isBlank(rawData)) {
+        if (this.isBlank(rawData)) {
             this.save(DataAccessConsts.defaultRootElement);
         }
 

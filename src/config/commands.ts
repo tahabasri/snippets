@@ -25,6 +25,8 @@ export const enum CommandsConsts {
 	globalDeleteSnippetFolder = "globalSnippetsCmd.deleteSnippetFolder",
 	globalMoveSnippetUp = "globalSnippetsCmd.moveSnippetUp",
 	globalMoveSnippetDown = "globalSnippetsCmd.moveSnippetDown",
+	globalExportSnippets = "globalSnippetsCmd.exportSnippets",
+	globalImportSnippets = "globalSnippetsCmd.importSnippets",
 	// ws commands
 	wsAddSnippet = "wsSnippetsCmd.addSnippet",
 	wsAddSnippetFromClipboard = "wsSnippetsCmd.addSnippetFromClipboard",
@@ -65,19 +67,19 @@ export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSni
 		vscode.window.showWarningMessage(Labels.snippetValueErrorMsg);
 		return;
 	}
-	
+
 	// request where to save snippets if ws is available
 	if (workspaceSnippetsAvailable) {
 		const targetView = await UIUtility.requestTargetSnippetsView();
 		// no value chosen
 		if (!targetView) {
 			vscode.window.showWarningMessage(Labels.noViewTypeSelected);
-		}else if (targetView === Labels.globalSnippets) {
+		} else if (targetView === Labels.globalSnippets) {
 			snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
-		}else if (targetView === Labels.wsSnippets) {
+		} else if (targetView === Labels.wsSnippets) {
 			wsSnippetsProvider.addSnippet(name, text, Snippet.rootParentId);
 		}
-	}else{
+	} else {
 		snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
 	}
 }
@@ -136,19 +138,19 @@ export async function commonAddSnippetFromClipboard(snippetsProvider: SnippetsPr
 		vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
 		return;
 	}
-	
+
 	// request where to save snippets if ws is available
 	if (workspaceSnippetsAvailable) {
 		const targetView = await UIUtility.requestTargetSnippetsView();
 		// no value chosen
 		if (!targetView) {
 			vscode.window.showWarningMessage(Labels.noViewTypeSelected);
-		}else if (targetView === Labels.globalSnippets) {
+		} else if (targetView === Labels.globalSnippets) {
 			snippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
-		}else if (targetView === Labels.wsSnippets) {
+		} else if (targetView === Labels.wsSnippets) {
 			wsSnippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
 		}
-	}else{
+	} else {
 		snippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
 	}
 }
@@ -186,19 +188,19 @@ export async function commonAddSnippetFolder(snippetsProvider: SnippetsProvider,
 		vscode.window.showWarningMessage(Labels.snippetFolderNameErrorMsg);
 		return;
 	}
-	
+
 	// request where to save snippets if ws is available
 	if (workspaceSnippetsAvailable) {
 		const targetView = await UIUtility.requestTargetSnippetsView();
 		// no value chosen
 		if (!targetView) {
 			vscode.window.showWarningMessage(Labels.noViewTypeSelected);
-		}else if (targetView === Labels.globalSnippets) {
+		} else if (targetView === Labels.globalSnippets) {
 			snippetsProvider.addSnippetFolder(name, Snippet.rootParentId);
-		}else if (targetView === Labels.wsSnippets) {
+		} else if (targetView === Labels.wsSnippets) {
 			wsSnippetsProvider.addSnippetFolder(name, Snippet.rootParentId);
 		}
-	}else{
+	} else {
 		snippetsProvider.addSnippetFolder(name, Snippet.rootParentId);
 	}
 }
@@ -231,4 +233,55 @@ export function editSnippet(context: vscode.ExtensionContext, snippet: Snippet, 
 	}
 	// Create and show a new webview for editing snippet
 	new EditSnippet(context, snippet, snippetsProvider);
+}
+
+export async function exportSnippets(snippetsProvider: SnippetsProvider) {
+	// get snippet destination
+	vscode.window.showSaveDialog(
+		{
+			filters: {
+				// eslint-disable-next-line @typescript-eslint/naming-convention
+				'JSON': ['json']
+			},
+			title: 'Export Snippets',
+			saveLabel: 'Export'
+		}
+	).then(fileUri => {
+		if (fileUri && fileUri.fsPath) {
+			snippetsProvider.exportSnippets(fileUri.fsPath);
+		}
+	});
+}
+
+export async function importSnippets(snippetsProvider: SnippetsProvider) {
+	// get snippets destination
+	vscode.window.showOpenDialog({
+		canSelectFiles: true,
+		canSelectFolders: false,
+		canSelectMany: false,
+		filters: {
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			'JSON': ['json']
+		},
+		openLabel: 'Import',
+		title: 'Import Snippets'
+	}).then(fileUris => {
+		if (fileUris && fileUris[0] && fileUris[0].fsPath) {
+			vscode.window.showWarningMessage(
+				Labels.snippetImportRequestConfirmation,
+				...[Labels.importSnippets, Labels.discardImport])
+				.then(selection => {
+					switch (selection) {
+						case Labels.importSnippets:
+							if (snippetsProvider.importSnippets(fileUris[0].fsPath)) {
+								vscode.window.showInformationMessage(Labels.snippetsImported);
+							} else {
+								vscode.window.showErrorMessage(Labels.snippetsNotImported);
+							}
+						case Labels.discardImport:
+							break;
+					}
+				});
+		}
+	});
 }
