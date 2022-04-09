@@ -22,6 +22,7 @@ If you like my work or if it is useful to you, show your support by buying me a 
 - [Installation](#installation)
 - [Known Issues](#known-issues)
 - [Release Notes](#release-notes)
+  - [2.1.1](#211)
   - [2.1.0](#210)
   - [2.0.2](#202)
   - [2.0.0](#200)
@@ -127,6 +128,10 @@ alt="Permissions issue">
 
 
 ## Release Notes
+
+### 2.1.1
+
+- Update vulnerable dependencies.
 
 ### 2.1.0
 
