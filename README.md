@@ -6,6 +6,12 @@ Visual Studio Code already has great support for snippets, including snippets ap
 
 This extension takes snippets to another level bringing new features which will improve managing code snippets.
 
+# Show your support <!-- omit in toc -->
+
+If you like my work or if it is useful to you, show your support by buying me a coffee.
+
+<a href="https://www.buymeacoffee.com/tahabasri" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
 #### Table of contents  <!-- omit in toc -->
 - [Features](#features)
   - [Create Snippet](#create-snippet)
@@ -16,6 +22,7 @@ This extension takes snippets to another level bringing new features which will 
 - [Installation](#installation)
 - [Known Issues](#known-issues)
 - [Release Notes](#release-notes)
+  - [2.1.1](#211)
   - [2.1.0](#210)
   - [2.0.2](#202)
   - [2.0.0](#200)
@@ -121,6 +128,10 @@ alt="Permissions issue">
 
 
 ## Release Notes
+
+### 2.1.1
+
+- Update vulnerable dependencies.
 
 ### 2.1.0
 
