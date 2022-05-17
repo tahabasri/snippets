@@ -520,6 +520,11 @@
 					"default": null,
 					"format": "uri",
 					"description": "Specifies the folder path where to save snippets."
+				},
+				"snippets.confirmBeforeDeletion": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "Show a confirmation alert before deleting a snippet/folder."
 				}
 			}
 		}

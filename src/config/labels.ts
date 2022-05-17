@@ -57,4 +57,7 @@ export const enum Labels {
 	snippetImportRequestConfirmation = "All your global snippets will be replaced with the imported ones (except for workspace snippets)! Do you want to proceed ? (A backup file of your snippets will be saved in case of a rollback).",
 	snippetsImported = "Snippets imported. Kept a backup of old snippets next to the imported file in case of a rollback.",
 	snippetsNotImported = "Snippets weren't imported. Please check the file content or redo a proper export/import (A copy of your old snippets was saved next to the recently imported file)",
+
+	confirmationYes = "Yes",
+	confirmationNo = "No",
 }
