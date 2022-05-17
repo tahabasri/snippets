@@ -233,41 +233,41 @@ export function activate(context: vscode.ExtensionContext) {
 
     //** COMMAND : INITIALIZE GENERIC COMPLETION ITEM PROVIDER **/*
 
-    let triggerCharacter : any = vscode.workspace.getConfiguration(snippetsConfigKey).get("triggerKey");
+    let triggerCharacter: any = vscode.workspace.getConfiguration(snippetsConfigKey).get("triggerKey");
     if (!triggerCharacter) {
         triggerCharacter = "snp"; // placeholder which is not a simple character in order to trigger IntelliSense
     }
     const registerCIPSnippets = () => cipDisposable = vscode.languages.registerCompletionItemProvider(
         '*', {
-            provideCompletionItems(document, position) {
-                if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
-                    return;
-                }
-                let isTriggeredByChar = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
-                // append workspace snippets if WS is available
-                let candidates = snippetService.getAllSnippets();
-                if (workspaceSnippetsAvailable) {
-                    // add suffix for all workspace items
-                    candidates = candidates.concat(wsSnippetService.getAllSnippets().map(
-                        elt => {
-                            elt.label = `${elt.label}__(ws)`;
-                            return elt;
-                        }
-                    ));
-                }
-                return candidates.map(element =>
-                    <vscode.CompletionItem>{
-                        label: `snp:${element.label.replace('\n', '').replace(' ', '-').replace("__(ws)", " (ws)")}`,
-                        insertText: new vscode.SnippetString(element.value),
-                        detail: element.label.replace("__(ws)", " (snippet from workspace)"),
-                        kind: vscode.CompletionItemKind.Snippet,
-                        // replace trigger character with the chosen suggestion
-                        additionalTextEdits: isTriggeredByChar
-                            ? [vscode.TextEdit.delete(new vscode.Range(position.with(position.line, position.character - 1), position))]
-                            : []
-                    });
-            },
-        }, triggerCharacter
+        provideCompletionItems(document, position) {
+            if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
+                return;
+            }
+            let isTriggeredByChar = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
+            // append workspace snippets if WS is available
+            let candidates = snippetService.getAllSnippets();
+            if (workspaceSnippetsAvailable) {
+                // add suffix for all workspace items
+                candidates = candidates.concat(wsSnippetService.getAllSnippets().map(
+                    elt => {
+                        elt.label = `${elt.label}__(ws)`;
+                        return elt;
+                    }
+                ));
+            }
+            return candidates.map(element =>
+                <vscode.CompletionItem>{
+                    label: `snp:${element.label.replace('\n', '').replace(' ', '-').replace("__(ws)", " (ws)")}`,
+                    insertText: new vscode.SnippetString(element.value),
+                    detail: element.label.replace("__(ws)", " (snippet from workspace)"),
+                    kind: vscode.CompletionItemKind.Snippet,
+                    // replace trigger character with the chosen suggestion
+                    additionalTextEdits: isTriggeredByChar
+                        ? [vscode.TextEdit.delete(new vscode.Range(position.with(position.line, position.character - 1), position))]
+                        : []
+                });
+        },
+    }, triggerCharacter
     );
 
     context.subscriptions.push(registerCIPSnippets());
@@ -396,21 +396,69 @@ export function activate(context: vscode.ExtensionContext) {
     //** COMMAND : REMOVE SNIPPET **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalDeleteSnippet,
-        (snippet) => handleCommand(() => snippetsProvider.removeSnippet(snippet))
+        (snippet) => handleCommand(() => {
+            if (vscode.workspace.getConfiguration('snippets').get('confirmBeforeDeletion')) {
+                vscode.window
+                    .showInformationMessage(`Do you really want to delete the snippet (${snippet.label}) ?`, Labels.confirmationYes, Labels.confirmationNo)
+                    .then(answer => {
+                        if (answer === Labels.confirmationYes) {
+                            snippetsProvider.removeSnippet(snippet);
+                        }
+                    });
+            } else {
+                snippetsProvider.removeSnippet(snippet);
+            }
+        })
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsDeleteSnippet,
-        (snippet) => handleCommand(() => wsSnippetsProvider.removeSnippet(snippet))
+        (snippet) => handleCommand(() => {
+            if (vscode.workspace.getConfiguration('snippets').get('confirmBeforeDeletion')) {
+                vscode.window
+                    .showInformationMessage(`Do you really want to delete the snippet (${snippet.label}) ?`, Labels.confirmationYes, Labels.confirmationNo)
+                    .then(answer => {
+                        if (answer === Labels.confirmationYes) {
+                            wsSnippetsProvider.removeSnippet(snippet);
+                        }
+                    });
+            } else {
+                wsSnippetsProvider.removeSnippet(snippet);
+            }
+        })
     ));
 
     //** COMMAND : REMOVE SNIPPET FOLDER **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalDeleteSnippetFolder,
-        (snippetFolder) => handleCommand(() => snippetsProvider.removeSnippet(snippetFolder))
+        (snippetFolder) => handleCommand(() => {
+            if (vscode.workspace.getConfiguration('snippets').get('confirmBeforeDeletion')) {
+                vscode.window
+                    .showInformationMessage(`Do you really want to delete the folder (${snippetFolder.label}) ?`, Labels.confirmationYes, Labels.confirmationNo)
+                    .then(answer => {
+                        if (answer === Labels.confirmationYes) {
+                            snippetsProvider.removeSnippet(snippetFolder);
+                        }
+                    });
+            } else {
+                snippetsProvider.removeSnippet(snippetFolder);
+            }
+        })
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsDeleteSnippetFolder,
-        (snippetFolder) => handleCommand(() => wsSnippetsProvider.removeSnippet(snippetFolder))
+        (snippetFolder) => handleCommand(() => {
+            if (vscode.workspace.getConfiguration('snippets').get('confirmBeforeDeletion')) {
+                vscode.window
+                    .showInformationMessage(`Do you really want to delete the folder (${snippetFolder.label}) ?`, Labels.confirmationYes, Labels.confirmationNo)
+                    .then(answer => {
+                        if (answer === Labels.confirmationYes) {
+                            wsSnippetsProvider.removeSnippet(snippetFolder);
+                        }
+                    });
+            } else {
+                wsSnippetsProvider.removeSnippet(snippetFolder);
+            }
+        })
     ));
 
     //** COMMAND : MOVE SNIPPET UP **/
@@ -442,7 +490,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalExportSnippets,
         async _ => handleCommand(() => commands.exportSnippets(snippetsProvider))
     ));
-    
+
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalImportSnippets,
         async _ => handleCommand(() => commands.importSnippets(snippetsProvider))
     ));
