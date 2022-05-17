@@ -150,4 +150,16 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
         }
         return treeItem;
     }
+
+    exportSnippets(destinationPath: string) {
+        this._snippetService.exportSnippets(destinationPath, Snippet.rootParentId);
+        this.sync();
+    }
+
+    importSnippets(destinationPath: string) : boolean {
+        this._snippetService.importSnippets(destinationPath);
+        this.sync();
+        const parentElt = this._snippetService.getParent(undefined);
+        return parentElt !== undefined && parentElt.children!== undefined && parentElt.children.length > 0;
+    }
 }

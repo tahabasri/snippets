@@ -1,4 +1,5 @@
 import { DataAccess } from "../data/dataAccess";
+import { FileDataAccess } from "../data/fileDataAccess";
 import { Snippet } from "../interface/snippet";
 
 export class SnippetService {
@@ -156,5 +157,24 @@ export class SnippetService {
                 this._reorderArray(parentElement.children, index, index + offset);
             }
         }
+    }
+
+    exportSnippets(destinationPath: string, parentId: number) {
+        const parentElement = SnippetService.findParent(parentId ?? Snippet.rootParentId, this._rootSnippet);
+        if (parentElement) {
+            // save file using destroyable instance of FileDataAccess
+            new FileDataAccess(destinationPath).save(parentElement);
+        }
+    }
+
+    importSnippets(destinationPath: string) {
+        // save a backup version of current snippets next to the file to import
+        this.exportSnippets(
+            destinationPath.replace(FileDataAccess.dataFileExt, `_pre-import-bak${FileDataAccess.dataFileExt}`),
+            Snippet.rootParentId
+        );
+        let newSnippets: Snippet = new FileDataAccess(destinationPath).load();
+        this._rootSnippet.children = newSnippets.children;
+        this._rootSnippet.lastId = newSnippets.lastId;
     }
 }

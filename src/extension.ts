@@ -433,6 +433,16 @@ export function activate(context: vscode.ExtensionContext) {
     //** COMMAND : REFRESH **/
 
     context.subscriptions.push(vscode.commands.registerCommand("commonSnippetsCmd.refreshEntry", _ => refreshUI()));
+
+    //** COMMAND : IMPORT & EXPORT **/
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalExportSnippets,
+        async _ => handleCommand(() => commands.exportSnippets(snippetsProvider))
+    ));
+    
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalImportSnippets,
+        async _ => handleCommand(() => commands.importSnippets(snippetsProvider))
+    ));
 }
 
 export function deactivate() { }
