@@ -233,7 +233,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     //** COMMAND : INITIALIZE GENERIC COMPLETION ITEM PROVIDER **/*
 
-    let triggerCharacter = ">";
+    let triggerCharacter : any = vscode.workspace.getConfiguration(snippetsConfigKey).get("triggerKey");
+    if (!triggerCharacter) {
+        triggerCharacter = "snp"; // placeholder which is not a simple character in order to trigger IntelliSense
+    }
     const registerCIPSnippets = () => cipDisposable = vscode.languages.registerCompletionItemProvider(
         '*', {
             provideCompletionItems(document, position) {

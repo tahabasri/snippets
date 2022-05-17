@@ -502,7 +502,14 @@
 				"snippets.showSuggestions": {
 					"type": "boolean",
 					"default": true,
-					"description": "Show Snippets suggestions when typing `>` or when using your IntelliSense default trigger."
+					"markdownDescription": "Show Snippets suggestions when typing `#snippets.triggerKey#`."
+				},
+				"snippets.triggerKey": {
+					"type": "string",
+					"default": ">",
+					"minLength": 0,
+					"maxLength": 1,
+					"markdownDescription": "Character to be typed in order to show Snippets suggestions. `Note: Changes require a window restart to apply`."
 				},
 				"snippets.snippetsLocation": {
 					"deprecationMessage": "This is deprecated, the new default storage is VSCode globalState. This enables to sync snippets accross multiple machines. To keep using the file system as storage unit, consider using `#snippets.useWorkspaceFolder#`.",
