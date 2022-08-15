@@ -1,5 +1,8 @@
 # Change Log
 
+### 2.2.1
+
+- Update vulnerable dependencies.
 ### 2.2.0
 
 - [[#37](https://github.com/tahabasri/snippets/pull/37)] Add feature to Import/Export Snippets.

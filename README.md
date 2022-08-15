@@ -6,12 +6,6 @@ Visual Studio Code already has great support for snippets, including snippets ap
 
 This extension takes snippets to another level bringing new features which will improve managing code snippets.
 
-# Show your support <!-- omit in toc -->
-
-If you like my work or if it is useful to you, show your support by buying me a coffee.
-
-<a href="https://www.buymeacoffee.com/tahabasri" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-
 #### Table of contents  <!-- omit in toc -->
 - [Features](#features)
   - [Create Snippet](#create-snippet)
@@ -22,14 +16,6 @@ If you like my work or if it is useful to you, show your support by buying me a 
 - [Installation](#installation)
 - [Known Issues](#known-issues)
 - [Release Notes](#release-notes)
-  - [2.1.1](#211)
-  - [2.1.0](#210)
-  - [2.0.2](#202)
-  - [2.0.0](#200)
-  - [1.2.0](#120)
-  - [1.1.1](#111)
-  - [1.1.0](#110)
-  - [1.0.0](#100)
 - [Feedback](#feedback)
 - [Credits](#credits)
 
@@ -119,7 +105,7 @@ Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
 
 ## Known Issues
 
-- **With version 1.2 and bellow**, there is an issue regarding permissions when trying to change snippets location. In Windows in particular, changing location to some restricted folders (e.g `C:\\`) will cause the extension to rollback to default path. This is due to lack of permissions on files from within VSCode itself.
+- **With version 1.2 and bellow**, there was an issue regarding permissions when trying to change snippets location. In Windows in particular, changing location to some restricted folders (e.g `C:\\`) caused the extension to rollback to default path. This is due to lack of permissions on files from within VSCode itself.
 
 We recommend **upgrading to version 2+** to fix such issues.
 
