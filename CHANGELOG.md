@@ -1,4 +1,7 @@
 # Change Log
+### 2.2.2
+
+- Update vulnerable dependencies.
 
 ### 2.2.1
 
