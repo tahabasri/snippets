@@ -5,8 +5,65 @@ import { Snippet } from '../interface/snippet';
 import { CommandsConsts } from '../config/commands';
 import { SnippetService } from '../service/snippetService';
 
-export class SnippetsProvider implements vscode.TreeDataProvider<Snippet> {
+export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
     constructor(private _snippetService: SnippetService, private _extensionPath: string) { }
+
+    dropMimeTypes: readonly string[] = ['application/vnd.code.tree.snippetsProvider'];
+    dragMimeTypes: readonly string[] = ['text/uri-list'];
+    
+    handleDrag?(source: readonly Snippet[], dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
+        dataTransfer.set('application/vnd.code.tree.snippetsProvider', new vscode.DataTransferItem(source));
+    }
+
+    handleDrop?(target: Snippet | undefined, dataTransfer: vscode.DataTransfer, token: vscode.CancellationToken): void | Thenable<void> {
+        const transferItem = dataTransfer.get('application/vnd.code.tree.snippetsProvider');
+        // if target is undefined, that's root of tree
+        if (!target) {
+            target = this._snippetService.getParent(undefined);
+            
+        }
+        // skip if :
+        // - source is undefined
+        // - target is undefined
+        // - source = target
+        // skip if source or target are undefined or source = target
+        if (!transferItem || transferItem.value.length === 0 || !target || transferItem.value[0].id === target.id) {
+			return;
+		}
+
+        const transferSnippet = transferItem.value[0];
+        // if target is root of tree or target is folder, move child inside it directly
+        // skip if target is already source parent
+        if (target.parentId === -1 || (target.folder && target.id !== transferSnippet.parentId)) {
+            // in case of moving folder to folder, don't allow moving parent folder inside child folder
+            if (target.folder && transferSnippet.folder) {
+                let targetInsideSource = false;
+                // potential child folder
+                let targetParent = target;
+                while (targetParent.parentId && targetParent.parentId > -1 || !targetInsideSource) {                    
+                    const targetParentResult = this._snippetService.getParent(targetParent.parentId);
+                    if (targetParentResult?.id === transferSnippet.id) {
+                        // skip operation
+                        return;
+                    } else if (targetParentResult) {
+                        targetParent = targetParentResult;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            // all good ? proceed with moving snippet to target folder
+            // basically, remove it from original place and add it to the new place
+            this._snippetService.removeSnippet(transferSnippet);
+            // compared to normal addSnippet, we don't bump up lastId here 
+            // as we need to only move item and not create new one
+            // --> only update parentId
+            transferSnippet.parentId = target.id;
+            this._snippetService.addSnippet(transferSnippet);
+        }
+
+        this.sync();
+    }
 
     getTreeItem(element: Snippet): vscode.TreeItem {
         return this.snippetToTreeItem(element);
