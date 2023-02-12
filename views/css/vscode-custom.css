@@ -108,3 +108,8 @@ textarea {
     color: var(--vscode-button-secondaryForeground);
 	background: var(--vscode-button-secondaryBackground);
 }
+
+.changelog-header {
+	display: inline-block;
+    position: fixed;
+}

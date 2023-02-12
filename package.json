@@ -2,8 +2,8 @@
 	"name": "snippets",
 	"displayName": "Snippets",
 	"description": "Manage your code snippets without quitting your editor.",
-	"version": "2.2.2",
-	"preview": false,
+	"version": "3.0.0",
+	"preview": true,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
 	"author": {
