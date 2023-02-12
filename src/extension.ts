@@ -128,7 +128,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
         treeDataProvider: snippetsProvider,
-        showCollapseAll: true
+        showCollapseAll: true,
+        // Drag and Drop API binding
+        // This check is for older versions of VS Code that don't have the most up-to-date tree drag and drop API
+        dragAndDropController: typeof vscode.DataTransferItem === 'function' ? snippetsProvider : undefined
     });
 
     // refresh UI to initialize all required config for workspace panel
