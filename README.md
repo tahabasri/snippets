@@ -40,7 +40,12 @@ alt="Create Snippet Manually">
 
 ### Organize Snippets
 
-You have the flexibility to reorder your snippets, there is no default order.
+Drag and drop ! That simple !
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/056-drag-and-drop.gif" 
+alt="Drag and Drop Snippets">
+
+You have the flexibility to reorder your snippets, there is no forced order.
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/04-snippets-reorder.gif" 
 alt="Reorder Snippets">

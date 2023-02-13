@@ -2,8 +2,8 @@
 	"name": "snippets",
 	"displayName": "Snippets",
 	"description": "Manage your code snippets without quitting your editor.",
-	"version": "2.2.2",
-	"preview": false,
+	"version": "3.0.0",
+	"preview": true,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
 	"author": {
@@ -75,6 +75,11 @@
 			{
 				"command": "globalSnippetsCmd.openSnippetInTerminal",
 				"title": "Open Snippet in Terminal",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.copySnippetToClipboard",
+				"title": "Copy Snippet to Clipboard",
 				"category": "Snippets"
 			},
 			{
@@ -361,6 +366,11 @@
 					"group": "1_snippets@2"
 				},
 				{
+					"command": "globalSnippetsCmd.copySnippetToClipboard",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "1_snippets@3"
+				},
+				{
 					"command": "globalSnippetsCmd.addSnippet",
 					"when": "view == snippetsExplorer",
 					"group": "2_snippetManagement@1"
@@ -459,6 +469,11 @@
 					"command": "globalSnippetsCmd.openSnippetInTerminal",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
 					"group": "1_snippets@2"
+				},
+				{
+					"command": "globalSnippetsCmd.copySnippetToClipboard",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "1_snippets@3"
 				}
 			],
 			"editor/context": [
@@ -525,6 +540,11 @@
 					"type": "boolean",
 					"default": true,
 					"markdownDescription": "Show a confirmation alert before deleting a snippet/folder."
+				},
+				"snippets.runCommandInTerminal": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Automatically execute open commands in terminal."
 				}
 			}
 		}

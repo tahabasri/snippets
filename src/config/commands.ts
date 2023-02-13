@@ -12,6 +12,7 @@ export const enum CommandsConsts {
 	// common commands across global & ws
 	commonOpenSnippet = "globalSnippetsCmd.openSnippet",
 	commonOpenSnippetInTerminal = "globalSnippetsCmd.openSnippetInTerminal",
+	commonCopySnippetToClipboard = "globalSnippetsCmd.copySnippetToClipboard",
 	commonAddSnippet = "commonSnippetsCmd.addSnippet",
 	commonAddSnippetFromClipboard = "commonSnippetsCmd.addSnippetFromClipboard",
 	commonAddSnippetFolder = "commonSnippetsCmd.addSnippetFolder",

@@ -6,6 +6,7 @@ import { SnippetsProvider } from './provider/snippetsProvider';
 import { MementoDataAccess } from './data/mementoDataAccess';
 import { Snippet } from './interface/snippet';
 import { EditSnippetFolder } from './views/editSnippetFolder';
+import { NewRelease } from './views/newRelease';
 import { SnippetService } from './service/snippetService';
 import { UIUtility } from './utility/uiUtility';
 import { StringUtility } from './utility/stringUtility';
@@ -17,6 +18,9 @@ import { FileDataAccess } from './data/fileDataAccess';
  * @param context 
  */
 export function activate(context: vscode.ExtensionContext) {
+    // exact version for which show Changelog panel
+    const changelogVersion = '3.0.0';
+
     //** variables **//
     // global settings
     const snippetsConfigKey = "snippets";
@@ -45,6 +49,16 @@ export function activate(context: vscode.ExtensionContext) {
     const snippetService = new SnippetService(dataAccess);
     const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
     let cipDisposable: { dispose(): any };
+
+    // show What's new if it's first time at current release
+    const currentVersion = context.extension.packageJSON.version;
+    // generate release identifier for changelog related property
+    const releaseChangelogId = `skipChangelog_${currentVersion}`;
+    // if the key is undefined or value is not true, show Changelog window
+    if (!context.globalState.get(releaseChangelogId) && currentVersion === changelogVersion) {
+        new NewRelease(context);
+        context.globalState.update(releaseChangelogId, true);
+    }
 
     //** upgrade from 1.x to 2.x **//
     let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get('snippetsLocation')
@@ -249,7 +263,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
                 return;
             }
-            let isTriggeredByChar = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
+            let isTriggeredByChar: boolean = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
             // append workspace snippets if WS is available
             let candidates = snippetService.getAllSnippets();
             if (workspaceSnippetsAvailable) {
@@ -333,8 +347,12 @@ export function activate(context: vscode.ExtensionContext) {
             if (!snippet) {
                 return;
             }
-            terminal.sendText(snippet.value);
+            terminal.sendText(snippet.value, vscode.workspace.getConfiguration('snippets').get('runCommandInTerminal'));
         })
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonCopySnippetToClipboard,
+        async (snippet) => handleCommand(async () => vscode.env.clipboard.writeText(snippet.value))
     ));
 
     //** COMMAND : ADD SNIPPET **/
