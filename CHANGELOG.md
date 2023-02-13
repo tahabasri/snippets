@@ -1,4 +1,11 @@
 # Change Log
+### 3.0.0
+
+- [[#56](https://github.com/tahabasri/snippets/pull/56)] Added support for drag and drop 🙌.
+- Added new command for copying Snippet to clipboard.
+- Made configurable the automatic execution of copied commands in terminal.
+- Updated vulnerable dependencies.
+
 ### 2.2.2
 
 - Update vulnerable dependencies.
