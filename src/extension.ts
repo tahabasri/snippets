@@ -263,7 +263,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
                 return;
             }
-            let isTriggeredByChar = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
+            let isTriggeredByChar: boolean = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
             // append workspace snippets if WS is available
             let candidates = snippetService.getAllSnippets();
             if (workspaceSnippetsAvailable) {
@@ -347,8 +347,12 @@ export function activate(context: vscode.ExtensionContext) {
             if (!snippet) {
                 return;
             }
-            terminal.sendText(snippet.value);
+            terminal.sendText(snippet.value, vscode.workspace.getConfiguration('snippets').get('runCommandInTerminal'));
         })
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonCopySnippetToClipboard,
+        async (snippet) => handleCommand(async () => vscode.env.clipboard.writeText(snippet.value))
     ));
 
     //** COMMAND : ADD SNIPPET **/

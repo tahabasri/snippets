@@ -78,6 +78,11 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "globalSnippetsCmd.copySnippetToClipboard",
+				"title": "Copy Snippet to Clipboard",
+				"category": "Snippets"
+			},
+			{
 				"command": "commonSnippetsCmd.addSnippet",
 				"title": "New Snippet",
 				"icon": "$(search-new-editor)",
@@ -361,6 +366,11 @@
 					"group": "1_snippets@2"
 				},
 				{
+					"command": "globalSnippetsCmd.copySnippetToClipboard",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "1_snippets@3"
+				},
+				{
 					"command": "globalSnippetsCmd.addSnippet",
 					"when": "view == snippetsExplorer",
 					"group": "2_snippetManagement@1"
@@ -459,6 +469,11 @@
 					"command": "globalSnippetsCmd.openSnippetInTerminal",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
 					"group": "1_snippets@2"
+				},
+				{
+					"command": "globalSnippetsCmd.copySnippetToClipboard",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "1_snippets@3"
 				}
 			],
 			"editor/context": [
@@ -525,6 +540,11 @@
 					"type": "boolean",
 					"default": true,
 					"markdownDescription": "Show a confirmation alert before deleting a snippet/folder."
+				},
+				"snippets.runCommandInTerminal": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Automatically execute open commands in terminal."
 				}
 			}
 		}
