@@ -1,6 +1,7 @@
 export const enum Labels {
 	noOpenEditor = "No open editor was found.",
 	noOpenTerminal = "No open terminal was found.",
+	noOpenEditorForWSConfig = "No open folder was found. Please open a folder first and try again.",
 	noTextSelected = "No text was selected from active editor.",
 	noClipboardContent = "No content was found in the clipboard.",
 

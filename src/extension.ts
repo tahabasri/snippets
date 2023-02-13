@@ -247,8 +247,13 @@ export function activate(context: vscode.ExtensionContext) {
     //** common commands **//
     //** COMMAND : INITIALIZE WS CONFIG **/*
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.miscRequestWSConfig, async _ => {
-        // check if a workspace is open and if useWorkspaceFolder is enabled
-        requestWSConfigSetup();
+        if (!vscode.workspace.workspaceFolders) {
+            // can't initialize if no folder is open
+            vscode.window.showWarningMessage(Labels.noOpenEditorForWSConfig);
+        } else {
+            // check if a workspace is open and if useWorkspaceFolder is enabled
+            requestWSConfigSetup();
+        }
     }));
 
     //** COMMAND : INITIALIZE GENERIC COMPLETION ITEM PROVIDER **/*
