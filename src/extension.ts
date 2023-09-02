@@ -530,6 +530,47 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalFixSnippets,
         async _ => handleCommand(() => commands.fixSnippets(snippetsProvider))
     ));
+    
+    context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider('*', {
+       async provideDocumentDropEdits(
+          _document: vscode.TextDocument,
+          position: vscode.Position,
+          dataTransfer: vscode.DataTransfer,
+          _token: vscode.CancellationToken
+        ): Promise<vscode.DocumentDropEdit | undefined> {
+            const dataItem = dataTransfer.get('application/vnd.code.tree.snippetsProvider');
+            if (!dataItem) {
+                return;
+            }
+            try {
+                const text = await dataItem.asString();
+                const parsedSource = JSON.parse(text) as readonly Snippet[];
+                // only accept one snippet (not a folder)
+                if (parsedSource?.length !== 1 || parsedSource[0].folder) {
+                    return;
+                }
+                const draggedSnippet = parsedSource[0];
+                // same as open snippet command
+                if (draggedSnippet.resolveSyntax === undefined) {
+                    draggedSnippet.resolveSyntax = true;
+                }
+                if (draggedSnippet.resolveSyntax) {
+                    vscode.commands.executeCommand("editor.action.insertSnippet", { snippet: draggedSnippet.value }
+                    );
+                } else {
+                    const editor = vscode.window.activeTextEditor;
+                    if (!editor) {
+                        return;
+                    }
+                    editor.edit(edit => {
+                        edit.insert(position, draggedSnippet.value ?? '');
+                    });
+                }
+            } catch {
+                // throws error when parsing `dataItem?.value`, just skip
+            }
+        }
+      }));
 }
 
 export function deactivate() { }
