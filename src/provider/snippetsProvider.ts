@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import fs = require('fs');
 import * as path from 'path';
 import { Snippet } from '../interface/snippet';
 import { CommandsConsts } from '../config/commands';
@@ -98,7 +97,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         this.refresh();
     }
 
-    addSnippet(name: string, snippet: string, parentId: number) {
+    addSnippet(name: string, description: string, snippet: string, parentId: number) {
         let lastId = this._snippetService.incrementLastId();
 
         this._snippetService.addSnippet(
@@ -107,6 +106,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 parentId: parentId,
                 label: name,
                 value: snippet,
+                description: description,
                 children: []
             }
         );
@@ -179,7 +179,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 dark: path.join(this._extensionPath, 'resources', 'icons', 'dark', 'folder.svg')
             };
         } else {
-            treeItem.tooltip = `${snippet.value}`;
+            treeItem.tooltip = snippet.description ? `(${snippet.description})\n${snippet.value}` : `${snippet.value}`;
             treeItem.contextValue = 'snippet';
             treeItem.iconPath = {
                 light: path.join(this._extensionPath, 'resources', 'icons', 'light', 'file.svg'),

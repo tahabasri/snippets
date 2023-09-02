@@ -70,6 +70,8 @@ export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSni
 		vscode.window.showWarningMessage(Labels.snippetValueErrorMsg);
 		return;
 	}
+	// get snippet description
+	let description = await UIUtility.requestSnippetDescription() || '';
 
 	// request where to save snippets if ws is available
 	if (workspaceSnippetsAvailable) {
@@ -78,12 +80,12 @@ export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSni
 		if (!targetView) {
 			vscode.window.showWarningMessage(Labels.noViewTypeSelected);
 		} else if (targetView === Labels.globalSnippets) {
-			snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
+			snippetsProvider.addSnippet(name, description, text, Snippet.rootParentId);
 		} else if (targetView === Labels.wsSnippets) {
-			wsSnippetsProvider.addSnippet(name, text, Snippet.rootParentId);
+			wsSnippetsProvider.addSnippet(name, description, text, Snippet.rootParentId);
 		}
 	} else {
-		snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
+		snippetsProvider.addSnippet(name, description, text, Snippet.rootParentId);
 	}
 }
 
@@ -115,16 +117,18 @@ export async function addSnippet(snippetsExplorer: vscode.TreeView<Snippet>, sni
 		vscode.window.showWarningMessage(Labels.snippetValueErrorMsg);
 		return;
 	}
+	// get snippet description
+	let description = await UIUtility.requestSnippetDescription() || '';
 	// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 	// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 	if (snippetsExplorer.selection.length === 0 && !node) {
-		snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
+		snippetsProvider.addSnippet(name, description, text, Snippet.rootParentId);
 	} else {
 		const selectedItem = node ? node : snippetsExplorer.selection[0];
 		if (selectedItem.folder && selectedItem.folder === true) {
-			snippetsProvider.addSnippet(name, text, selectedItem.id);
+			snippetsProvider.addSnippet(name, description, text, selectedItem.id);
 		} else {
-			snippetsProvider.addSnippet(name, text, selectedItem.parentId ?? Snippet.rootParentId);
+			snippetsProvider.addSnippet(name, description, text, selectedItem.parentId ?? Snippet.rootParentId);
 		}
 	}
 }
@@ -141,7 +145,8 @@ export async function commonAddSnippetFromClipboard(snippetsProvider: SnippetsPr
 		vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
 		return;
 	}
-
+	// get snippet description
+	let description = await UIUtility.requestSnippetDescription() || '';
 	// request where to save snippets if ws is available
 	if (workspaceSnippetsAvailable) {
 		const targetView = await UIUtility.requestTargetSnippetsView();
@@ -149,12 +154,12 @@ export async function commonAddSnippetFromClipboard(snippetsProvider: SnippetsPr
 		if (!targetView) {
 			vscode.window.showWarningMessage(Labels.noViewTypeSelected);
 		} else if (targetView === Labels.globalSnippets) {
-			snippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
+			snippetsProvider.addSnippet(name, description, clipboardContent, Snippet.rootParentId);
 		} else if (targetView === Labels.wsSnippets) {
-			wsSnippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
+			wsSnippetsProvider.addSnippet(name, description, clipboardContent, Snippet.rootParentId);
 		}
 	} else {
-		snippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
+		snippetsProvider.addSnippet(name, description, clipboardContent, Snippet.rootParentId);
 	}
 }
 
@@ -170,16 +175,18 @@ export async function addSnippetFromClipboard(snippetsExplorer: vscode.TreeView<
 		vscode.window.showWarningMessage(Labels.snippetNameErrorMsg);
 		return;
 	}
+	// get snippet description
+	let description = await UIUtility.requestSnippetDescription() || '';
 	// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 	// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 	if (snippetsExplorer.selection.length === 0 && !node) {
-		snippetsProvider.addSnippet(name, clipboardContent, Snippet.rootParentId);
+		snippetsProvider.addSnippet(name, description, clipboardContent, Snippet.rootParentId);
 	} else {
 		const selectedItem = node ? node : snippetsExplorer.selection[0];
 		if (selectedItem.folder && selectedItem.folder === true) {
-			snippetsProvider.addSnippet(name, clipboardContent, selectedItem.id);
+			snippetsProvider.addSnippet(name, description, clipboardContent, selectedItem.id);
 		} else {
-			snippetsProvider.addSnippet(name, clipboardContent, selectedItem.parentId ?? Snippet.rootParentId);
+			snippetsProvider.addSnippet(name, description, clipboardContent, selectedItem.parentId ?? Snippet.rootParentId);
 		}
 	}
 }
