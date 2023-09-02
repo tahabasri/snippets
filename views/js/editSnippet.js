@@ -1,4 +1,18 @@
 (function() {
+    // add TAB support
+    const snippetValue = document.getElementById('snippet-value');
+    snippetValue.addEventListener('keydown', keyHandler, false);
+    function keyHandler(e) {
+        var TABKEY = 9;
+        if(e.keyCode === TABKEY) {
+            this.value += "\t";
+            if(e.preventDefault) {
+                e.preventDefault();
+            }
+            return false;
+        }
+    }
+
     const vscode = acquireVsCodeApi();
 
     const resolveSyntaxCB = document.lastChild.querySelector('input[name="_snippets_resolve_syntax"]');
