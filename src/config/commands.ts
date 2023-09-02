@@ -3,8 +3,8 @@ import { Snippet } from '../interface/snippet';
 import { SnippetsProvider } from '../provider/snippetsProvider';
 import { UIUtility } from "../utility/uiUtility";
 import { EditSnippet } from '../views/editSnippet';
-import { EditSnippetFolder } from '../views/editSnippetFolder';
 import { Labels } from "./Labels";
+import { StringUtility } from '../utility/stringUtility';
 
 
 export const enum CommandsConsts {
@@ -26,6 +26,7 @@ export const enum CommandsConsts {
 	globalDeleteSnippetFolder = "globalSnippetsCmd.deleteSnippetFolder",
 	globalMoveSnippetUp = "globalSnippetsCmd.moveSnippetUp",
 	globalMoveSnippetDown = "globalSnippetsCmd.moveSnippetDown",
+	globalFixSnippets = "globalSnippetsCmd.fixSnippets",
 	globalExportSnippets = "globalSnippetsCmd.exportSnippets",
 	globalImportSnippets = "globalSnippetsCmd.importSnippets",
 	// ws commands
@@ -38,6 +39,7 @@ export const enum CommandsConsts {
 	wsDeleteSnippetFolder = "wsSnippetsCmd.deleteSnippetFolder",
 	wsMoveSnippetUp = "wsSnippetsCmd.moveSnippetUp",
 	wsMoveSnippetDown = "wsSnippetsCmd.moveSnippetDown",
+	wsFixSnippets = "wsSnippetsCmd.fixSnippets",
 }
 
 export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSnippetsProvider: SnippetsProvider, workspaceSnippetsAvailable: boolean) {
@@ -275,6 +277,7 @@ export async function importSnippets(snippetsProvider: SnippetsProvider) {
 					switch (selection) {
 						case Labels.importSnippets:
 							if (snippetsProvider.importSnippets(fileUris[0].fsPath)) {
+								snippetsProvider.fixLastId();
 								vscode.window.showInformationMessage(Labels.snippetsImported);
 							} else {
 								vscode.window.showErrorMessage(Labels.snippetsNotImported);
@@ -284,5 +287,28 @@ export async function importSnippets(snippetsProvider: SnippetsProvider) {
 					}
 				});
 		}
+	});
+}
+
+export async function fixSnippets(snippetsProvider: SnippetsProvider) {
+	vscode.window.withProgress({
+		location: vscode.ProgressLocation.Window,
+		cancellable: false,
+		title: 'Scanning Snippets'
+	}, async (progress) => {
+		progress.report({  increment: 0 });
+		vscode.window
+			.showInformationMessage(Labels.troubleshootConfirmation, Labels.troubleshootProceed, Labels.troubleshootCancel)
+			.then(answer => {
+				if (answer === Labels.troubleshootProceed) {
+					let results = snippetsProvider.fixSnippets();
+					vscode.window.showInformationMessage(
+						(results[0] > 0 || results[1] > 0) 
+						? StringUtility.formatString(Labels.troubleshootResults, results[0].toString(), results[1].toString())
+						: Labels.troubleshootResultsOk
+					);
+				}
+			});
+		progress.report({ increment: 100 });
 	});
 }

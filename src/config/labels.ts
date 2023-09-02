@@ -61,4 +61,12 @@ export const enum Labels {
 
 	confirmationYes = "Yes",
 	confirmationNo = "No",
+
+	troubleshootProceed = "Proceed",
+	troubleshootCancel = "Cancel",
+
+	troubleshootConfirmation = 'This will scan your snippets and fix any issues with them, it may change your data structure (not their content). A backup is always recommended.',
+	troubleshootFolder = '⚠ Unorganized Snippets ⚠',
+	troubleshootResults = "Troubleshooting done ! Cleaned {0} with duplicate IDs and moved {1} corrupted snippets to special folder (check last folder in your tree).",
+	troubleshootResultsOk = "Troubleshooting done ! Nothing wrong with your snippets ✔",
 }
