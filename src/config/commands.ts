@@ -237,9 +237,9 @@ export async function addSnippetFolder(snippetsExplorer: vscode.TreeView<Snippet
 }
 
 export function editSnippet(context: vscode.ExtensionContext, snippet: Snippet, snippetsProvider: SnippetsProvider) {
-	// note: enable syntax resolving by default if property is not yet defined in JSON
 	if (snippet.resolveSyntax === undefined) {
-		snippet.resolveSyntax = true;
+		// 3.1 update: disable syntax resolving by default if property is not yet defined in JSON
+		snippet.resolveSyntax = false;
 	}
 	// Create and show a new webview for editing snippet
 	new EditSnippet(context, snippet, snippetsProvider);
