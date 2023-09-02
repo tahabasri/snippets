@@ -320,9 +320,9 @@ export function activate(context: vscode.ExtensionContext) {
             if (!snippet) {
                 return;
             }
-            // note: enable syntax resolving by default if property is not yet defined in JSON
+            // 3.1 update: disable syntax resolving by default if property is not yet defined in JSON
             if (snippet.resolveSyntax === undefined) {
-                snippet.resolveSyntax = true;
+                snippet.resolveSyntax = false;
             }
             if (snippet.resolveSyntax) {
                 vscode.commands.executeCommand("editor.action.insertSnippet", { snippet: snippet.value }
@@ -552,7 +552,8 @@ export function activate(context: vscode.ExtensionContext) {
                 const draggedSnippet = parsedSource[0];
                 // same as open snippet command
                 if (draggedSnippet.resolveSyntax === undefined) {
-                    draggedSnippet.resolveSyntax = true;
+                    // 3.1 update: disable syntax resolving by default if property is not yet defined in JSON
+                    draggedSnippet.resolveSyntax = false;
                 }
                 if (draggedSnippet.resolveSyntax) {
                     vscode.commands.executeCommand("editor.action.insertSnippet", { snippet: draggedSnippet.value }
