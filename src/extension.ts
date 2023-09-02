@@ -278,7 +278,8 @@ export function activate(context: vscode.ExtensionContext) {
                 // add suffix for all workspace items
                 candidates = candidates.concat(wsSnippetService.getAllSnippets().map(
                     elt => {
-                        elt.label = `${elt.description}__(ws)`;
+                        elt.label = `${elt.label}`;
+                        elt.description = `${elt.description}__(ws)`;
                         return elt;
                     }
                 ));
