@@ -1,17 +1,23 @@
 (function() {
     // add TAB support
     const snippetValue = document.getElementById('snippet-value');
-    snippetValue.addEventListener('keydown', keyHandler, false);
-    function keyHandler(e) {
-        var TABKEY = 9;
-        if(e.keyCode === TABKEY) {
-            this.value += "\t";
-            if(e.preventDefault) {
-                e.preventDefault();
-            }
-            return false;
+    snippetValue.addEventListener('keydown', function (e) {
+        // [Tab] pressed
+        if (e.key === "Tab") {
+            // suspend default behaviour
+            e.preventDefault();
+            // Get the current cursor position
+            let cursorPosition = snippetValue.selectionStart;
+            // Insert tab space at the cursor position
+            let newValue = snippetValue.value.substring(0, cursorPosition) + "\t" +
+                snippetValue.value.substring(cursorPosition);
+            // Update the snippetValue value and cursor position
+            snippetValue.value = newValue;
+            snippetValue.selectionStart = cursorPosition + 1;
+            snippetValue.selectionEnd = cursorPosition + 1;
+            return;
         }
-    }
+    });
 
     const vscode = acquireVsCodeApi();
 
