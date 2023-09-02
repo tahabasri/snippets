@@ -35,7 +35,7 @@ export class SnippetService {
         }
     }
 
-    /**
+   /**
    * to be used like the following:
    * let result: any[] = [];
    * Snippet.flatten(snippetsProvider.snippets.children, result);
@@ -52,7 +52,20 @@ export class SnippetService {
             }
         }
         return result;
-    };
+    }
+    
+    public static flattenAndKeepFolders(arr: any, result: any[] = []) {
+        for (let i = 0, length = arr.length; i < length; i++) {
+            const value = arr[i];
+            if (value.folder === true) {
+                result.push(value);
+                SnippetService.flattenAndKeepFolders(value.children, result);
+            } else {
+                result.push(value);
+            }
+        }
+        return result;
+    }
 
     // private methods
 
@@ -60,7 +73,7 @@ export class SnippetService {
         if (newIndex < arr.length) {
             arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
         }
-    };
+    }
 
     private _updateLastId(newId: number): void {
         this._rootSnippet.lastId = newId;
@@ -80,6 +93,14 @@ export class SnippetService {
         this._dataAccess.save(this._rootSnippet);
     }
 
+    fixLastId(): void{
+        let snippetIds = this.getAllSnippetsAndFolders().map(s=>s.id);
+        const maxId = Math.max.apply(Math, snippetIds);
+        if (this._rootSnippet.lastId && this._rootSnippet.lastId < maxId) {
+            this._updateLastId(maxId);
+        }
+    }
+
     getRootChildren(): Snippet[] {
         return this._rootSnippet.children;
     }
@@ -89,6 +110,14 @@ export class SnippetService {
         this._rootSnippet = this.loadSnippets();
         let snippets: Snippet[] = [];
         SnippetService.flatten(this._rootSnippet.children, snippets);
+        return snippets;
+    }
+
+    getAllSnippetsAndFolders(): Snippet[] {
+        // sync snippets
+        this._rootSnippet = this.loadSnippets();
+        let snippets: Snippet[] = [];
+        SnippetService.flattenAndKeepFolders(this._rootSnippet.children, snippets);
         return snippets;
     }
 
@@ -107,11 +136,14 @@ export class SnippetService {
     // snippet management services
 
     addSnippet(newSnippet: Snippet): void {
+        this.addExistingSnippet(newSnippet);
+        this._updateLastId(newSnippet.id);
+    }
+
+    addExistingSnippet(newSnippet: Snippet): void {
         newSnippet.parentId === Snippet.rootParentId
             ? this._rootSnippet.children.push(newSnippet)
             : SnippetService.findParent(newSnippet.parentId ?? Snippet.rootParentId, this._rootSnippet)?.children.push(newSnippet);
-
-        this._updateLastId(newSnippet.id);
     }
 
     updateSnippet(snippet: Snippet): void {
@@ -133,6 +165,13 @@ export class SnippetService {
                 );
             }
         }
+    }
+
+    overrideSnippetId(snippet: Snippet): void {
+        let lastId = this.incrementLastId();
+        snippet.id = lastId;
+        this.updateSnippet(snippet);
+        this._updateLastId(snippet.id);
     }
 
     removeSnippet(snippet: Snippet): void {

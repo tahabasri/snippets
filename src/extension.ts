@@ -50,6 +50,9 @@ export function activate(context: vscode.ExtensionContext) {
     const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
     let cipDisposable: { dispose(): any };
 
+    // make sure lastId is accurate
+    snippetService.fixLastId();
+
     // show What's new if it's first time at current release
     const currentVersion = context.extension.packageJSON.version;
     // generate release identifier for changelog related property
@@ -524,6 +527,10 @@ export function activate(context: vscode.ExtensionContext) {
         async _ => handleCommand(() => commands.importSnippets(snippetsProvider))
     ));
 
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalFixSnippets,
+        async _ => handleCommand(() => commands.fixSnippets(snippetsProvider))
+    ));
+    
     context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider('*', {
        async provideDocumentDropEdits(
           _document: vscode.TextDocument,

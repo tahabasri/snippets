@@ -1,0 +1,1463 @@
+{
+  "id": 1,
+  "parentId": -1,
+  "label": "snippets",
+  "lastId": 237,
+  "children": [
+    {
+      "id": 182,
+      "parentId": 1,
+      "label": "removed for privacy reasons",
+      "value": "",
+      "children": [],
+      "resolveSyntax": true
+    },
+    {
+      "id": 58,
+      "parentId": 1,
+      "label": "HTML  HEAD",
+      "folder": true,
+      "children": [
+        {
+          "id": 59,
+          "parentId": 58,
+          "label": "HTML Start",
+          "value": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n   <meta charset=\"UTF-8\">\r\n   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n   <title>Document</title>\r\n</head>\r\n<body>\r\n   \r\n</body>\r\n</html>",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 61,
+          "parentId": 58,
+          "label": "HEAD Load google font links",
+          "value": "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n   <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\r\n   <link href=\"https://fonts.googleapis.com/css2?family=XXXXX:wght@700&display=swap\" rel=\"stylesheet\"> ",
+          "children": []
+        },
+        {
+          "id": 212,
+          "parentId": 58,
+          "label": "HEAD Vieuwport Meta tag",
+          "value": "<meta name=\"  viewport\" content=\"width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no\">",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "parentId": 1,
+      "label": "HTML Inserts",
+      "folder": true,
+      "children": [
+        {
+          "id": 66,
+          "parentId": 62,
+          "label": "Insert <script> tags",
+          "value": "<script type=\"text/javascript\">\r\n</script>",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 63,
+          "parentId": 62,
+          "label": "Insert <span> with font style",
+          "value": "<span style=\"font:500 0.95em/1.1em Comfortaa;\"></span>",
+          "children": []
+        },
+        {
+          "id": 64,
+          "parentId": 62,
+          "label": "Insert basic table with odd/even rows",
+          "value": "<style>\r\n   table, tr, td {border:1px solid #777;border-collapse: collapse;padding:2px;}\r\n   td {width:100px}\r\n   tr:nth-child(odd) {background: #DDD}\r\n   tr:nth-child(even) {background: #FFF} \r\n   </style>   \r\n<table><tbody>\r\n   <tr>\r\n    <td>\r\n       \r\n    </td>  \r\n    <td>\r\n       \r\n    </td>   \r\n   </tr>\r\n   <tr>  \r\n    <td>\r\n       \r\n    </td>\r\n    <td>\r\n       \r\n    </td>   \r\n   </tr>\r\n   <tr>\r\n    <td>\r\n       \r\n    </td>\r\n    <td>\r\n       \r\n    </td>\r\n   </tr>\r\n   <tr>\r\n    <td>\r\n       \r\n    </td>\r\n    <td>\r\n       \r\n    </td>\r\n   </tr>\r\n  </tbody>\r\n </table>    ",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 65,
+          "parentId": 62,
+          "label": "Insert Sliding div + button",
+          "value": "<!-- HEAD -->\r\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js\" integrity=\"sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>\r\n<style>#comment_btn {display:inline block;font:400 0.9em/1.2em 'Montserrat';border:1px solid #777;padding:2px 6px 2px 6px;border-radius:4px;background: linear-gradient(#fff, #9198e544);box-shadow: -2px 2px 10px 1px #44444433;color:#222;width:165px;transition:.2s;}#comment_btn:hover {border-radius:4px;background:#800080;color:#fff;box-shadow: 2px -2px 8px 1px #44444466;}.content {margin:15px 0 0 0;height:0px;transition:.8s;}.content.changeHeight {height: 330px;}.show {opacity:1;}.hide {opacity:0;}#comment_form_html {overflow:hidden;}</style>\r\n\r\n\r\n\r\n<!-- BODY -->\r\n<center>\r\n<button class=\"button\"  id=\"comment_btn\">\r\n<span class=\"show\">Plaats een bericht</span>\r\n<span class=\"hide\">Annuleren</span>\r\n</button>\r\n</center>\r\n\r\n<center>\r\n<div class=\"content\">\r\n[elementor-template id=\"49990\"]\r\n</div>\r\n</center>\r\n\r\n\r\n<script>\r\n$('.button').click(function(){\r\n$('.content').toggleClass('changeHeight');\r\n$('.button > *').toggleClass('show hide')\r\n})   \r\n</script>",
+          "children": []
+        },
+        {
+          "id": 69,
+          "parentId": 62,
+          "label": "Insert JQuery <script> tags",
+          "value": "<script src=\"https://code.jquery.com/jquery-3.5.0.min.js\"></script>\r\n<script src=\"https://code.jquery.com/ui/1.13.2/jquery-ui.min.js\"></script>",
+          "children": []
+        },
+        {
+          "id": 117,
+          "parentId": 62,
+          "label": "Insert spinning loading image",
+          "value": "  <style>.topshizzel {position: absolute;display: block;top: 0;left: 48%;width: 50px;height: 50px;z-index: 9999;transform: rotate(-40deg);} .loading {position:relative;display: block;width: 40px;height: 40px;opacity: .65;transition: opacity .4s;animation: spin 1.2s forwards infinite linear;} @keyframes spin {0% {transform: rotate(0deg);}50% {transform: rotate(180deg);}100%{transform:rotate(360deg);}}</style><div class=\"topshizzel\"><img id=\"loader\" class=\"loading\" src=\"https://pampus-design.nl/cdn/img/loading1.png\"></div>",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 118,
+          "parentId": 62,
+          "label": "Insert spinning loader + blurring page",
+          "value": "<!-- \r\n       Voeg aan link toe:    onclick=\"blurr\", en geef een column of div wat gebrludr moet worden het id=\"crossing\" \r\n       Voeg de styles toe (in head of body) en plaats de div met de klasse \"topshizzel\" waar je een loading animatie wilt hebben. Plaatsing kun je finetunen met \"position: absolute\". Plaats onderstaand script ergens onderaan de pagina. Het script luistert naar click events in een element genaamd \"wrapper_col\" en checkt of geklikt werd op een dom-elelement met nodenaam \"A\" (oftewel een <a>link</a>)\r\n       Was het idd een link, dan zet het script van alle andere links de achtergrond kleur op wit, behalve de geklikte link. Bij een neiuwe klik herhaalt het: de vorige link wordt nu ook wit, de nieuwe link niet.\r\n  -->  \r\n  <!-- Eerste styles blok is voor de buttons, als je die gebruikt -->\r\n  <style>.buttons {display: inline-block;border: 1px solid #89f;border-radius: 4px;background: white;color: #207080;padding: 0px 6px 0px 4px;height: 26px;width:75px;box-shadow: -2px 2px 6px 0px #55555522!important;text-align: center;text-decoration: none!important;font-size: 0.9em;font-weight: 600;letter-spacing:0;line-height:1.68em;margin: 6px;transition-duration: 0.15s;cursor: pointer;} .buttons:hover, .buttons:active, .buttons:focus {border-radius: 4px;background: linear-gradient( 180deg, #a222a2 10%, #540054)!important;color: #fff!important;text-decoration:none!important;box-shadow: -2px 2px 6px 0px #66666633!important;}.gold:hover{border-radius: 4px;background: linear-gradient( 180deg, #a78801 50%, #685500)!important;color: #fff!important;border:1px solid #584500;}.buttons2 {border: 1px solid #ccc;border-radius: 4px;background: white;color: #bbb;padding: 0px 2px 0px 2px;height: 27px;width:75px;box-shadow: -2px 2px 6px 0px #55555522, inset 1px 1px 1px #66666622!important;text-align: center;text-decoration: none;display: inline-block;font-size: 0.9em;font-weight: 600;letter-spacing:0;line-height:1.7em;margin: 6px;transition-duration: 0.25s;} a {text-decoration: none!important;}</style>\r\n\r\n  <!-- Tweede styles blok is voor de loading animatie -->\r\n  <style>  #blur {opacity: 1;filter:blur(0em);transition: all 1s;} #jumper{height:0px!important; }  #wrapper_col{display: flex;flex-flow: row nowrap;justify-content: center;-webkit-justify-content: center;} .topshizzel {position: absolute;display: block;top: 0;left: 48%;width: 50px;height: 50px;z-index: 9999;transform: rotate(-40deg);} .loading {position:relative;display: block;width: 40px;height: 40px;opacity: .65;transition: opacity .4s;animation: spin 1.2s forwards infinite linear;} @keyframes spin {0% {transform: rotate(0deg);}50% {transform: rotate(180deg);}100%{transform:rotate(360deg);}}</style>\r\n\r\n  <div class=\"topshizzel\"><img id=\"loader\" class=\"loading\" src=\"https://pampus-design.nl/cdn/img/loading1.png\"></div>\r\n\r\n  <!-- blurring & loading animatie functie-->\r\n  <script>function blurr(){document.getElementById(\"crossing\").style=\"opacity:.6;\";document.getElementById(\"loader\").style=\"opacity:.65;\";}; </script>\r\n\r\n  <!-- button focus functie-->\r\n  <script>let previButton = null; const wrappert = document.getElementById(\"wrapper_col\"); wrappert.addEventListener('click', (e) => { const isA = e.target.nodeName === 'A';   if (!isA) { return; }  if(previButton !== null) {    previButton.style = \"background:white\";} previButton = e.target; });</script>",
+          "children": []
+        },
+        {
+          "id": 124,
+          "parentId": 62,
+          "label": "Insert table row with 2 cells",
+          "value": "    <tr>\r\n      <td style=\"background-color:#5ca1dd31;\">\r\n         <!-- -->\r\n       </td>\r\n       <td style=\"background-color: #5ca1dd31;\">\r\n          <!-- -->\r\n      </td>\r\n    </tr>",
+          "children": []
+        },
+        {
+          "id": 125,
+          "parentId": 62,
+          "label": "Insert checkbox table-row + html ",
+          "value": "<!-- form border (checkbox chebo_12) -->\n              <label class=\"cbx valign-m\" for=\"commentform_settings_OPTION_VAR\"><div class=\"cb-label\"><?php echo __('LABEL TEKST', 'commentform') ?></div></label>\n              <div class=\"checkbox-wrapper-4\"><input  name=\"commentform_settings[OPTION_VAR]\" id=\"commentform_settings_OPTION_VAR\"  type=\"checkbox\" class=\"inp-cbx top-4 chebo_XX\" value=\"1\" <?php echo checked(1, $this->options('OPTION_VAR'), false) ?> /><label class=\"cbx valign-m\" for=\"commentform_settings_OPTION_VAR\"><span><svg width=\"12px\" height=\"10px\"><use xlink:href=\"#check-X\"></use></svg></span></label><svg class=\"inline-svg\"><symbol id=\"check-X\" viewbox=\"0 0 12 10\"><polyline points=\"1.5 6 4.5 9 10.5 1\"></polyline></symbol></svg></div>",
+          "children": [],
+          "resolveSyntax": false
+        },
+        {
+          "id": 135,
+          "parentId": 62,
+          "label": "Insert FULL table",
+          "value": "<span style=\"cursor:default;\"> <!-- default cursor start -->\r\n  <table class=\"gen-table\"><tbody> <!-- table start -->    \r\n\r\n    <tr><th>\r\n          <!-- header links -->\r\n        </th><th>\r\n          <!-- header rechts -->\r\n    </th></tr>\r\n    <tr><td colspan=\"2\" style=\"max-height:1px!important;\">\r\n          <!-- empty row -->\r\n    </td></tr>\r\n\r\n    <tr><td>\r\n          <!-- content links -->\r\n        </td><td> \r\n          <!-- content rechts -->\r\n    </td></tr>\r\n\r\n    <tr><td>\r\n          <!-- content links -->\r\n        </td><td>\r\n          <!-- content rechts -->\r\n    </td></tr>\r\n\r\n    <tr><td>\r\n          <!-- content links -->\r\n        </td><td>\r\n          <!-- content rechts -->\r\n    </td></tr>\r\n\r\n    <tr><td>\r\n  </tbody></table> <!-- table end --> \r\n</span> <!-- default cursor end -->",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 138,
+          "parentId": 62,
+          "label": "Insert i18n translatable snippet",
+          "value": "' . __('', 'commentform') . '",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 139,
+          "parentId": 62,
+          "label": "Insert radiobuttons with unselect option",
+          "value": "<input type=\"radio\" name=\"GROUP\" id=\"radio-1\" data-prev-chkd=\"true\">\r\n&nbsp; <input type=\"radio\" name=\"GROUP\" id=\"radio-2\" >\r\n&nbsp; <input type=\"radio\" name=\"GROUP\" id=\"radio-3\" >\r\n&nbsp; <input type=\"radio\" name=\"GROUP\" id=\"radio-4\" >\r\n\r\n<script>$(function(){ $('input[name=\"GROUP\"]').click(function(){ var $radio = $(this); if ($radio.data('prev-chkd') == true) { $radio.prop('checked', false); $radio.data('prev-chkd', false); } else { $radio.data('prev-chkd', true); } $radio.siblings('input[type=\"radio\"]').data('prev-chkd', false); }); }); </script>",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 147,
+          "parentId": 62,
+          "label": "Insert Fake nav menu",
+          "value": ".nav-menu {position:sticky!important; top:0; margin-top:0px!important; margin-left:auto; margin-right:auto; padding:0px!important; width: 100vw; margin:0!important; padding:0!important; min-height:60px!important; max-height:60px!important;  background-image: URL('/cdn/graan/top.jpg'); background-position: center top; background-repeat: no-repeat; background-attachment: scroll; background-size: contain;  max-width:100vw!important; max-height: 50px!important;}\n        /*  <div class=\"nav-menu\"></div> */\n        ",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 184,
+          "parentId": 62,
+          "label": "Insert Gradient Tab complete",
+          "value": "<style>\r\n  :root {--gradient: linear-gradient(125deg,  #043b53d6,#043b53bd,#043766c5,#67038fe5,#8006b1e5,#8006b1e5,#67038fe5,#044764c4,#044764c4,#0988bed5,#0988bed5,#9e0303d2,#9e0303d2,#043b53d6,#043b53d6 );}  \r\n  .tab {position:relative !important;display:block !important;margin-left:42vw !important; margin-top:-16px !important; z-index:10;border:1px solid #fff;border-radius:0 0 8px 8px; box-shadow:-1px 2px 4px #444444AA;width:100px;height:38px;padding:22px 11px 24px 10px ;text-align: center ;font: 700 0.8rem/1.2rem 'Comfortaa';letter-spacing:0.024rem;color: #f5f5f5;cursor: pointer; text-shadow:-1px 1px 0px #000000;background-image: var(--gradient); background-size: 1750%; animation: bg-animation 52s infinite linear; transition: background-position 2s; -webkit-font-smoothing:subpixel-antialiased; -moz-osx-font-smoothing: grayscale; image-rendering: crisp-edges;}  @keyframes bg-animation { 0% {background-position: left}100% {background-position: right}}\r\n  .parent {position:absolute !important;}\r\n</style>\r\n\r\n<center>\r\n  <div class=\"parent\">\r\n      <a href=\"/hyperlink/\"><div class=\"tab\">Inspiratie</div></a>\r\n  </div>\r\n</center>",
+          "children": []
+        },
+        {
+          "id": 227,
+          "parentId": 62,
+          "label": "Input Formulier 5 x 2 velden",
+          "value": "Input Formulier 5 x 2 velden",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "parentId": 1,
+      "label": "PHP",
+      "folder": true,
+      "children": [
+        {
+          "id": 73,
+          "parentId": 70,
+          "label": "Inserts",
+          "folder": true,
+          "children": [
+            {
+              "id": 152,
+              "parentId": 73,
+              "label": "Insert functie-heading",
+              "value": "/**\n * \n * \n * @global string       $string\n * @global WP_Post_Type $post_type_object\n * @return void\n * @return string       $string \n*/\n\npublic function  () {\n\n}",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 153,
+              "parentId": 73,
+              "label": "Insert rode regel met down pijlen",
+              "value": "/**\r\n   🡻 Custom password module  🡻\r\n*/",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 75,
+              "parentId": 73,
+              "label": "Insert basic HTML page w. echo",
+              "value": "echo '\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n  <title> </title>\r\n</head>\r\n<body>\r\n  \r\n</body>\r\n</html>\r\n';",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 203,
+              "parentId": 73,
+              "label": "Insert $pagenow functie",
+              "value": "function function_name(){\r\n  global $pagenow;\r\n  if ($pagenow=='edit.php' || $pagenow=='post.php' || $pagenow=='post-new.php'){\r\n        \r\n   }\r\n}",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 72,
+          "parentId": 70,
+          "label": "Functions",
+          "folder": true,
+          "children": [
+            {
+              "id": 74,
+              "parentId": 72,
+              "label": "String replace .json",
+              "value": "function str_replace_json(search, replace, subject){\r\n  return json_decode(str_replace(search, replace,  json_encode(subject)));\r\n\r\n} ",
+              "children": []
+            },
+            {
+              "id": 150,
+              "parentId": 72,
+              "label": "datum_()  shortcode en andere handy time functions",
+              "value": "/* PAMPUS™ */ add_shortcode('datum_', 'datum_'); \nfunction datum_(){ $today = getdate();$dagen=array(); $dagen[]=\"zondag\"; $dagen[]=\"maandag\"; $dagen[]=\"dinsdag\"; $dagen[]=\"woensdag\"; $dagen[]=\"donderdag\"; $dagen[]=\"vrijdag\"; $dagen[]=\"zaterdag\"; $maanden=array(); $maanden[]=\"januari\"; $maanden[]=\"februari\"; $maanden[]=\"maart\"; $maanden[]=\"april\"; $maanden[]=\"mei\"; $maanden[]=\"juni\"; $maanden[]=\"juli\"; $maanden[]=\"augustus\"; $maanden[]=\"september\"; $maanden[]=\"oktober\"; $maanden[]=\"november\"; $maanden[]=\"december\";\t$dag =  $dagen[$today['wday']] ;  $datum = date('d').\" \".$maanden[$today['mon']-1].\" \".date('Y'); $tijd =  date('H:i'); return $dag.' '.$datum.'';} \nfunction tijd_(){ $today = getdate(); $tijd =  date('H:i:s'); return $tijd;} add_shortcode( 'tijd_', 'tijd_'); \nfunction datum() {\t$postId = $_GET['post_id'];\treturn '[acf field=\"datum\" post_id=\"'.$postId.'\"]';} add_shortcode('datum', 'datum'); \nfunction tijd() { $postId = $_GET['post_id'];return '[acf field=\"tijd\" post_id=\"'.$postId.'\"]';} add_shortcode('tijd', 'tijd'); ",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 202,
+              "parentId": 72,
+              "label": "SprintF ( )  incl.  %1$  en  str_replace",
+              "value": "// Needs vars: $len, $max, $rem, textdomain\n$display = sprintf(\n__('| %2$s lettertekens max | gebruikt: %1$s | over: %3$', 'pampus'),\n'%%len%%',\n'%%max%%',\n'%%remain%%'\n);\n\n$display = apply_filters('class-name/display', $display);\n$display = str_replace('%%len%%', '<span class=\"count\">'.$len.'</span>', $display);\n$display = str_replace('%%max%%', '<span class=\"max\">'.$max.'</span>', $display);\n$display = str_replace('%%remain%%', $rem, $display);",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 208,
+              "parentId": 72,
+              "label": "Toggle all checkboxes on a page",
+              "value": "// to toggle all checkboxes based off their individual values:\n\n$( \"input[type='checkbox']\" ).prop( \"checked\", function( i, val ) {\n  return !val;\n});",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 209,
+              "parentId": 72,
+              "label": "Disable all checkboxes on a page",
+              "value": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>prop demo</title>\n  <style>\n  img {\n    padding: 10px;\n  }\n  div {\n    color: red;\n    font-size: 24px;\n  }\n  </style>\n  <script src=\"https://code.jquery.com/jquery-3.6.3.js\"></script>\n</head>\n<body>\n \n  <input type=\"checkbox\" checked=\"checked\">\n  <input type=\"checkbox\">\n  <input type=\"checkbox\">\n  <input type=\"checkbox\" checked=\"checked\">\n \n<script>\n$( \"input[type='checkbox']\" ).prop({\n  disabled: true\n});\n</script>\n \n</body>\n</html>",
+              "children": [
+                {
+                  "id": 208,
+                  "parentId": 209,
+                  "label": "Layout: ::before pseudo",
+                  "value": ".container{position:relative;}.container::before{content:'';position:absolute;top:0;left:0;width:200%;height:200%;}",
+                  "children": []
+                },
+                {
+                  "id": 210,
+                  "parentId": 209,
+                  "label": "Layout :: before",
+                  "value": ".container{position:relative;}.container::before{content:'';position:absolute;top:0;left:0;width:200%;height:200%;}",
+                  "children": []
+                }
+              ],
+              "resolveSyntax": true
+            }
+          ]
+        },
+        {
+          "id": 106,
+          "parentId": 70,
+          "label": "Wordpress functions",
+          "folder": true,
+          "children": [
+            {
+              "id": 223,
+              "parentId": 106,
+              "label": "Disable",
+              "folder": true,
+              "children": [
+                {
+                  "id": 224,
+                  "parentId": 223,
+                  "label": "Disable plugin update e-mails",
+                  "value": " // Disable auto-update email notifications for plugins.\r\nadd_filter( 'auto_plugin_update_send_email', '__return_false' );",
+                  "children": []
+                },
+                {
+                  "id": 225,
+                  "parentId": 223,
+                  "label": "DIsable theme  update e-mails",
+                  "value": "// Disable auto-update email notifications for themes.\r\nadd_filter( 'auto_theme_update_send_email', '__return_false' );",
+                  "children": []
+                },
+                {
+                  "id": 226,
+                  "parentId": 223,
+                  "label": "Disable auto-save",
+                  "value": "// Disable the autosave\nadd_action( 'admin_init', 'disable_autosave' );\nfunction disable_autosave() {\n  wp_deregister_script( 'autosave' );\n}",
+                  "children": [],
+                  "resolveSyntax": true
+                }
+              ]
+            },
+            {
+              "id": 199,
+              "parentId": 106,
+              "label": "Function wrap: Admin/user check",
+              "value": "$user = wp_get_current_user();\nif (in_array('administrator', (array) $user->roles)) {\n    // admin functie\n}",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 201,
+              "parentId": 106,
+              "label": "load_textdomain ( )  when plugins_loaded( )",
+              "value": "add_action('plugins_loaded', array($this, 'pampus_load_textdomain'));\npublic function pampus_load_textdomain() {\n    load_plugin_textdomain( 'pampus', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );\n}",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 107,
+              "parentId": 106,
+              "label": "add_mennu_page()",
+              "value": "add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 108,
+              "parentId": 106,
+              "label": "add_submenu_page()",
+              "value": "add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function);",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 109,
+              "parentId": 106,
+              "label": "print list $menu / $submenu",
+              "value": "add_action('admin_init','print_menu_list');\nfunction print_menu_list(){\n  global $submenu, $menu, $pagenow;\n    if( $pagenow == 'index.php' ) { \n        echo '<pre>'; print_r( $menu ); echo '</pre>'; // TOP LEVEL MENUS\n        echo '<pre>'; print_r( $submenu ); echo '</pre>'; // SUBMENUS\n    }\n}",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 110,
+              "parentId": 106,
+              "label": "removing submenu's from admin menu",
+              "value": "function remove_submenus() {\n    global $submenu;\n      unset($submenu['index.php'][10]); // Removes 'Updates'.\n      unset($submenu['themes.php'][5]); // Removes 'Themes'.\n      unset($submenu['options-general.php'][15]); // Removes 'Writing'.\n      unset($submenu['options-general.php'][25]); // Removes 'Discussion'.\n  }\n  add_action('admin_menu', 'remove_submenus');",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 111,
+              "parentId": 106,
+              "label": "password-protect single items",
+              "value": "if (!post_password_required()) {\n     // content\n}\n",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 112,
+              "parentId": 106,
+              "label": "check if password cookie exists",
+              "value": "If ( isset( $_COOKIE['wp-postpass_' . COOKIEHASH] ) ) {\n      //actions \n}",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 113,
+              "parentId": 106,
+              "label": "set cookie expiration time",
+              "value": "add_filter( 'post_password_expires', 'mind_set_cookie_expire' );\nfunction mind_set_cookie_expire( $time ) {   \n  return time() + 4838400;\n}\n  // Voorbeelden:\n  // Alleen geldig voor de huidige sessie: return 0;\n  // 1 Minute:    return time() + 60; \n  // 1 dag:       return time() + 86400;\n  // 1 week:      return time() + 604800;\n  // 10 dagen:    return time() + 864000; //-> default\n  // 2 weken:     return time() + 1209600;\n  // 1 maand:     return time() + 2419200;\n  // 2 maanden:   return time() + 4838400;\n  // 10 weken:    return time() + 6048000;",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 114,
+              "parentId": 106,
+              "label": "custom disable wp-cron",
+              "value": "/**\n * Geen wp-cron op plugin pagina's of andere \n * pagina's onder de pampus namespace\n * \n * @return void\n * \n * @since 1.0.0\n */\nadd_action('plugins_loaded', 'custom_disable_cron', 0, 20);\nfunction custom_disable_cron() {\n  if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/wp-json/pampus/') !== false) {  \n      if (!defined('DISABLE_WP_CRON')) {\n        define('DISABLE_WP_CRON', true);\n      }       \n      remove_action('init', 'wp_cron');     \n      remove_action('wp_loaded', '_wp_cron');\n  }\n}",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 115,
+              "parentId": 106,
+              "label": "get current page url",
+              "value": "global $wp;\n$current_url = home_url(add_query_arg(array(),$wp->request));",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 116,
+              "parentId": 106,
+              "label": "get server variables and print them",
+              "value": "$current_uri = home_url(add_query_arg(array(),$wp->request));\n$script_loc = $_SERVER['PHP_SELF'];\n$serv_name = $_SERVER['SERVER_NAME'];\n$serv_addr = $_SERVER['SERVER_ADDR'];\n$doc_root = $_SERVER['DOCUMENT_ROOT'];\n$remote_addr = $_SERVER['REMOTE_ADDR'];\n$script_fname = $_SERVER['SCRIPT_FILENAME'];\n$request_uri = $_SERVER['REQUEST_URI'];\n?>\n  <span class=\"pagina-titel\"> &nbsp; <?php echo $current_uri ?></span><br>\n  <span class=\"pagina-titel\"> &nbsp; <?php echo $script_loc ?></span><br>\n  <span class=\"pagina-titel\"> &nbsp; <?php echo $serv_name ?></span><br>\n  <span class=\"pagina-titel\"> &nbsp; <?php echo $serv_addr ?></span><br>\n  <span class=\"pagina-titel\"> &nbsp; <?php echo $doc_root ?></span><br>\n  <span class=\"pagina-titel\"> &nbsp; <?php echo $remote_addr ?></span><br>\n  <span class=\"pagina-titel\"> &nbsp; <?php echo $script_fname ?></span><br>\n  <span class=\"pagina-titel\"> &nbsp; <?php echo $request_uri ?></span><br>\n<?php ",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 151,
+              "parentId": 106,
+              "label": "Shortcodes - 7 examples",
+              "value": "// Use shortcode in a PHP file (outside the post editor).\necho do_shortcode( '[gallery]' );\n\n// In case there is opening and closing shortcode.\necho do_shortcode( '[iscorrect]' . $text_to_be_wrapped_in_shortcode . '[/iscorrect]' );\n\n// Enable the use of shortcodes in text widgets.\nadd_filter( 'widget_text', 'do_shortcode' );\n\n// Use shortcodes in form like Landing Page Template.\necho do_shortcode( '[contact-form-7 id=\"91\" title=\"quote\"]' );\n\n// Store the short code in a variable.\n$var = do_shortcode( '[gallery]' );\necho $var;\n\n// Making your custom string parses shortcode\n$string = do_shortcode( $string );\n// If your string has a custom filter, add its tag name in an applicable add_filter function\nadd_filter( 'my_string_filter_hook_tag_name', 'do_shortcode' );\n\n?>\n<?php echo do_shortcode('[name_of_shortcode]'); ?>",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 200,
+              "parentId": 106,
+              "label": "Add Metabox",
+              "value": "  function meta_box_data($plugins=array()) {\n      $plugins[] = array(\n        'title' \t=> 'TITEL',\n        'screens' \t=> array('screen1', 'screen2'),\n        'doc' \t\t=> 'Readme.txt'\n      );\n      return $plugins;\n  }\n\n// add_meta_box($id, $title, $callback, $screens, $context, $priority);",
+              "children": [
+                {
+                  "id": 201,
+                  "parentId": 200,
+                  "label": "JQ Auto-resize text-area field",
+                  "value": "<script>\r\n<textarea id=\"form-field-BERICHT\"></textarea>\r\n\r\nvar textarea = document.getElementById(\"form-field-BERICHT\");\r\nvar expandedHeight = 500;\r\ntextarea.addEventListener(\"focus\", function() {\r\n  textarea.style.height = expandedHeight + \"px\";\r\n});\r\ntextarea.addEventListener(\"blur\", function() {\r\n  expandedHeight = textarea.clientHeight;\r\n  textarea.style.height = \"\";\r\n});\r\ntextarea.addEventListener(\"input\", function() {\r\n  textarea.style.height = \"\";\r\n  var newHeight = textarea.scrollHeight + 1;\r\n  textarea.style.height = newHeight + \"px\";\r\n});\r\n</script>",
+                  "children": []
+                },
+                {
+                  "id": 202,
+                  "parentId": 200,
+                  "label": "JQ Auto-resize text-area field",
+                  "value": "<script>\r\n<textarea id=\"form-field-BERICHT\"></textarea>\r\n\r\nvar textarea = document.getElementById(\"form-field-BERICHT\");\r\nvar expandedHeight = 500;\r\ntextarea.addEventListener(\"focus\", function() {\r\n  textarea.style.height = expandedHeight + \"px\";\r\n});\r\ntextarea.addEventListener(\"blur\", function() {\r\n  expandedHeight = textarea.clientHeight;\r\n  textarea.style.height = \"\";\r\n});\r\ntextarea.addEventListener(\"input\", function() {\r\n  textarea.style.height = \"\";\r\n  var newHeight = textarea.scrollHeight + 1;\r\n  textarea.style.height = newHeight + \"px\";\r\n});\r\n</script>",
+                  "children": []
+                },
+                {
+                  "id": 203,
+                  "parentId": 200,
+                  "label": "Test",
+                  "value": "var textarea = document.getElementById(\"form-field-BERICHT\");\r\nvar expandedHeight = 500;\r\ntextarea.addEventListener(\"focus\", function() {\r\n  textarea.style.height = expandedHeight + \"px\";\r\n});\r\ntextarea.addEventListener(\"blur\", function() {\r\n  expandedHeight = textarea.clientHeight;\r\n  textarea.style.height = \"\";\r\n});\r\ntextarea.addEventListener(\"input\", function() {\r\n  textarea.style.height = \"\";\r\n  var newHeight = textarea.scrollHeight + 1;\r\n  textarea.style.height = newHeight + \"px\";\r\n});",
+                  "children": []
+                },
+                {
+                  "id": 204,
+                  "parentId": 200,
+                  "label": "TEst",
+                  "value": "var textarea = document.getElementById(\"form-field-BERICHT\");\r\nvar expandedHeight = 500;\r\ntextarea.addEventListener(\"focus\", function() {\r\n  textarea.style.height = expandedHeight + \"px\";\r\n});\r\ntextarea.addEventListener(\"blur\", function() {\r\n  expandedHeight = textarea.clientHeight;\r\n  textarea.style.height = \"\";\r\n});\r\ntextarea.addEventListener(\"input\", function() {\r\n  textarea.style.height = \"\";\r\n  var newHeight = textarea.scrollHeight + 1;\r\n  textarea.style.height = newHeight + \"px\";\r\n});",
+                  "children": []
+                },
+                {
+                  "id": 205,
+                  "parentId": 200,
+                  "label": "TEst",
+                  "value": "var textarea = document.getElementById(\"form-field-BERICHT\");\r\nvar expandedHeight = 500;\r\ntextarea.addEventListener(\"focus\", function() {\r\n  textarea.style.height = expandedHeight + \"px\";\r\n});\r\ntextarea.addEventListener(\"blur\", function() {\r\n  expandedHeight = textarea.clientHeight;\r\n  textarea.style.height = \"\";\r\n});\r\ntextarea.addEventListener(\"input\", function() {\r\n  textarea.style.height = \"\";\r\n  var newHeight = textarea.scrollHeight + 1;\r\n  textarea.style.height = newHeight + \"px\";\r\n});",
+                  "children": []
+                },
+                {
+                  "id": 207,
+                  "parentId": 200,
+                  "label": "Test",
+                  "value": "var textarea = document.getElementById(\"form-field-BERICHT\");\r\nvar expandedHeight = 500;\r\ntextarea.addEventListener(\"focus\", function() {\r\n  textarea.style.height = expandedHeight + \"px\";\r\n});\r\ntextarea.addEventListener(\"blur\", function() {\r\n  expandedHeight = textarea.clientHeight;\r\n  textarea.style.height = \"\";\r\n});\r\ntextarea.addEventListener(\"input\", function() {\r\n  textarea.style.height = \"\";\r\n  var newHeight = textarea.scrollHeight + 1;\r\n  textarea.style.height = newHeight + \"px\";\r\n});",
+                  "children": []
+                },
+                {
+                  "id": 208,
+                  "parentId": 200,
+                  "label": "Forms-child-folder",
+                  "folder": true,
+                  "children": []
+                },
+                {
+                  "id": 214,
+                  "parentId": 200,
+                  "label": "TEST",
+                  "value": "php.exe c:\\Users\\Hans\\.vscode\\extensions\\zobo.php-intellisense-1.1.2\\vendor\\felixfbecker\\language-server\\bin\\php-language-server.php --tcp=127.0.0.1:58062 --memory-limit=4095M\n0\n14\n16484",
+                  "children": []
+                },
+                {
+                  "id": 236,
+                  "parentId": 200,
+                  "label": "TEST snippet",
+                  "value": "if (window.location.pathname.includes('aclo')) {",
+                  "children": []
+                }
+              ],
+              "resolveSyntax": false
+            },
+            {
+              "id": 215,
+              "parentId": 106,
+              "label": "Simple User ID retrieval",
+              "value": "$current_user_id = get_current_user_id();\n$current_user = wp_get_current_user();",
+              "children": [
+                {
+                  "id": 216,
+                  "parentId": 215,
+                  "label": "NESTED FOLDER TEST",
+                  "folder": true,
+                  "children": []
+                },
+                {
+                  "id": 217,
+                  "parentId": 215,
+                  "label": "SNIPPET TEST",
+                  "value": "php.exe c:\\Users\\Hans\\.vscode\\extensions\\zobo.php-intellisense-1.1.2\\vendor\\felixfbecker\\language-server\\bin\\php-language-server.php --tcp=127.0.0.1:58062 --memory-limit=4095M\n0\n14\n16484",
+                  "children": []
+                }
+              ],
+              "resolveSyntax": false
+            },
+            {
+              "id": 214,
+              "parentId": 106,
+              "label": "Backtrace function (simple)",
+              "value": "var_dump($nonce);\ndebug_print_backtrace();",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 228,
+              "parentId": 106,
+              "label": "Proper shutdown ob_end_flush ( )",
+              "value": " // proper shutdown\r\n remove_action( 'shutdown', 'wp_ob_end_flush_all', 1 );\r\n add_action( 'shutdown', function() { while ( @ob_end_flush() ); } );",
+              "children": [
+                {
+                  "id": 229,
+                  "parentId": 228,
+                  "label": "AJAX met eventlisteners 1",
+                  "value": "    <script type=\"text/javascript\">\r\n      $(document).ready(function() {\r\n        let inputFields1 = document.querySelectorAll(\".numbers\");\r\n        inputFields1.forEach(function(inputField) {\r\n          inputField.addEventListener(\"input\", function() {\r\n            if (inputField.value.length >= 5) {\r\n\r\n                  $.ajax({\r\n                  type: 'POST',\r\n                  url: 'process.php',\r\n                  data: formData,\r\n                  success: function(response) {\r\n\r\n                    $('#row1').html(response);\r\n\r\n                  }\r\n                });\r\n\r\n            }\r\n          });\r\n        });\r\n  ",
+                  "children": []
+                },
+                {
+                  "id": 237,
+                  "parentId": 228,
+                  "label": "TATA - TEST SNIPPET",
+                  "value": "*** TAHA, HERE IS A NON DILAYNG NIPPET WITH  ***\r\n*** RECOGNIZABLE SNIPPET CONTENT FOR TESTING ***",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": 229,
+              "parentId": 106,
+              "label": "Remove WP generator",
+              "value": "// remove wordpress generator, vervangt remove_version_info()\r\nremove_action('wp_head', 'wp_generator');",
+              "children": []
+            },
+            {
+              "id": 230,
+              "parentId": 106,
+              "label": "Register Stylesheets - complete functie",
+              "value": "/*\r\n * Adding stylesheets\r\n */\r\n add_action('admin_init', 'commentform_stylesheets_admin_init');\r\n function commentform_stylesheets_admin_init() {\r\n    global $pagenow;\r\n    $page1 = 'comment-form-customizer';\r\n    $page2 = 'comment-form-css-builder';\r\n\r\n    // registering the external style-sheets\r\n    wp_register_style('Comment-form-styles', esc_url(plugins_url('commentform-styles.css', __FILE__ )));\r\n    wp_register_style('Comment-form-elements', esc_url(plugins_url('commentform-elements.css', __FILE__ )));\r\n    wp_register_style('Admin-Info-screen', esc_url(plugins_url('admin-screen.min.css', __FILE__ )));\r\n    \r\n    // only load the styles on the setting pages, and add the (already registerd) WP colorpicker too.\r\n    if ('admin.php' === $pagenow  && ($_GET['page'] === $page1 || $_GET['page'] === $page2)){      \r\n        wp_enqueue_style('Comment-form-styles'); \r\n        wp_enqueue_style('Comment-form-elements');\r\n        wp_enqueue_style('Admin-Info-screen');\r\n        wp_enqueue_style('wp-color-picker'); \r\n    } \r\n }",
+              "children": []
+            },
+            {
+              "id": 191,
+              "parentId": 106,
+              "label": "Add Options Page",
+              "value": "add_action( 'admin_menu', 'advmceconf_menu' );\nfunction advmceconf_menu() {\n  if ( function_exists( 'add_options_page' ) ) {\n  add_options_page( 'TinyMCE Config', 'TinyMCE Config', 'manage_options', 'advanced-tinymce-configuration', 'advmceconf_admin' );\n  }\n}",
+              "children": [],
+              "resolveSyntax": true
+            }
+          ]
+        },
+        {
+          "id": 136,
+          "parentId": 70,
+          "label": "Comment Form snippets",
+          "folder": true,
+          "children": [
+            {
+              "id": 137,
+              "parentId": 136,
+              "label": "Three radiobuttons w/o table",
+              "value": "  /**\n   * Render css usage options\n   * @since 1.2.2 [BETA]\n   */\n  public function render_css_usage_callback() { ?>\n      <span style=\"cursor:default;\">\n        <!-- Using the custom css (3 radiobuttons:  backend, frontend, or both) -->\n        <input name=\"commentform_settings[use_css_constants]\" id=\"commentform_settings_css_constants_backend\" type=\"radio\" value=\"1\" class=\"code\" <?PHP ECHO  checked(1, $this->options('use_css_constants'), false) ?>  />\n        <label for=\"commentform_settings_css_constants_backend\"><?PHP ECHO  __('backend ', 'commentform') ?></label> &nbsp; &nbsp; \n\n        <input name=\"commentform_settings[use_css_constants]\" id=\"commentform_settings_css_constants_frontend\" type=\"radio\" value=\"2\" class=\"code\" <?PHP ECHO  checked(2, $this->options('use_css_constants'), false) ?> />\n        <label for=\"commentform_settings_css_constants_frontend\"><?PHP ECHO  __('frontend ', 'commentform') ?></label> &nbsp; &nbsp;  \n           \n        <input name=\"commentform_settings[use_css_constants]\" id=\"commentform_settings_css_constants_both\" type=\"radio\" value=\"3\" class=\"code\" <?PHP ECHO  checked(3, $this->options('use_css_constants'), false) ?> />\n        <label for=\"commentform_settings_css_constants_both\"><?PHP ECHO  __('both ', 'commentform') ?></label>\n        <p class=\"description top-2 w600\"><?php echo __('Check \"backend\" to use it here (the preview form uses it), check \"frontend\" to use it on the website, or check both. Note: the preview function does not work if you select \"frontend\".', 'commentform')?></p>\n      </span><br><br>\n   <?php    \n  }  ",
+              "children": [],
+              "resolveSyntax": false
+            }
+          ]
+        },
+        {
+          "id": 158,
+          "parentId": 70,
+          "label": "ECHO",
+          "folder": true,
+          "children": [
+            {
+              "id": 159,
+              "parentId": 158,
+              "label": "ECHO Permalink en $_server[request_uri]",
+              "value": "echo 'Permalink: ' . $ppp;\necho '<br>';\necho 'Server request-uri response: ' . $_SERVER['REQUEST_URI'];",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 198,
+              "parentId": 158,
+              "label": "ECHO Basic alert ( ) ",
+              "value": "?><script>alert(\"<?php echo includes_dir . '/custom-tmce.php';  ?>\")</script><?php ",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 197,
+              "parentId": 158,
+              "label": "ECHO Basic troubleshooting",
+              "value": "echo '<div style=\"position:absolute; top:100px; left: 300px; font: 500 16px/17px Arial; color: red;\">' . PAMPUSPATH . '</div>';",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 219,
+              "parentId": 158,
+              "label": "ECHO Print info van alle cookies",
+              "value": "$cookies = explode('; ', $_SERVER['HTTP_COOKIE']);\r\n$allCookies = [];\r\n  foreach($cookies as $cookie) {\r\n      $keyAndValue = explode('=', $cookie);\r\n      $allCookies[$keyAndValue[0]] = $keyAndValue[1];\r\n\r\n      echo $keyAndValue[0] . ' => ';\r\n      $html = $keyAndValue[1];\r\n      $html = str_replace('%3D', '=', $html);\r\n      $html = str_replace('%7C', '|', $html);\r\n      $html = str_replace('%20', ' ', $html);\r\n      echo $html . '<br><br>';\r\n  } ",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 217,
+          "parentId": 70,
+          "label": "DEBUGGING",
+          "folder": true,
+          "children": [
+            {
+              "id": 227,
+              "parentId": 217,
+              "label": "Debugging simple debug_print_backtrace ( )",
+              "value": "var_dump($nonce);\r\ndebug_print_backtrace();",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 204,
+          "parentId": 70,
+          "label": "INFO SNIPS",
+          "folder": true,
+          "children": [
+            {
+              "id": 205,
+              "parentId": 204,
+              "label": "Default WP Locations ",
+              "value": "/*\nPlugins\n*/\nplugins_url();\nplugin_dir_url($file);\nplugin_dir_path($file);\nplugin_basename($file);\n\n/*\nThemes\n*/\nget_template_directory_uri();\nget_stylesheet_directory_uri();\nget_stylesheet_uri();\nget_theme_root_uri();\nget_theme_root();\nget_theme_roots();\nget_stylesheet_directory();\nget_template_directory();\n\n/*\nSite Home\n*/\nhome_url();\nget_home_path();\n\n/*\nWordPress\n*/\nadmin_url();\nsite_url();\ncontent_url();\nincludes_url();\nwp_upload_dir();",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 206,
+              "parentId": 204,
+              "label": "Namespace & functie calls",
+              "value": "<?php\n\n//_____________\n// my namespace\nnamespace pampus;\n\n\nfunction function_1() {\n  // example function\n}\n\n//____\n// calling external function in another namespace\n$external_namespaces_function = \\another_namespace\\function_2();\n\n\n//____\n// If you are importing a class, you don't have to type \"use class\", just \"use\".\nuse function \\another_namespace\\function_2;\nuse function \\another_namespace\\function_2 as function_3;\n\n// Now we can use that function directly\n$external_namespaces_function = function_2();\n$external_namespaces_function = function_3();\n\n// But I want to call my own function with the same name!\n$my_function = \\pampus\\function_1();\n\n\n//____\n// calling a function that is defined in *another file* under the namespace pampus.\n$users = function_1(); \n\n// This is fine if we don't have a function with the same name under our namespace.\n$post_id = wp_insert_post($var); \n\n\n//____\n// calling a function from the global space.\n$post_id = \\wp_insert_post($var);\n\n\n\n\n//______________\n// new namespace\nnamespace another_namespace;\n\n// function under new namespace\nfunction function_2() {\n  // example function\n}\n\n\n\n\n\n\n\n",
+              "children": [],
+              "resolveSyntax": false
+            },
+            {
+              "id": 207,
+              "parentId": 204,
+              "label": "Ternary as example",
+              "value": "condition ? action-on-true : action-on-false(else)",
+              "children": [],
+              "resolveSyntax": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "parentId": 1,
+      "label": "JQuery",
+      "folder": true,
+      "children": [
+        {
+          "id": 200,
+          "parentId": 76,
+          "label": "BAD",
+          "folder": true,
+          "children": []
+        },
+        {
+          "id": 77,
+          "parentId": 76,
+          "label": "Inserts",
+          "folder": true,
+          "children": [
+            {
+              "id": 80,
+              "parentId": 77,
+              "label": "<script> jQuery 3.6.3 </script>",
+              "value": "<script src=\"https://code.jquery.com/jquery-3.6.3.min.js\" defer async></script>\n<script src=\"https://code.jquery.com/ui/1.13.2/jquery-ui.min.js\" defer async></script>\n<script src=\"https://code.jquery.com/color/jquery.color-2.1.2.min.js\" defer async></script>",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 179,
+              "parentId": 77,
+              "label": "<script> jQuery Lint </script>",
+              "value": "<script src=\"jquery.js\"></script>\n<script src=\"jquery.lint.js\"></script>",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 198,
+              "parentId": 77,
+              "label": "<script> WP jQuery </script>",
+              "value": "/wp-includes/js/jquery/jquery.min.js",
+              "children": []
+            },
+            {
+              "id": 81,
+              "parentId": 77,
+              "label": "Assign window location",
+              "value": "  function reload() {\r\n    window.location.assign(\"switch.php\")\r\n  }",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 162,
+              "parentId": 77,
+              "label": "Insert Script tags",
+              "value": " <script type=\"text/javascript\">\r\n </script>",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 196,
+              "parentId": 77,
+              "label": "Insert getScript()",
+              "value": "var url = \"https://\";\r\n$.getScript( url)\r\n  .done( function( script, textStatus ) {\r\n    console.log( textStatus );\r\n  })\r\n  .fail(function( jqxhr, settings, exception ) {\r\n    $( \"div.log\" ).text( \"Triggered ajaxError handler.\" );\r\n    alert(\"Could not load the specified script\");\r\n});",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 161,
+              "parentId": 77,
+              "label": "Insert query-selector met css",
+              "value": "$('selector').css({\"property\":\"value\", \"property\":\"value\"});",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 193,
+              "parentId": 77,
+              "label": "Insert query-selector data-id",
+              "value": "$('[data-id=\"acf-editor-310\"]').on('input', function() { \r\n  // script\r\n}",
+              "children": [
+                {
+                  "id": 206,
+                  "parentId": 193,
+                  "label": "JQ Auto-resize text area field",
+                  "value": "var textarea = document.getElementById(\"form-field-BERICHT\");\r\nvar expandedHeight = 500;\r\ntextarea.addEventListener(\"focus\", function() {\r\n  textarea.style.height = expandedHeight + \"px\";\r\n});\r\ntextarea.addEventListener(\"blur\", function() {\r\n  expandedHeight = textarea.clientHeight;\r\n  textarea.style.height = \"\";\r\n});\r\ntextarea.addEventListener(\"input\", function() {\r\n  textarea.style.height = \"\";\r\n  var newHeight = textarea.scrollHeight + 1;\r\n  textarea.style.height = newHeight + \"px\";\r\n});",
+                  "children": [],
+                  "resolveSyntax": true
+                },
+                {
+                  "id": 207,
+                  "parentId": 193,
+                  "label": "JQ  nieuwe regel met shift+enter",
+                  "value": "$(document).ready(function() { \r\nvar messageInput = document.getElementById('form-field-BERICHT');\r\nmessageInput.addEventListener('keydown', function(event) {\r\n  if (event.key === 'Enter') {\r\n    if (event.shiftKey) {\r\n      var message = this.value;\r\n      var position = this.selectionStart;\r\n      this.value = message.substring(0, position) + \"\\n\" + message.substring(position);\r\n      this.selectionStart = this.selectionEnd = position + 1;\r\n      event.preventDefault();\r\n    } else {\r\n      var message = this.value;\r\n      var position = this.selectionStart;\r\n      this.value = message.substring(0, position) + \"\\n\\n\" + message.substring(position);\r\n      this.selectionStart = this.selectionEnd = position + 2;\r\n      event.preventDefault();\r\n    }\r\n  }\r\n});\r\n \r\n}); ",
+                  "children": []
+                },
+                {
+                  "id": 224,
+                  "parentId": 193,
+                  "label": "Input Formulier 5 x 2 velden",
+                  "value": "<!-- Input formulier -->\r\n  <form id=\"input-form\">\r\n    <table><tr><td>\r\n     <label for=\"bulk1\">Hoeveelheid 1 ► </label> \r\n     <input type=\"number\" name=\"bulk1\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price1\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price1\"> ◄ Pellet prijs 1 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk2\">Hoeveelheid 2: </label> \r\n     <input type=\"number\" name=\"bulk2\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price2\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price2\"> ◄ Pellet prijs 2</label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk3\">Hoeveelheid 3: </label> \r\n     <input type=\"number\" name=\"bulk3\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price3\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price3\"> ◄ Pellet prijs 3 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk4\">Hoeveelheid 4: </label> \r\n     <input type=\"number\" name=\"bulk4\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price4\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price4\"> ◄ Pellet prijs 4 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk5\">Hoeveelheid 5: </label> \r\n     <input type=\"number\" name=\"bulk5\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price5\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price5\"> ◄ Pellet prijs 5 </label> \r\n    </td></tr></table>\r\n    <button type=\"submit\">Magic Button</button>\r\n  </form>    ",
+                  "children": []
+                },
+                {
+                  "id": 225,
+                  "parentId": 193,
+                  "label": "Input Formulier 5 x 2 velden",
+                  "value": "\r\n  <!-- Input formulier -->\r\n  <form id=\"input-form\">\r\n    <table><tr><td>\r\n     <label for=\"bulk1\">Hoeveelheid 1 ► </label> \r\n     <input type=\"number\" name=\"bulk1\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price1\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price1\"> ◄ Pellet prijs 1 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk2\">Hoeveelheid 2: </label> \r\n     <input type=\"number\" name=\"bulk2\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price2\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price2\"> ◄ Pellet prijs 2</label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk3\">Hoeveelheid 3: </label> \r\n     <input type=\"number\" name=\"bulk3\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price3\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price3\"> ◄ Pellet prijs 3 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk4\">Hoeveelheid 4: </label> \r\n     <input type=\"number\" name=\"bulk4\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price4\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price4\"> ◄ Pellet prijs 4 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk5\">Hoeveelheid 5: </label> \r\n     <input type=\"number\" name=\"bulk5\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price5\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price5\"> ◄ Pellet prijs 5 </label> \r\n    </td></tr></table>\r\n    <button type=\"submit\">Magic Button</button>\r\n  </form>  ",
+                  "children": []
+                },
+                {
+                  "id": 226,
+                  "parentId": 193,
+                  "label": "Input Formulier 5 x 2 velden",
+                  "value": "\r\n  <!-- Input formulier -->\r\n  <form id=\"input-form\">\r\n    <table><tr><td>\r\n     <label for=\"bulk1\">Hoeveelheid 1 ► </label> \r\n     <input type=\"number\" name=\"bulk1\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price1\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price1\"> ◄ Pellet prijs 1 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk2\">Hoeveelheid 2: </label> \r\n     <input type=\"number\" name=\"bulk2\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price2\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price2\"> ◄ Pellet prijs 2</label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk3\">Hoeveelheid 3: </label> \r\n     <input type=\"number\" name=\"bulk3\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price3\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price3\"> ◄ Pellet prijs 3 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk4\">Hoeveelheid 4: </label> \r\n     <input type=\"number\" name=\"bulk4\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price4\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price4\"> ◄ Pellet prijs 4 </label> \r\n    </td></tr>\r\n    <tr><td>  \r\n      <label for=\"bulk5\">Hoeveelheid 5: </label> \r\n     <input type=\"number\" name=\"bulk5\" inputmode=\"numeric\" class=\"numbers\" >\r\n     <input type=\"number\" step=\"0.000001\" name=\"unit-price5\" inputmode=\"numeric\" class=\"numbers\" > \r\n     <label for=\"unit-price5\"> ◄ Pellet prijs 5 </label> \r\n    </td></tr></table>\r\n    <button type=\"submit\">Magic Button</button>\r\n  </form>  ",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": 174,
+              "parentId": 77,
+              "label": "Insert html elements after input field",
+              "value": "jQuery('<div class=\"quantity-nav\">\r\n        <div class=\"quantity-button quantity-up\">+</div>\r\n        <div class=\"quantity-button quantity-down\">-</div>\r\n        </div>').insertAfter('#DIV-ID input');",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 100,
+              "parentId": 77,
+              "label": "JQ HTML Checkbutton code min",
+              "value": "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script><script src=\"https://code.jquery.com/ui/1.13.2/jquery-ui.min.js\"></script> <script>function warning(e){return 0==document.getElementById(e).checked?!1:($(\"#bevestiging\").html(\"Weet je zeker dat je deze bijlage wilt verwijderen?\"),document.getElementById(e).checked=!1,$(\"#bevestiging\").dialog({hide:{effect:\"fade\",duration:700},resizable:!1,height:170,width:560,modal:!0,buttons:{\"     'Bijlage nu verwijderen'  \":function(){document.getElementById(e).checked=!0,$(\"#bevestiging\").html(\"Bijlage wordt nu verwijderd....<br />&nbsp;\"),window.location.replace(window.location.href+\"?&cmd=<?php bijlage_nr ?>\")},\"    'Bijlage later verwijderen'  \":function(){document.getElementById(e).checked=!0,$(this).dialog(\"close\")},\" 'Annuleren' \":function(){document.getElementById(e).checked=!1,$(this).dialog(\"close\")}}}),void 0)}$(document).ready(function(){$(\"input[type='checkbox']\").attr(\"onchange\",\"warning('acf-field_636d8d4d322c6')\")});</script><div> &nbsp; &nbsp;<div id=\"bevestiging\" title=\"Bevestiging\" style=\"text-align: left; padding:10px;\"></div></div>",
+              "children": [],
+              "resolveSyntax": true
+            }
+          ]
+        },
+        {
+          "id": 78,
+          "parentId": 76,
+          "label": "Functions",
+          "folder": true,
+          "children": [
+            {
+              "id": 82,
+              "parentId": 78,
+              "label": "JQ document.ready",
+              "value": "$(document).ready(function() {\n      /* function here */\n});\n\ndocument.addEventListener(\"DOMContentLoaded\", function(event) { \n  //do work\n});",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 195,
+              "parentId": 78,
+              "label": "JQ Basic jQuery function",
+              "value": "(function($) {\n  $(document).ready(function() {\n\n  });\n})(jQuery);",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 180,
+              "parentId": 78,
+              "label": "Assign window location",
+              "value": "unction reload() {\r\n    window.location.assign(\"switch.php\")\r\n  }",
+              "children": []
+            },
+            {
+              "id": 104,
+              "parentId": 78,
+              "label": "JQ SetTimeout( )",
+              "value": "setTimeout(function() {\r\n  // function here\r\n}, 1000);",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 84,
+              "parentId": 78,
+              "label": "JQ clock script",
+              "value": "//<script>\r\nwindow.onload=display_ct7();\r\n\r\nfunction display_ct7() {\r\nvar x = new Date()\r\nhours = x.getHours( ) % 24;\r\nhours = hours ? hours : 24;\r\nhours=hours.toString().length==1? 0+hours.toString() : hours;\r\n\r\nvar minutes=x.getMinutes().toString()\r\nminutes=minutes.length==1 ? 0+minutes : minutes;\r\n\r\nvar seconds=x.getSeconds().toString()\r\nseconds=seconds.length==1 ? 0+seconds : seconds;\r\n\r\nvar x1= hours + \":\" +  minutes + \":\" +  seconds;\r\ndocument.getElementById('ct7').innerHTML = x1;\r\ndisplay_c7();\r\n }\r\n function display_c7(){\r\nvar refresh=1000;\r\nmytime=setTimeout('display_ct7()',refresh)\r\n}\r\ndisplay_c7()\r\n//</script>\r\n",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 83,
+              "parentId": 78,
+              "label": "JQ onload replace attr.",
+              "value": "jQuery(document).ready(function($){\r\n  $(\"[class*= class-name-here]\").attr(\"class\", \"new-class-name-here\");\r\n});",
+              "children": []
+            },
+            {
+              "id": 85,
+              "parentId": 78,
+              "label": "JQ onload replace style",
+              "value": "jQuery(document).ready(function($){\r\n  $(\"#id\").css({\"height\":\"130px\", \"min-height\":\"80px\"});\r\n});",
+              "children": []
+            },
+            {
+              "id": 86,
+              "parentId": 78,
+              "label": "JQ onload set timeout",
+              "value": "/* Set timeout on page load */\r\nwindow.addEventListener(\"load\", (event) => {\r\n  setTimeout(function(){document.location.reload(true);},180000)\r\n});",
+              "children": []
+            },
+            {
+              "id": 87,
+              "parentId": 78,
+              "label": "JQ toggle animation playstate",
+              "value": "$(document).ready(function(){\r\n   $(\"#a-spin-1\").click(function(){\r\n       $(\".spinning\").css(\"animation-play-state\", \"running\");\r\n   });\r\n   $(\".stop-animation\").click(function(){\r\n       $(\".spinning\").css(\"animation-play-state\", \"paused\");\r\n   });\r\n});\r\n",
+              "children": []
+            },
+            {
+              "id": 92,
+              "parentId": 78,
+              "label": "JQ Change \"is checked\"  class in buttongroup",
+              "value": "// change is-checked class on buttons\r\n$('.button-group').each( function( i, buttonGroup ) {\r\n  var buttonGroup = $( buttonGroup );\r\n  buttonGroup.on( 'click', 'a', function() {\r\n      buttonGroup.find('.is-checked').removeClass('is-checked');\r\n      $( this ).addClass('is-checked');\r\n  });\t\r\n});",
+              "children": []
+            },
+            {
+              "id": 93,
+              "parentId": 78,
+              "label": "JQ Hide-on-click oneliner",
+              "value": "/* hide a button on click */\r\n$(this).onclick=\"this.parentElement.style.display='none'\";",
+              "children": []
+            },
+            {
+              "id": 94,
+              "parentId": 78,
+              "label": "JQ Remove focus in JQ UI elements",
+              "value": "/* REMOVE FOCUS */\r\n$.ui.dialog.prototype._focusTabbable = function(){};",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 95,
+              "parentId": 78,
+              "label": "JQ Fade out on page load",
+              "value": "/* Fade Out on page load - dit werkt*/\r\n$('#sub-log-btn').click(function() {\r\n      $('#login_form').fadeOut('1250');\r\n});",
+              "children": []
+            },
+            {
+              "id": 96,
+              "parentId": 78,
+              "label": "JQ Multiple attributes in 1 query",
+              "value": "// setting multiple attributes in one query: use curly's!! { }\r\n$(document).ready(function(){\r\n    $(\".something\").attr( { title:\"Test\", alt:\"Test2\" } );\r\n});",
+              "children": []
+            },
+            {
+              "id": 97,
+              "parentId": 78,
+              "label": "JQ Check $_GET ( ) variables on pageload",
+              "value": "/* Check _GET variabele on page load and if true, produce an alertbox */\r\n$(document).ready(function(){\r\n  var parts = window.location.search.substr(1).split(\"&\");\r\n  var _GET = {};\r\n  for (var i = 0; i < parts.length; i++) {\r\n      var temp = parts[i].split(\"=\");\r\n      _GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);\r\n  }\r\n  if(_GET.login=='variabele'){\r\n      alert(\"Message\")\r\n  }   \r\n  });",
+              "children": []
+            },
+            {
+              "id": 98,
+              "parentId": 78,
+              "label": "JQ Fixes Elementor animations bug",
+              "value": "/*  Elementor Main Homepage Slider CSS */\r\njQuery(document).ready(function($){\r\n   $(\"[class*=swiper-slide-contents]\").attr(\"class\", \"swiper-slide-contents animated fadeInDown\");\r\n});",
+              "children": []
+            },
+            {
+              "id": 101,
+              "parentId": 78,
+              "label": "JQ Close modal with any click on page",
+              "value": "window.onclick = function(event) {\r\n  if (event.target == modal) {\r\n    modal.style.display = \"none\";\r\n  }\r\n}",
+              "children": []
+            },
+            {
+              "id": 102,
+              "parentId": 78,
+              "label": "JQ Add event listener - 2 options",
+              "value": "element.addEventListener(\"click\", myFunction);\r\n\r\nelement.addEventListener(\"click\", function(){ \r\n  alert(\"Hello World!\"); \r\n}); ",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 103,
+              "parentId": 78,
+              "label": "JQ Change class / load url in frame",
+              "value": "  $(document).ready(function() {\n      function short_meeting(){ \n          $(\"#iFrame1\").attr(\"src\", \"https://meet-me-at.pampus-design.nl/en/e/hansvannoord?t=0&l=short-meeting\"); \n          $(\".meetfoxframe\").addClass(\"bigger\");\n      }; \n      function video_meeting(){ \n          $(\"#iFrame1\").attr(\"src\", \"https://meet-me-at.pampus-design.nl/en/e/hansvannoord?t=0&l=video-meeting\"); \n          $(\".meetfoxframe\").addClass(\"bigger\");\n      }; \n      function extended_meeting(){ \n          $(\"#iFrame1\").attr(\"src\", \"https://meet-me-at.pampus-design.nl/en/e/hansvannoord?t=0&l=extended-meeting\"); \n          $(\".meetfoxframe\").addClass(\"bigger\");\n      }; \n  });",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 105,
+              "parentId": 78,
+              "label": "JQ Remove an element by class name",
+              "value": "$(document).ready(function() {\r\n  $(\".CLASSNAME\").remove();\r\n});",
+              "children": []
+            },
+            {
+              "id": 119,
+              "parentId": 78,
+              "label": "JQ toggle attribute",
+              "value": "$('#contenteditable1').attr('contenteditable',$(this).attr('contenteditable')==='true'?'false':'true' );",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 120,
+              "parentId": 78,
+              "label": "JQ change attr value on change",
+              "value": "  <script type=\"text/javascript\">\r\n    $(window).load(function(){\r\n      $('#my').attr('name','photo[[1,2,4]]')\r\n    });\r\n  </script> \r\n  <input class=\"uploadReptCtrl\" id=\"my\" name=\"photo[[1,2,3]]\" type=\"file\">  ",
+              "children": []
+            },
+            {
+              "id": 121,
+              "parentId": 78,
+              "label": "JQ create and append a div with content",
+              "value": "  <script type=\"text/javascript\">\r\n    $(window).load(function(){/*from   w  ww  .ja  va 2s .  c  o m*/\r\n\r\nvar newDiv = $('<div></div>');\r\nnewDiv.attr('id', 'myId');\r\nnewDiv.html('Hello World!');\r\n\r\n$('#container').append(newDiv);\r\n\r\n    });\r\n\r\n      </script> \r\n   </head> \r\n   <body> \r\n      <div id=\"container\"></div> ",
+              "children": []
+            },
+            {
+              "id": 122,
+              "parentId": 78,
+              "label": "JQ eventListener enter key",
+              "value": "element.addEventListener(\"keypress\", function(event) {\r\n\t if (event.key === \"Enter\") {\r\n \t\talert(event.key  + \" \" + event.which);\r\n \t\tevent.preventDefault();\r\n     }\r\n});",
+              "children": []
+            },
+            {
+              "id": 123,
+              "parentId": 78,
+              "label": "JQ disable enter key",
+              "value": "$(document).ready(function() {\r\n  $(window).keydown(function(event){\r\n    if(event.keyCode == 13) {\r\n      event.preventDefault();\r\n      return false;\r\n    }\r\n  });\r\n});",
+              "children": []
+            },
+            {
+              "id": 144,
+              "parentId": 78,
+              "label": "JQ Dialog styling Information",
+              "value": "If the draggable option is set, the ui-dialog-dragging class is added during a drag. \nIf the resizable option is set, the ui-dialog-resizing class is added during a resize. \nIf the buttons option is set, the ui-dialog-buttons class is added.\n\nui-dialog-titlebar: The title bar containing the dialog's title and close button.\nui-dialog-title: The container around the textual title of the dialog.\nui-dialog-titlebar-close: The dialog's close button.\nui-dialog-content: The container around the dialog's content. This is also the element the widget was instantiated with.\nui-dialog-buttonpane: The pane that contains the dialog's buttons. This will only be present if the buttons option is set.\nui-dialog-buttonset: The container around the buttons themselves.\n\nAdditionally, when the modal option is set, an element with a ui-widget-overlay class name is appended to the <body>",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 148,
+              "parentId": 78,
+              "label": "JQ show/hide data-attribute element",
+              "value": "$('form > [data-show=\"pro\"]').show();\r\n$('form > [data-show=\"home\"]').hide();",
+              "children": []
+            },
+            {
+              "id": 149,
+              "parentId": 78,
+              "label": "JQ Yell()  Blurr function",
+              "value": "function yell(){\r\n   document.getElementById('top').style.opacity = \"0.8\"; \r\n   document.getElementById('top').style.filter =\"blur(0.055em)\"; \r\n }",
+              "children": []
+            },
+            {
+              "id": 166,
+              "parentId": 78,
+              "label": "JQ code for input [type=number] field",
+              "value": "jQuery('<div class=\"field-nav\"><div class=\"field-button field-up\">+</div><div class=\"field-button field-down\">-</div></div>').insertAfter('.field input');\r\n    jQuery('.field').each(function() {\r\n      var spinner = jQuery(this),\r\n        input = spinner.find('input[type=\"number\"]'),\r\n        btnUp = spinner.find('.field-up'),\r\n        btnDown = spinner.find('.field-down'),\r\n        min = input.attr('min'),\r\n        max = input.attr('max');\r\n\r\n      btnUp.click(function() {\r\n        var oldValue = parseFloat(input.val());\r\n        if (oldValue >= max) {\r\n          var newVal = oldValue;\r\n        } else {\r\n          var newVal = oldValue + 1;\r\n        }\r\n        spinner.find(\"input\").val(newVal);\r\n        spinner.find(\"input\").trigger(\"change\");\r\n      });\r\n\r\n      btnDown.click(function() {\r\n        var oldValue = parseFloat(input.val());\r\n        if (oldValue <= min) {\r\n          var newVal = oldValue;\r\n        } else {\r\n          var newVal = oldValue - 1;\r\n        }\r\n        spinner.find(\"input\").val(newVal);\r\n        spinner.find(\"input\").trigger(\"change\");\r\n      });\r\n\r\n    });",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 173,
+              "parentId": 78,
+              "label": "JQ Insert elements after input fields",
+              "value": "jQuery('<div class=\"quantity-nav\">\r\n        <div class=\"quantity-button quantity-up\">+</div>\r\n        <div class=\"quantity-button quantity-down\">-</div>\r\n        </div>').insertAfter('#DIV-ID input');",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 177,
+              "parentId": 78,
+              "label": "JQ Input Up en Down buttons script",
+              "value": "      jQuery(\".field\").each(function(){\n        var i=jQuery(this),                           // i = dit jQuery object                    // vindt de elementen en maak een object\n          n=i.find('input[type=\"number\"]'),           // n = input veld\n          a=i.find(\".field-up\"),                      // a = up button\n          e=i.find(\".field-down\"),                    // e = down button\n          r=n.attr(\"min\"),                            // r = min waarde\n          t=n.attr(\"max\");                            // t = max waarde\n\n        a.click(function(){                           // luister naar klik \"up button\"            // check waarde van up button en pas \n        var a=parseFloat(n.val());                    // als klik, \"a\" = input veld waarde        // daarna die waarde to op input veld\n          if(a>=t)var e=a;                            // als \"a\" >= max, dan \"e\" = \"a\"\n          else var e=a+1;                             // zo niet, dan: \"e\" = input-waarde +1 \n        i.find(\"input\").val(e),                       // Zoek input, zet waarde op \"e\"\n        i.find(\"input\").trigger(\"change\");            // trigger change (\"val\" = geen trigger)\n        }),\n\n        e.click(function(){                           // luister naar click \"down button\"          // check waarde van down button en pas \n        var a=parseFloat(n.val());                    // als klik, \"a\" = input veld waarde         // daarna die waarde to op input veld\n          if(r>=a)var e=a;                            // als \"a\" <= min, dan \"e\" = \"a\"\n          else var e=a-1;                             // zo niet, dan: \"e\" = input-waarde -1 \n        i.find(\"input\").val(e),                       // Zoek input, zet waarde op \"e\"\n        i.find(\"input\").trigger(\"change\");            // trigger change (\"val\" = trigger)\n        })\n      });",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 212,
+              "parentId": 78,
+              "label": "JQ change css on mouse-over",
+              "value": "$(document).ready(()=>{ $(\"#vraag\").mouseover(()=>{$(\"#tip\").css({\"opacity\":\"1\"}); }); $(\"#vraag\").mouseout(()=>{$(\"#tip\").css({\"opacity\":\"0\"}); }); });",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 213,
+              "parentId": 78,
+              "label": "JQ change / toggle class on mouse-over",
+              "value": "$(document).ready(()=>{ $(\"#vraag\").mouseover(()=>{$(\"#tip\").addClass(\"NEWCLASS\").removeClass(\"OLDCLASS\"); }); $(\"#vraag\").mouseout(()=>{$(\"#tip\").toggleCLass(\"showHide\"); }); });",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 194,
+              "parentId": 78,
+              "label": "JQ Scroll from iFrame to contactform ",
+              "value": " <script type=\"text/javascript\">\r\n      function scrollToAnchor(anchorName) {\r\n      var parentDoc = window.parent.document;\r\n      var anchor = parentDoc.getElementById(anchorName);\r\n      if (anchor) {\r\n        var anchorPos = anchor.offsetTop;\r\n        parentDoc.documentElement.scrollTop = anchorPos;\r\n      }\r\n    }\r\n </script>\r\n\r\n<a href=\"#\" onclick=\"window.parent.scrollToAnchor('contact');\">\r\ncontactformulier</a>",
+              "children": []
+            },
+            {
+              "id": 195,
+              "parentId": 78,
+              "label": "JQ SHIFT+Enter makes a new line in text-area",
+              "value": "var messageInput = document.getElementById('message');\r\nmessageInput.addEventListener('keydown', function(event) {\r\n  if (event.keyCode === 13 && !event.shiftKey) {\r\n    event.preventDefault();\r\n  } else if (event.keyCode === 13 && event.shiftKey) {\r\n    var message = this.value;\r\n    var position = this.selectionStart;\r\n    this.value = message.substring(0, position) + \"\\n\" + message.substring(position);\r\n    this.selectionStart = this.selectionEnd = position + 1;\r\n    event.preventDefault();\r\n  }\r\n});",
+              "children": []
+            },
+            {
+              "id": 196,
+              "parentId": 78,
+              "label": "JQ Enter makes a new line in text-area",
+              "value": "var messageInput = document.getElementById('message');\r\nmessageInput.addEventListener('keydown', function(event) {\r\n  if (event.keyCode === 13 && !event.shiftKey) {\r\n    var message = this.value;\r\n    var position = this.selectionStart;\r\n    this.value = message.substring(0, position) + \"\\n\" + message.substring(position);\r\n    this.selectionStart = this.selectionEnd = position + 1;\r\n    event.preventDefault();\r\n  }\r\n});\r\n",
+              "children": []
+            },
+            {
+              "id": 197,
+              "parentId": 78,
+              "label": "JQ ENTER = new <p> SHIFT+ENTER = \\n",
+              "value": "var messageInput = document.getElementById('form-field-BERICHT');\r\nmessageInput.addEventListener('keydown', function(event) {\r\n  if (event.key === 'Enter') {\r\n    if (event.shiftKey) {\r\n      var message = this.value;\r\n      var position = this.selectionStart;\r\n      this.value = message.substring(0, position) + \"\\n\" + message.substring(position);\r\n      this.selectionStart = this.selectionEnd = position + 1;\r\n      event.preventDefault();\r\n    } else {\r\n      var message = this.value;\r\n      var position = this.selectionStart;\r\n      this.value = message.substring(0, position) + \"\\n\\n\" + message.substring(position);\r\n      this.selectionStart = this.selectionEnd = position + 2;\r\n      event.preventDefault();\r\n    }\r\n  }\r\n});",
+              "children": []
+            },
+            {
+              "id": 213,
+              "parentId": 78,
+              "label": "JQ change text in input [ ]  field",
+              "value": "$(document).ready(function() {\r\n  // Get the current value of the date input field\r\n  var currentDate = $('.elementor-field-group-DATUM input').val();\r\n\r\n  // Split the date into two parts at the time\r\n  var dateParts = currentDate.split(\" \");\r\n\r\n  // Add the pipe character and a space before the time\r\n  var newTime = \" | \" + dateParts[3];\r\n\r\n  // Concatenate the two parts back together with the new time\r\n  var newDate = dateParts[0] + \" \" + dateParts[1] + \" \" + dateParts[2] + newTime;\r\n\r\n  // Set the value of the date input field to the new date\r\n  $('.elementor-field-group-DATUM input').val(newDate);\r\n  $('.elementor-field-group-DATUM input').attr(\"disabled\",\"disabled\");\r\n});",
+              "children": []
+            },
+            {
+              "id": 218,
+              "parentId": 78,
+              "label": "JQ Running clock with seconds",
+              "value": " <!-- Clock scripts -->\r\n  <script> window.onload=display_ct();</script><script>function display_ct7() { var x = new Date();  hours = x.getHours( ) % 24; hours = hours ? hours : 24; hours=hours.toString().length==1? 0+hours.toString() : hours; var minutes=x.getMinutes().toString();  minutes=minutes.length==1 ? 0+minutes : minutes;    var seconds=x.getSeconds().toString();  seconds=seconds.length==1 ? 0+seconds : seconds; var x1= hours + \":\" +  minutes + \":\" +  seconds;   document.getElementById('ct7').innerHTML = x1;  display_c7();  }  function display_c7(){  var refresh=1000;   mytime=setTimeout('display_ct7()',refresh);  } display_c7() </script>\r\n    <!-- <span id='ct7' style=\"background-color:transparent;\"></span> -->",
+              "children": []
+            },
+            {
+              "id": 219,
+              "parentId": 78,
+              "label": "JQ CTRL+click to uncheck radio",
+              "value": "  $('input').click(function(e){\r\n    if (e.ctrlKey || e.metaKey) {\r\n        $(this).prop('checked', false);\r\n    }\r\n  }); ",
+              "children": []
+            },
+            {
+              "id": 220,
+              "parentId": 78,
+              "label": "JQ Check / Uncheck Radio button",
+              "value": "  var checkit1 = 0;\r\n  $('#radio1').click(function(e){   \r\n    if (checkit1 == 0) {\r\n      $(\"#radio1\").prop('checked', true);\r\n      checkit1 = 1;\r\n    } else {      \r\n      $(\"#radio1\").prop('checked', false);\r\n      checkit1 = 0;\r\n    }\r\n  }); ",
+              "children": []
+            },
+            {
+              "id": 233,
+              "parentId": 78,
+              "label": "JQ ScrollTop",
+              "value": "  $(\"html, body\").animate({ scrollTop: \"+=1\" }, 100);",
+              "children": []
+            },
+            {
+              "id": 234,
+              "parentId": 78,
+              "label": "JQ Get screen dimensions",
+              "value": "  const screenWidth = $(window).width();\r\n  const screenHeight = $(window).height();\r\n",
+              "children": []
+            },
+            {
+              "id": 235,
+              "parentId": 78,
+              "label": "Test function",
+              "value": "if (window.location.pathname.includes('aclo')) {",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 79,
+          "parentId": 76,
+          "label": "Animations",
+          "folder": true,
+          "children": [
+            {
+              "id": 88,
+              "parentId": 79,
+              "label": "JQ Animation speed with range slider",
+              "value": "/*\r\n<style>.spinning {animation: rotate; animation-duration: 1s;}</style>\r\n<input type=\"range\" id=\"speed\">\r\n<img src=\"\" alt=\"\" width=\"\" height=\"\" class=\"spinning\">\r\n*/\r\n$(\"#speed\").change(function(){\r\n  let secs = $(this).val();\r\n  let speed = secs + 's';\r\n   $(\".spinning\").css(\"animation-duration\", speed);\r\n})",
+              "children": []
+            },
+            {
+              "id": 89,
+              "parentId": 79,
+              "label": "JQ Animate only once (HTML tag)",
+              "value": "// adding a class to the html tag, during the animation time \r\nconst startPage = (() => {\r\n  const html = document.documentElement,\r\n  s = 'start'\r\n  html.classList.add(s)\r\n  window.addEventListener('load', function() {\r\n    setTimeout(() => {\r\n      html.classList.remove(s)\r\n    }, 1500) // the time must be at least equal to the duration of the CSS animation (personally I put a little more).\r\n  });\r\n})();",
+              "children": []
+            },
+            {
+              "id": 90,
+              "parentId": 79,
+              "label": "JQ Pauze animation with setTimeout()",
+              "value": "/* met 'setTimeout' een animatie pauzeren */\r\n$(document).ready(function() {\r\n   $(\"#page\").click(function(){\r\n       $(\".spinning\").css(\"-webkit-animation-play-state\", \"running\");\r\n       setTimeout(function() {\r\n         $(\".spinning\").css(\"-webkit-animation-play-state\", \"paused\");\r\n       }, 1000);\r\n   });\r\n});",
+              "children": []
+            },
+            {
+              "id": 91,
+              "parentId": 79,
+              "label": "JQ Reset an animation",
+              "value": "/* resetten van animatie */\r\nfunction reset_animation() {\r\n   var el = document.getElementById('animated');\r\n   el.style.animation = 'none';\r\n   el.offsetHeight;                        /* << trigger reflow */\r\n   el.style.animation = null;\r\n }\r\n",
+              "children": []
+            },
+            {
+              "id": 146,
+              "parentId": 79,
+              "label": "JQ Red checkbox-outline wobble",
+              "value": "setTimeout(function() {document.getElementById(\"av\").style=\"outline:3px solid #F00!important;\";},  400); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:4px solid #F00!important;\";},  435); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:5px solid #F00!important;\";},  500); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:4px solid #F00!important;\";},  560); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:3px solid #F00!important;\";},  620); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:2px solid #F00!important;\";},  680); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:1px solid #F00!important;\";},  740); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:0px solid #F00!important;\";},  800); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:1px solid #F00!important;\";},  850); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:2px solid #F00!important;\";},  900); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:3px solid #F00!important;\";},  945); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:2px solid #F00!important;\";},  990); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:1px solid #F00!important;\";}, 1035); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:2px solid #F00!important;\";}, 1070); \nsetTimeout(function() {document.getElementById(\"av\").style=\"outline:1px solid #F00!important;\";}, 1130); ",
+              "children": [],
+              "resolveSyntax": true
+            }
+          ]
+        },
+        {
+          "id": 175,
+          "parentId": 76,
+          "label": "Math",
+          "folder": true,
+          "children": [
+            {
+              "id": 176,
+              "parentId": 175,
+              "label": "Add leading '0' to numbers under 10",
+              "value": "function minTwoDigits(n) {\r\n  return (n < 10 ? '0' : '') + n;\r\n}\r\n\r\n// als INT een nul ervoor moet hebben:\r\n\r\nc += minTwoDigits(INT);",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "parentId": 1,
+      "label": "CSS",
+      "folder": true,
+      "children": [
+        {
+          "id": 190,
+          "parentId": 128,
+          "label": "CSS Reset all styles",
+          "value": "*,\r\n*::before,\r\n*::after {\r\n  box-sizing: border-box;\r\n}",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 211,
+          "parentId": 128,
+          "label": "Layout",
+          "value": ".",
+          "children": [],
+          "resolveSyntax": true
+        },
+        {
+          "id": 129,
+          "parentId": 128,
+          "label": "Animations",
+          "folder": true,
+          "children": [
+            {
+              "id": 145,
+              "parentId": 129,
+              "label": "Conic Gradient Cube animation",
+              "value": "<style>\r\n:root {\r\n\t--size: 50;\r\n\t--speed: 5;\r\n\t--trans: linear;\r\n\t--hole: #121212;\r\n\t--start: #FF7500;\r\n\t--line: #46433f;\r\n\t--ini: from 90deg at;\r\n\t--end: 0 25%, #fff0 0 100%;\r\n\t--bg:\t\r\n\t\tconic-gradient(var(--ini) 97.5% 97.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 95% 95%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 92.5% 92.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 90% 90%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 87.5% 87.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 85% 85%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 82.5% 82.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 80% 80%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 77.5% 77.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 75% 75%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 72.5% 72.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 70% 70%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 67.5% 67.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 65% 65%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 62.5% 62.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 60% 60%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 57.5% 57.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 55% 55%, var(--line) var(--end)), \r\n\t\tconic-gradient(var(--ini) 52.5% 52.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 50% 50%, var(--start) var(--end)), \r\n\t\tconic-gradient(var(--ini) 47.5% 47.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 45% 45%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 42.5% 42.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 40% 40%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 37.5% 37.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 35% 35%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 32.5% 32.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 30% 30%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 27.5% 27.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 25% 25%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 22.5% 22.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 20% 20%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 17.5% 17.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 15% 15%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 12.5% 12.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 10% 10%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 7.5% 7.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 5% 5%, var(--line) var(--end)),\r\n\t\tconic-gradient(var(--ini) 2.5% 2.5%, var(--hole) var(--end)), \r\n\t\tconic-gradient(var(--ini) 0% 0%, var(--start) var(--end));\r\n}\r\n\r\nbody {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n\twidth: 100vw;\r\n\theight: 100vh;\r\n\toverflow: hidden;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tjustify-content: center;\r\n\tperspective: 1000vmin;\r\n\tbackground: var(--hole);\r\n}\r\n\r\n.cube {\r\n\twidth: calc(var(--size) * 1vmin);\r\n\theight:  calc(var(--size) * 1vmin);\r\n\tbackground: var(--bg), var(--hole);\r\n\tbackground-size: 200% 200%;\r\n\tbackground-position: 0% 0%;\r\n\tbackground-repeat: no-repeat;\r\n\ttransform: rotateX(45deg) rotateZ(45deg) translateZ(calc(calc(var(--size) * 1vmin) / 2));\r\n\ttransform-style: preserve-3d;\r\n\tanimation: move-top calc(var(--speed) * 1s) var(--trans) 0s infinite;\r\n\r\n}\r\n\r\n.cube:before, .cube:after {\r\n\tcontent: \"\";\r\n\tbackground: var(--bg), var(--hole);\r\n\tbackground-size: 200% 200%;\r\n\tbackground-position: 100% 100%;\r\n\tbackground-repeat: no-repeat;\r\n\tposition: absolute;\r\n\twidth: 100%;\r\n\theight: 100%;\r\n\ttransform: rotate(180deg) rotateY(-90deg) translateY(calc(var(--size) * 1vmin));\r\n\ttransform-origin: right bottom;\r\n\tanimation: move-side calc(var(--speed) * 1s) var(--trans) calc(var(--speed) * -0.95s) infinite;\r\n\topacity: 0.65;\r\n} \r\n\r\n.cube:after {\r\n\ttransform: rotate(180deg) rotateY(-90deg) rotateX(-90deg) translateY(calc(var(--size) * 1vmin));\r\n\topacity: 0.35;\r\n}\r\n\r\n@keyframes move-top {\r\n\t100% { background-position: 100% 100%; }\r\n}\r\n@keyframes move-side {\r\n\t100% { background-position: 0% 0%; }\r\n}\r\n\r\n.cube:hover, .cube:hover:before, .cube:hover:after {\r\n\tanimation-play-state: paused;\r\n}\r\n</style>\r\n\r\n<div class=\"cube\"></div>",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 130,
+          "parentId": 128,
+          "label": "Backgrounds",
+          "folder": true,
+          "children": [
+            {
+              "id": 131,
+              "parentId": 130,
+              "label": "Pampus™ random animated gradient BG",
+              "value": "body {\n  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);\n  background-size: 400% 400%;\n  animation: gradient 15s ease infinite;\n  height: 100vh;\n}\n\n@keyframes gradient {\n  0% {\n    background-position: 0% 50%;\n  }\n  50% {\n    background-position: 100% 50%;\n  }\n  100% {\n    background-position: 0% 50%;\n  }\n}",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 132,
+              "parentId": 130,
+              "label": "Pampus™ 4 colors animated gradients BG",
+              "value": "b.css-selector {\nbackground: linear-gradient(116deg, #680eb2, #175da5, #a50124, #3001a5);\nbackground-size: 800% 800%;\n-webkit-animation: pampus_gradient_bg 9s ease infinite;\n-moz-animation: pampus_gradient_bg 9s ease infinite;\n-o-animation: pampus_gradient_bg 9s ease infinite;\nanimation: pampus_gradient_bg 9s ease infinite;\n  }\n  \n  @-webkit-keyframes pampus_gradient_bg {\n0%{background-position:0% 51%}\n50%{background-position:100% 50%}\n100%{background-position:0% 51%}\n  }\n  @-moz-keyframes pampus_gradient_bg {\n0%{background-position:0% 51%}\n50%{background-position:100% 50%}\n100%{background-position:0% 51%}\n  }\n  @-o-keyframes pampus_gradient_bg {\n0%{background-position:0% 51%}\n50%{background-position:100% 50%}\n100%{background-position:0% 51%}\n  }\n  @keyframes pampus_gradient_bg {\n0%{background-position:0% 51%}\n50%{background-position:100% 50%}\n100%{background-position:0% 51%}\n  }",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 192,
+              "parentId": 130,
+              "label": "Pampus™  Border + BG",
+              "value": "background-color: #d3018d94; border:2px solid  #b4c005;",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 133,
+          "parentId": 128,
+          "label": "Shadows",
+          "folder": true,
+          "children": [
+            {
+              "id": 134,
+              "parentId": 133,
+              "label": "Box-shadow inset",
+              "value": "box-shadow: inset 1px 1px 2px #55555566, inset -1px -1px 2px #55555566 ;",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 231,
+              "parentId": 133,
+              "label": "Box shadow 4 sides",
+              "value": "box-shadow: 1px 1px 2px #55555566, -1px -1px 2px #55555566 ;",
+              "children": [],
+              "resolveSyntax": true
+            }
+          ]
+        },
+        {
+          "id": 140,
+          "parentId": 128,
+          "label": "Text",
+          "folder": true,
+          "children": [
+            {
+              "id": 141,
+              "parentId": 140,
+              "label": "Transparant text w background-image",
+              "value": "background-clip: text;\r\n-webkit-background-clip: text;\r\ncolor: transparent;",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 223,
+              "parentId": 140,
+              "label": "CSS Circel met nummer paars/wit",
+              "value": " <b style=\"font:600 1.2em/1.2em 'Montserrat';color:#fff; border:2px solid #800080; border-radius:50%;padding:6px;outline:2px solid #ffffff;outline-offset:-4px; overflow:hidden;background-color:#600060;\">T7</b>",
+              "children": []
+            },
+            {
+              "id": 232,
+              "parentId": 140,
+              "label": "CSS Color & Font",
+              "value": "color:#00668f;font-family: 'Calibri', 'Helvetica', Sans-Serif; font-weight:600; font-size: 0.9em; line-height:0.9em;",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 167,
+          "parentId": 128,
+          "label": "Form & Input elements",
+          "folder": true,
+          "children": [
+            {
+              "id": 168,
+              "parentId": 167,
+              "label": "CSS Number field style",
+              "value": "/** Input type NUMBER  */\n/** Use:\n    <div class=\"field\">\n    <input type=\"number\" min=\"1\" max=\"10\" step=\"1\" value=\"5\">\n    </div>\n*/\ninput[type=number]::-webkit-inner-spin-button,\ninput[type=number]::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\ninput[type=number] {\n  -moz-appearance: textfield;\n  appearance: textfield;\n}\n.field input {\n  outline: 0; \n  border: none;\n  width: 42px;\n  height: 32px;\n  line-height: 1.65;\n  padding: 0;\n  margin: 0;\n  padding-left: 0px;\n  border: 1px solid red;\n}\n.field input:focus {\n  outline: 0;\n}\n.field-nav {\n  height: 32px;\n}\n.field-button {\n  position: relative;\n  cursor: default;\n  border-left: 1px solid #ccc;\n  width: 14px;\n  text-align: center;\n  color: #333;\n  font-size: 13px;\n  font-family: \"Trebuchet MS\", Helvetica, sans-serif !important;\n  line-height: 1.7;\n  -webkit-transform: translateX(-100%);\n  transform: translateX(-100%);\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  -o-user-select: none;\n  user-select: none;\n}\n.field-button.field-up {\n  position: absolute;\n  height: 50%;\n  top: 0;\n  border-bottom: 1px solid #eee;\n}\n.field-button.field-down {\n  position: absolute;\n  bottom: -1px;\n  height: 50%;\n}\n",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 235,
+              "parentId": 167,
+              "label": "CSS Numbers field minified",
+              "value": " input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {-webkit-appearance: none;margin: 0;}input[type=number] {-moz-appearance: textfield;appearance: textfield;}.field input {outline: 0;border: none;width: 42px;height: 32px;line-height: 1.65;padding: 0;margin: 0;padding-left: 0px;border: 1px solid red;}.field input:focus {outline: 0;}.field-nav {height: 32px;}.field-button {position: relative;cursor: default;border-left: 1px solid #ccc;width: 14px;text-align: center;color: #333;font-size: 13px;font-family: \"Trebuchet MS\", Helvetica, sans-serif !important;line-height: 1.7;-webkit-transform: translateX(-100%);transform: translateX(-100%);-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;-o-user-select: none;user-select: none;}.field-button.field-up {position: absolute;height: 50%;top: 0;border-bottom: 1px solid #eee;}.field-button.field-down {position: absolute;bottom: -1px;height: 50%;}",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 170,
+              "parentId": 167,
+              "label": "CSS Range slider style",
+              "value": "/* ///// Range Slider ////  */\n.slider {\n  margin: 0 0 0 0;\n}\ninput[type=range] {\n  height: 12px;\n  -webkit-appearance: none;\n  appearance: none;\n  margin: 5px 0 3px 0;\n  width: 100%;\n}\ninput[type=range]:focus {\n  outline: none;\n}\ninput[type=range]:focus::-webkit-slider-runnable-track {\n  background: #31669c;\n}\ninput[type=range]::-webkit-slider-runnable-track {\n  width: 100%;\n  height: 5px;\n  cursor: pointer;\n  transition: 0.2s;\n  box-shadow: 1px 1px 3px #12505cbd;\n  background: #31669c;\n  border-radius: 7px;\n  border: 1px solid #010101;\n}\ninput[type=range]::-moz-range-track {\n  width: 100%;\n  height: 5px;\n  cursor: pointer;\n  transition: 0.2s;\n  box-shadow: 1px 1px 3px #12505Cbd;\n  background: #31669c;\n  border-radius: 7px;\n  border: 1px solid #010101;\n}\n/*\ninput[type=\"range\"]::-moz-range-progress {\n  background: #5697D8;\n}\n*/\ninput[type=range]::-ms-track {\n  width: 100%;\n  height: 5px;\n  cursor: pointer;\n  transition: 0.2s;\n  background: transparent;\n  border-color: transparent;\n  color: transparent;\n}\ninput[type=range]::-webkit-slider-thumb {\n  box-shadow: 1px 1px 4px #555C70bd;\n  border: 2px solid #3B6987;\n  height: 12px;\n  width: 12px;\n  border-radius: 5px;\n  background: #F2F2F2;\n  cursor: pointer;\n  -webkit-appearance: none;\n  margin-top: -4.5px;\n}\ninput[type=range]::-moz-range-thumb {\n  box-shadow: 1px 1px 4px #555C70bd;\n  border: 2px solid #3B6987;\n  height: 12px;\n  width: 12px;\n  border-radius: 5px;\n  background: #F2F2F2;\n  cursor: pointer;\n}\ninput[type=range]::-ms-thumb {\n  margin-top: 1px;\n  box-shadow: 1px 1px 4px #555C70bd;\n  border: 2px solid #3B6987;\n  height: 12px;\n  width: 12px;\n  border-radius: 5px;\n  background: #F2F2F2;\n  cursor: pointer;\n}\ninput[type=range]::-ms-fill-lower {\n  background: #31669c;\n  border: 1px solid #010101;\n  border-radius: 12px;\n  box-shadow: 1px 1px 3px #12505Cbd;\n}\ninput[type=range]::-ms-fill-upper {\n  background: #31669c;\n  border: 1px solid #010101;\n  border-radius: 12px;\n  box-shadow: 1px 1px 3px #12505Cbd;\n}\ninput[type=range]:focus::-ms-fill-lower {\n  background: #31669c;\n}\ninput[type=range]:focus::-ms-fill-upper {\n  background: #31669c;\n}\n\n/* to make a slider appear disabled, add class 'disabled' */\n.disabled {\n    background: transparent!important;\n    pointer-events: none!important;\n    opacity:0.4;\n    cursor: none;\n}\n.disabled input[type=range]:focus::-webkit-slider-runnable-track {\n    background: transparent!important;\n    pointer-events: none!important;\n    opacity:0.4;\n  }\n.disabled input[type=range]::-webkit-slider-runnable-track {\n    width: 100%;\n    height: 5px;\n    cursor: none;\n    box-shadow: 1px 1px 3px transparent!important;\n    background:  transparent!important;\n    border-radius: 7px;\n    border: 1px solid transparent!important;\n    pointer-events: none;\n    opacity:0.4;\n  }\n.disabled input[type=range]::-moz-range-track {\n    width: 100%;\n    height: 5px;\n    cursor: none;\n    box-shadow: 1px 1px 3px transparent!important;\n    background: transparent!important;\n    border-radius: 7px;\n    border: none!important;\n    pointer-events: none;\n    opacity:0.4;\n  }\n/* //////////////////// */\n",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 234,
+              "parentId": 167,
+              "label": "CSS Range slider minified",
+              "value": " .slider {margin: 0 0 0 0;}input[type=range] {height: 12px;-webkit-appearance: none;appearance: none;margin: 5px 0 3px 0;width: 100%;}input[type=range]:focus {outline: none;}input[type=range]:focus::-webkit-slider-runnable-track {background: #31669c;}input[type=range]::-webkit-slider-runnable-track {width: 100%;height: 5px;cursor: pointer;transition: 0.2s;box-shadow: 1px 1px 3px #12505cbd;background: #31669c;border-radius: 7px;border: 1px solid #010101;}input[type=range]::-moz-range-track {width: 100%;height: 5px;cursor: pointer;transition: 0.2s;box-shadow: 1px 1px 3px #12505Cbd;background: #31669c;border-radius: 7px;border: 1px solid #010101;}input[type=range]::-ms-track {width: 100%;height: 5px;cursor: pointer;transition: 0.2s;background: transparent;border-color: transparent;color: transparent;}input[type=range]::-webkit-slider-thumb {box-shadow: 1px 1px 4px #555C70bd;border: 2px solid #3B6987;height: 12px;width: 12px;border-radius: 5px;background: #F2F2F2;cursor: pointer;-webkit-appearance: none;margin-top: -4.5px;}input[type=range]::-moz-range-thumb {box-shadow: 1px 1px 4px #555C70bd;border: 2px solid #3B6987;height: 12px;width: 12px;border-radius: 5px;background: #F2F2F2;cursor: pointer;}input[type=range]::-ms-thumb {margin-top: 1px;box-shadow: 1px 1px 4px #555C70bd;border: 2px solid #3B6987;height: 12px;width: 12px;border-radius: 5px;background: #F2F2F2;cursor: pointer;}input[type=range]::-ms-fill-lower {background: #31669c;border: 1px solid #010101;border-radius: 12px;box-shadow: 1px 1px 3px #12505Cbd;}input[type=range]::-ms-fill-upper {background: #31669c;border: 1px solid #010101;border-radius: 12px;box-shadow: 1px 1px 3px #12505Cbd;}input[type=range]:focus::-ms-fill-lower {background: #31669c;}input[type=range]:focus::-ms-fill-upper {background: #31669c;}.disabled {background: transparent!important;pointer-events: none!important;opacity:0.4;cursor: none;}.disabled input[type=range]:focus::-webkit-slider-runnable-track {background: transparent!important;pointer-events: none!important;opacity:0.4;}.disabled input[type=range]::-webkit-slider-runnable-track {width: 100%;height: 5px;cursor: none;box-shadow: 1px 1px 3px transparent!important;background: transparent!important;border-radius: 7px;border: 1px solid transparent!important;pointer-events: none;opacity:0.4;}.disabled input[type=range]::-moz-range-track {width: 100%;height: 5px;cursor: none;box-shadow: 1px 1px 3px transparent!important;background: transparent!important;border-radius: 7px;border: none!important;pointer-events: none;opacity:0.4;}",
+              "children": []
+            },
+            {
+              "id": 172,
+              "parentId": 167,
+              "label": "CSS radiobuttons style",
+              "value": "/* //// Radio button ////  */\n:root {\n\t-form-control-color: #800080;\n}\n*, *:before, *:after {\n\tbox-sizing: border-box;\n}\n.form-control {\n\tdisplay: grid;\n\tgrid-template-columns: .9em auto;\n\tgap: 0.6em;\n}\n.form-control:focus-within {\n  color: #064b91;\n} \ninput[type=radio] {  \n  background-color: #fff; \n  margin: 0 3px; \n  max-width:16px!important; \n  max-height: 16px!important; \n  min-width: 16px!important; \n  min-height: 16px!important; \n  border: 1px solid #064b91;\n  border-radius: 50%; \n  color: #064b91;\n  vertical-align:bottom!important;\n}\ninput[type=\"radio\"]:checked {\n  outline: max(.006em,.006em) solid #064b91!important;\n}\ninput[type=\"radio\"]::before {\n  box-shadow: inset .15em .15em 0 #064b91!important;\n  content: \"\"; \n  border-radius: 50%;   \n}\ninput[type=\"radio\"]:checked::before {\n\ttransform: scale(1.03);\n}\n/* /////////////////////// */\n",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 232,
+              "parentId": 167,
+              "label": "CSS radiobuttons minified",
+              "value": ":root {-form-control-color: #800080;}*, *:before, *:after {box-sizing: border-box;}.form-control {display: grid;grid-template-columns: .9em auto;gap: 0.6em;}.form-control:focus-within {color: #064b91;}input[type=radio] {background-color: #fff;margin: 0 3px;max-width:16px!important;max-height: 16px!important;min-width: 16px!important;min-height: 16px!important;border: 1px solid #064b91;border-radius: 50%;color: #064b91;vertical-align:bottom!important;}input[type=\"radio\"]:checked {outline: max(.006em,.006em) solid #064b91!important;}input[type=\"radio\"]::before {box-shadow: inset .15em .15em 0 #064b91!important;content: \"\";border-radius: 50%;}input[type=\"radio\"]:checked::before {transform: scale(1.03);}",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 171,
+              "parentId": 167,
+              "label": "CSS  checkbox  style",
+              "value": "/* //// Checkbox /////  */\n.checkbox-wrapper-4 * {\n  box-sizing: border-box;\n}\n.checkbox-wrapper-4 .cbx {\n  -webkit-user-select: none;\n  user-select: none;\n  cursor: pointer;\n  padding: 5px 0 ;\n  border-radius: 3px;\n  overflow: hidden;\n  transition: all 0.3s ease;\n  display: inline-block;\n}\n.checkbox-wrapper-4 .cbx:not(:last-child) {\n  margin-right: 5px;\n}\n.checkbox-wrapper-4 .cbx:hover {\n  background: #0077ff07;\n}\n.checkbox-wrapper-4 .cbx span {\n  float: left;\n  vertical-align: middle;\n  transform: translate3d(0, 0, 0);\n}\n.checkbox-wrapper-4 .cbx span:first-child {\n  position: relative;\n  width: 17px;\n  height: 16px;\n  border-radius: 3px;\n  transform: scale(1);\n  border: 1px solid #454757;\n  transition: all 0.3 ease;\n  box-shadow: 1px 1px 2px #00104b22;    \n}\n.checkbox-wrapper-4 .cbx span:first-child svg {\n  position: absolute;\n  top: 2px;\n  left: 2px;\n  fill: none;\n  stroke: #fff;\n  stroke-width: 2;\n  stroke-linecap: round;\n  stroke-linejoin: round;\n  stroke-dasharray: 14px;\n  stroke-dashoffset: 14px;\n  transition: all 0.2s ease;\n  transition-delay: 0.0s;\n  transform: translate3d(0, 0, 0);\n}\n.checkbox-wrapper-4 .cbx span:last-child {\n  padding-left: 6px;\n  line-height: 16px;\n  padding-top:1px;\n  font-weight: 500;\n  font-size: 0.95rem;\n  font-family: \"Comfortaa\", Arial, Helvetica, sans-serif Helvetica;\n  color: #333;\n}\n.checkbox-wrapper-4 .cbx:hover span:first-child {\n  border-color: #105091;\n}\n.checkbox-wrapper-4 .inp-cbx {\n  position: absolute;\n  visibility: hidden;\n}\n.checkbox-wrapper-4 .inp-cbx:checked+.cbx span:first-child {\n  background: #2774b3;\n  border-color: #105091;\n  animation: wave-4 0.3s ease;\n}\n.checkbox-wrapper-4 .inp-cbx:checked+.cbx span:first-child svg {\n  stroke-dashoffset: 0;\n}\n.checkbox-wrapper-4 .inline-svg {\n  position: absolute;\n  width: 0;\n  height: 0;\n  pointer-events: none;\n  user-select: none;\n}\n@media screen and (max-width: 640px){\n  .checkbox-wrapper-4 .cbx {width: 100%;display: inline-block;}}\n@-moz-keyframes wave-4 {50% {transform: scale(0.85);}}\n@-webkit-keyframes wave-4 {50% {transform: scale(0.85);}}\n@-o-keyframes wave-4 {50% {transform: scale(0.85);}}\n@keyframes wave-4 { 50% {transform: scale(0.85);}}\n\n.chebo_1 {\n  color:#2774b3;\n}\n/* ////////////////// */\n\n",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 233,
+              "parentId": 167,
+              "label": "CSS checkbox minified",
+              "value": ".checkbox-wrapper-4 * {box-sizing: border-box;}.checkbox-wrapper-4 .cbx {-webkit-user-select: none;user-select: none;cursor: pointer;padding: 5px 0 ;border-radius: 3px;overflow: hidden;transition: all 0.3s ease;display: inline-block;}.checkbox-wrapper-4 .cbx:not(:last-child) {margin-right: 5px;}.checkbox-wrapper-4 .cbx:hover {background: #0077ff07;}.checkbox-wrapper-4 .cbx span {float: left;vertical-align: middle;transform: translate3d(0, 0, 0);}.checkbox-wrapper-4 .cbx span:first-child {position: relative;width: 17px;height: 16px;border-radius: 3px;transform: scale(1);border: 1px solid #454757;transition: all 0.3 ease;box-shadow: 1px 1px 2px #00104b22;}.checkbox-wrapper-4 .cbx span:first-child svg {position: absolute;top: 2px;left: 2px;fill: none;stroke: #fff;stroke-width: 2;stroke-linecap: round;stroke-linejoin: round;stroke-dasharray: 14px;stroke-dashoffset: 14px;transition: all 0.2s ease;transition-delay: 0.0s;transform: translate3d(0, 0, 0);}.checkbox-wrapper-4 .cbx span:last-child {padding-left: 6px;line-height: 16px;padding-top:1px;font-weight: 500;font-size: 0.95rem;font-family: \"Comfortaa\", Arial, Helvetica, sans-serif Helvetica;color: #333;}.checkbox-wrapper-4 .cbx:hover span:first-child {border-color: #105091;}.checkbox-wrapper-4 .inp-cbx {position: absolute;visibility: hidden;}.checkbox-wrapper-4 .inp-cbx:checked+.cbx span:first-child {background: #2774b3;border-color: #105091;animation: wave-4 0.3s ease;}.checkbox-wrapper-4 .inp-cbx:checked+.cbx span:first-child svg {stroke-dashoffset: 0;}.checkbox-wrapper-4 .inline-svg {position: absolute;width: 0;height: 0;pointer-events: none;user-select: none;}@media screen and (max-width: 640px){.checkbox-wrapper-4 .cbx {width: 100%;display: inline-block;}}@-moz-keyframes wave-4 {50% {transform: scale(0.85);}}@-webkit-keyframes wave-4 {50% {transform: scale(0.85);}}@-o-keyframes wave-4 {50% {transform: scale(0.85);}}@keyframes wave-4 {50% {transform: scale(0.85);}}.chebo_1 {color:#2774b3;}",
+              "children": []
+            },
+            {
+              "id": 236,
+              "parentId": 167,
+              "label": "CSS Toggle switch 1 minified",
+              "value": " .form-switch i {position: relative;display: inline-block;margin-right: .5rem;width: 46px;height: 26px;background-color: #e6e6e6;border-radius: 23px;vertical-align: text-bottom;transition: all 0.3s linear;}.form-switch i::before {content: \"\";position: absolute;left: 0;width: 42px;height: 22px;background-color: #fff;border-radius: 11px;transform: translate3d(2px, 2px, 0) scale3d(1, 1, 1);transition: all 0.25s linear;}.form-switch i::after {content: \"\";position: absolute;left: 0;width: 22px;height: 22px;background-color: #fff;border-radius: 11px;box-shadow: 0 2px 2px #18181825;transform: translate3d(2px, 2px, 0);transition: all 0.2s ease-in-out;}.form-switch:active i::after {width: 28px;transform: translate3d(2px, 2px, 0);}.form-switch:active input:checked + i::after {transform: translate3d(16px, 2px, 0);}.form-switch input {display: none;}.form-switch input:checked + i {background-color: #0745a1;}.form-switch input:checked + i::before {transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0);}.form-switch input:checked + i::after {transform: translate3d(22px, 2px, 0);}",
+              "children": []
+            },
+            {
+              "id": 169,
+              "parentId": 167,
+              "label": "CSS Toggle switch 1",
+              "value": "/* //// toggle switch ////  */\n.form-switch i {\n  position: relative;\n  display: inline-block;\n  margin-right: .5rem;\n  width: 46px;\n  height: 26px;\n  background-color: #e6e6e6;\n  border-radius: 23px;\n  vertical-align: text-bottom;\n  transition: all 0.3s linear;\n}\n.form-switch i::before {\n  content: \"\";\n  position: absolute;\n  left: 0;\n  width: 42px;\n  height: 22px;\n  background-color: #fff;\n  border-radius: 11px;\n  transform: translate3d(2px, 2px, 0) scale3d(1, 1, 1);\n  transition: all 0.25s linear;\n}\n.form-switch i::after {\n  content: \"\";\n  position: absolute;\n  left: 0;\n  width: 22px;\n  height: 22px;\n  background-color: #fff;\n  border-radius: 11px;\n  box-shadow: 0 2px 2px #18181825;\n  transform: translate3d(2px, 2px, 0);\n  transition: all 0.2s ease-in-out;\n}\n.form-switch:active i::after {\n  width: 28px;\n  transform: translate3d(2px, 2px, 0);\n}\n.form-switch:active input:checked + i::after { transform: translate3d(16px, 2px, 0); }\n.form-switch input { display: none; }\n.form-switch input:checked + i { background-color: #0745a1; }\n.form-switch input:checked + i::before { transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0); }\n.form-switch input:checked + i::after { transform: translate3d(22px, 2px, 0); }\n/* /////////////////// */\n\n\n\n",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 199,
+              "parentId": 167,
+              "label": "CSS Resizer handle styling",
+              "value": "textarea {\n  resize: both;\n}\n@media screen and (-webkit-min-device-pixel-ratio:0) {\n  textarea::-webkit-resizer {\n    width: 12px;\n    height: 12px;\n    background-color: #ccc;\n    border: 2px solid #fff;\n  }\n}\n@media screen and (min--moz-device-pixel-ratio:0) {\n  textarea::-moz-resizer {\n    width: 12px;\n    height: 12px;\n    background-color: #ccc;\n    border: 2px solid #fff;\n  }\n}",
+              "children": [],
+              "resolveSyntax": true
+            }
+          ]
+        },
+        {
+          "id": 210,
+          "parentId": 128,
+          "label": "Buttons",
+          "folder": true,
+          "children": [
+            {
+              "id": 211,
+              "parentId": 210,
+              "label": "Blauwe admin-check button",
+              "value": "<style>#checkadmin{ background: #005f8b; min-height:22px; max-height:22px; padding:1px 4px 2px 4px; border:2px solid #fff; border-radius: 5px; outline:1px solid #005f8b; outline-offset: 2px; font: 500 1em \"Comfortaa;\"; color: #fff} #checkadmin:hover, #checkadmin:active, #checkadmin:focus {background-color: #800080; outline-color: #800080;}</style>\n\n<button id=\"checkadmin\" onclick=\"functie()\">admin-check</button>",
+              "children": [],
+              "resolveSyntax": true
+            },
+            {
+              "id": 209,
+              "parentId": 210,
+              "label": "Layout",
+              "folder": true,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 215,
+      "parentId": 1,
+      "label": "FOLDER-TEST",
+      "folder": true,
+      "children": []
+    },
+    {
+      "id": 228,
+      "parentId": 1,
+      "label": "AJAX",
+      "folder": true,
+      "children": []
+    },
+    {
+      "id": 230,
+      "parentId": 1,
+      "label": "AJAX met eventlisteners 1",
+      "value": "    <script type=\"text/javascript\">\n      $(document).ready(function() {\n        let inputFields1 = document.querySelectorAll(\".numbers\");\n        inputFields1.forEach(function(inputField) {\n          inputField.addEventListener(\"input\", function() {\n            if (inputField.value.length >= 5) {\n\n                  $.ajax({\n                  type: 'POST',\n                  url: 'process.php',\n                  data: formData,\n                  success: function(response) {\n\n                    $('#row1').html(response);\n\n                  }\n                });\n\n            }\n          });\n        });\n  ",
+      "children": [],
+      "resolveSyntax": true
+    },
+    {
+      "id": 231,
+      "parentId": 1,
+      "label": "AJAX met eventlisterens 2",
+      "value": "let inputFields = document.querySelectorAll(\".numbers\");\r\n          inputFields.forEach(function(inputField) {\r\n              inputField.addEventListener(\"input\", function() {\r\n                  let extraData = inputField.getAttribute(\"extra-data\");\r\n                  let rowNumber = extraData.split(\"-\")[0];\r\n                  let LRinfo = extraData.split(\"-\")[1];\r\n                  let formData = new FormData();\r\n                  formData.append(\"rowNumber\", rowNumber);\r\n                  formData.append(\"LRinfo\", LRinfo);\r\n                  formData.append(inputField.name, inputField.value);\r\n                  $.ajax({\r\n                      type: 'POST',\r\n                      url: 'process.php',\r\n                      data: formData,\r\n                      success: function(response) {\r\n                          $('#' + rowNumber).html(response);\r\n                      }\r\n                  });\r\n              });\r\n          });\r\n        });",
+      "children": []
+    }
+  ]
+}

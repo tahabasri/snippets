@@ -4,6 +4,7 @@ import * as path from 'path';
 import { Snippet } from '../interface/snippet';
 import { CommandsConsts } from '../config/commands';
 import { SnippetService } from '../service/snippetService';
+import { Labels } from '../config/Labels';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
     constructor(private _snippetService: SnippetService, private _extensionPath: string) { }
@@ -20,7 +21,6 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         // if target is undefined, that's root of tree
         if (!target) {
             target = this._snippetService.getParent(undefined);
-            
         }
         // skip if :
         // - source is undefined
@@ -52,16 +52,22 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                     }
                 }
             }
+
             // all good ? proceed with moving snippet to target folder
             // basically, remove it from original place and add it to the new place
+
+            // temp delay, to be changed by concrete concurrency treatment
+            // this._snippetService.getAllSnippetsAndFolders();
+
             this._snippetService.removeSnippet(transferSnippet);
+
             // compared to normal addSnippet, we don't bump up lastId here 
             // as we need to only move item and not create new one
             // --> only update parentId
+            
             transferSnippet.parentId = target.id;
-            this._snippetService.addSnippet(transferSnippet);
+            this._snippetService.addExistingSnippet(transferSnippet);
         }
-
         this.sync();
     }
 
@@ -122,6 +128,8 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         );
 
         this.sync();
+
+        return lastId;
     }
 
     editSnippet(snippet: Snippet) {
@@ -218,5 +226,66 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         this.sync();
         const parentElt = this._snippetService.getParent(undefined);
         return parentElt !== undefined && parentElt.children!== undefined && parentElt.children.length > 0;
+    }
+
+    fixLastId() : void {
+        this._snippetService.fixLastId();
+    }
+
+    fixSnippets() : number[] {
+        let duplicateCount = 0;
+        let corruptedCount = 0;
+        // fix last id
+        this._snippetService.fixLastId();
+        let snippets = this._snippetService.getAllSnippetsAndFolders();
+        // get all folders ids
+        var idsSet = snippets.map(s => s.id);
+        var duplicateIds = idsSet.filter((item, idx) =>  idsSet.indexOf(item) !== idx);
+
+        for (const duplicateId of duplicateIds) {
+            // get snippets with duplicate id and no children
+            // test on children count instead of folder property as the latter may be undefined (that's the root cause)
+            let corruptedSnippets = snippets.filter(s=>s.id === duplicateId && s.children.length === 0);
+            for (const cs of corruptedSnippets) {
+                duplicateCount++;
+                // increment last snippet Id
+                this._snippetService.overrideSnippetId(cs);
+            }
+        }
+
+        // extract snippets within non-folders snippets
+        var nonFolderSnippets = 
+            this._snippetService.getAllSnippetsAndFolders().filter(s=> !s.folder && s.children.length > 0);
+        
+        if (nonFolderSnippets.length > 0) {
+            // create folder for extracted snippets
+            const folderId = this.addSnippetFolder(Labels.troubleshootFolder, Snippet.rootParentId);
+            snippets = this._snippetService.getAllSnippetsAndFolders();
+            let targetFolder = snippets.find(s => s.id === folderId);
+            if (targetFolder) {
+                for (const snippet of nonFolderSnippets) {
+                    while (snippet.children.length > 0) {
+                        corruptedCount++;
+                        // after removing an item, snippet.children gets reduced
+                        let snippetChild = snippet.children[0];
+                        // remove snippet from original place and add it to the new folder
+                        this._snippetService.removeSnippet(snippetChild);
+                        // compared to normal addSnippet, we don't bump up lastId here 
+                        // as we need to only move item and not create new one
+                        // => only update parentId
+                        snippetChild.parentId = targetFolder.id;
+                        this._snippetService.addExistingSnippet(snippetChild);
+                    }
+                }
+                // fix duplicate ids
+                let unorganizedSnippets: Snippet[] = [];
+                SnippetService.flattenAndKeepFolders(targetFolder.children, unorganizedSnippets);
+                for (const s of unorganizedSnippets.filter(s=>s.children.length === 0)) {
+                    // increment last snippet Id
+                    this._snippetService.overrideSnippetId(s);
+                }
+            }
+        }
+        return new Array(duplicateCount, corruptedCount);
     }
 }

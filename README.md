@@ -110,6 +110,20 @@ Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
 
 ## Known Issues
 
+### Troubleshoot Snippets
+
+- The new option "Troubleshoot Snippets" will help fixing common issues:
+  - old snippets not appearing
+  - moving snippets not working
+  - vanishing new snippets
+
+This is generally caused by two features conflicting at the same time; moving snippets and syncing them simultaneously. Fortunately, no snippet should be lost for good. All of them are stored locally, but the database being inconsistent is causing the snippets to be invisible.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/issues/67-fix-snippets.gif" 
+alt="Fix Snippets">
+
+### Upgrade to version 2+
+
 - **With version 1.2 and bellow**, there was an issue regarding permissions when trying to change snippets location. In Windows in particular, changing location to some restricted folders (e.g `C:\\`) caused the extension to rollback to default path. This is due to lack of permissions on files from within VSCode itself.
 
 We recommend **upgrading to version 2+** to fix such issues.

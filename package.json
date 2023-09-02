@@ -2,8 +2,8 @@
 	"name": "snippets",
 	"displayName": "Snippets",
 	"description": "Manage your code snippets without quitting your editor.",
-	"version": "3.0.0",
-	"preview": true,
+	"version": "3.1.0",
+	"preview": false,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
 	"author": {
@@ -207,6 +207,12 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "globalSnippetsCmd.fixSnippets",
+				"title": "Troubleshoot Snippets",
+				"icon": "$(pulse)",
+				"category": "Snippets"
+			},
+			{
 				"command": "globalSnippetsCmd.exportSnippets",
 				"title": "Export Snippets",
 				"icon": "$(cloud-upload)",
@@ -342,6 +348,11 @@
 					"command": "globalSnippetsCmd.importSnippets",
 					"when": "view == snippetsExplorer",
 					"group": "other@3"
+				},
+				{
+					"command": "globalSnippetsCmd.fixSnippets",
+					"when": "view == snippetsExplorer",
+					"group": "other@4"
 				},
 				{
 					"command": "wsSnippetsCmd.addSnippetFromClipboard",
