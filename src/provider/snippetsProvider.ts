@@ -179,11 +179,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 dark: path.join(this._extensionPath, 'resources', 'icons', 'dark', 'folder.svg')
             };
         } else {
-            const maxLength = 20;
-            treeItem.tooltip = `${snippet.value
-                ? "'" + snippet.value.replace('\n', '').slice(0, maxLength)
-                + (snippet.value.length > 20 ? '...' : '') + "'"
-                : "''"}`;
+            treeItem.tooltip = `${snippet.value}`;
             treeItem.contextValue = 'snippet';
             treeItem.iconPath = {
                 light: path.join(this._extensionPath, 'resources', 'icons', 'light', 'file.svg'),
