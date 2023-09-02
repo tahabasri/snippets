@@ -278,16 +278,16 @@ export function activate(context: vscode.ExtensionContext) {
                 // add suffix for all workspace items
                 candidates = candidates.concat(wsSnippetService.getAllSnippets().map(
                     elt => {
-                        elt.label = `${elt.label}__(ws)`;
+                        elt.label = `${elt.description}__(ws)`;
                         return elt;
                     }
                 ));
             }
             return candidates.map(element =>
                 <vscode.CompletionItem>{
-                    label: `snp:${element.label.replace('\n', '').replace(' ', '-').replace("__(ws)", " (ws)")}`,
+                    label: `snp:${element.label.replace('\n', '').replace(' ', '-')}`,
                     insertText: new vscode.SnippetString(element.value),
-                    detail: element.label.replace("__(ws)", " (snippet from workspace)"),
+                    detail: element.description?.replace("__(ws)", " (snippet from workspace)"),
                     kind: vscode.CompletionItemKind.Snippet,
                     // replace trigger character with the chosen suggestion
                     additionalTextEdits: isTriggeredByChar

@@ -9,6 +9,7 @@ export class Snippet {
   value?: string;
   lastId?: number;
   resolveSyntax?: boolean;
+  description?: string;
 
   constructor(
     id: number,

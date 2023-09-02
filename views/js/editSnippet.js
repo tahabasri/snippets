@@ -28,12 +28,14 @@
         e.preventDefault();
         const form = document.querySelector('form[name="edit-snippet-form"]');
         const snippetLabel = form.elements['snippet-label'].value;
+        const snippetDescription = form.elements['snippet-description'].value;
         const snippetValue = form.elements['snippet-value'].value;
         const resolveSyntax = form.elements['snippet-resolveSyntax'].checked;
 
         vscode.postMessage({
             data: {
                 label: snippetLabel,
+                description: snippetDescription,
                 value: snippetValue,
                 resolveSyntax: resolveSyntax
             },
