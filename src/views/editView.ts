@@ -5,6 +5,7 @@ import * as mustache from 'mustache';
 import { Snippet } from '../interface/snippet';
 
 export abstract class EditView {
+    private static snippetsConfigKey = "snippets";
     private static docsUrl = "https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax";
     private static readonly viewsFolder: string = 'views';
     protected readonly _panel: vscode.WebviewPanel;
@@ -44,7 +45,8 @@ export abstract class EditView {
                 cssUri: this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, EditView.viewsFolder, 'css', 'vscode-custom.css'))),
                 jsUri: this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, EditView.viewsFolder, 'js', `${viewType}.js`))),
                 snippet: snippet,
-                docsUrl: EditView.docsUrl
+                docsUrl: EditView.docsUrl,
+                expertMode: vscode.workspace.getConfiguration(EditView.snippetsConfigKey).get("expertMode")
             }
         );
 

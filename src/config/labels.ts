@@ -22,9 +22,7 @@ export const enum Labels {
 	snippetValueErrorMsg = "Snippet must have a non-empty value.",
 
 	snippetNamePrompt = "Snippet Name",
-	snippetDescriptionPrompt = "Snippet Description",
 	snippetNamePlaceholder = "Some examples: Custom Navbar, CSS Alert Style, etc.",
-	snippetDescriptionPlaceholder = "A brief description of the snippet...",
 	snippetNameValidationMsg = "Snippet name should not be empty.",
 	snippetNameErrorMsg = "Snippet must have a non-empty name.",
 

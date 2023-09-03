@@ -17,10 +17,13 @@ export class EditSnippet extends EditView {
     handleReceivedMessage(message: any): any {
         switch (message.command) {
             case 'edit-snippet':
-                const { label, description, value, resolveSyntax } = message.data;
+                const { label, prefix, description, value, resolveSyntax } = message.data;
                 // call provider only if there is data change
                 if (label !== undefined) {
                     this._snippet.label = label;
+                }
+                if (prefix !== undefined) {
+                    this._snippet.prefix = prefix;
                 }
                 if (description !== undefined) {
                     this._snippet.description = description;

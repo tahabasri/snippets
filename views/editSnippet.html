@@ -12,13 +12,11 @@
 </head>
 
 <body>
-    <form name="edit-snippet-form">
-        <div class="no-m"><label for="snippet-label">Snippet Label:</label></div>
+    <form name="edit-snippet-form" data-vscode-context='{"preventDefaultContextMenuItems": true }'>
+        <div class="no-m"><label for="snippet-label">Snippet Label</label></div>
         <div><input type="text" id="snippet-label" value="{{snippet.label}}" required></div>
-        <div class="no-m"><label for="snippet-description">Snippet Description:</label></div>
-        <div><input type="text" id="snippet-description" value="{{snippet.description}}"></div>
         <div>
-            <label for="snippet-value">Snippet Content:</label>
+            <label for="snippet-value">Snippet Content</label>
             <div class="popup" name="_snippets_syntax">
                 Snippet syntax was detected: see
                 <a href="{{docsUrl}}" target="_blank">docs</a>
@@ -29,7 +27,31 @@
             </div>
         </div>
         <div><textarea id="snippet-value" name="snippet-value" rows="10" required>{{snippet.value}}</textarea></div>
-        <div><input type="submit" value="Save"></div>
+        <!-- expand advanced options if expert mode is on -->
+        <details {{#expertMode}}open{{/expertMode}}> 
+            <summary>Advanced options</summary>
+          <div>
+            <div class="no-m">
+                <label for="snippet-description">Snippet Description
+                    <div class="tooltip"> [?]
+                        <span class="tooltiptext">Trigger word that displays the snippet in IntelliSense.
+                            If unset, Snippet name will be used.
+                        </span>
+                    </div>
+                </label>
+            </div>
+            <div><input type="text" id="snippet-description" value="{{snippet.description}}"></div>
+            <div class="no-m">
+                <label for="snippet-prefix">Snippet Prefix
+                    <div class="tooltip"> [?]
+                        <span class="tooltiptext">Optional description of the snippet displayed by IntelliSense.</span>
+                    </div>
+                </label>
+            </div>
+            <div><input type="text" id="snippet-prefix" value="{{snippet.prefix}}"></div>
+          </div>
+        </details>
+        <div><input class="saveButton" type="submit" value="Save"></div>
     </form>
 </body>
 

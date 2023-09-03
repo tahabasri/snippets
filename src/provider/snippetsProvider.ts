@@ -97,7 +97,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         this.refresh();
     }
 
-    addSnippet(name: string, description: string, snippet: string, parentId: number) {
+    addSnippet(name: string, snippet: string, parentId: number) {
         let lastId = this._snippetService.incrementLastId();
 
         this._snippetService.addSnippet(
@@ -106,7 +106,6 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 parentId: parentId,
                 label: name,
                 value: snippet,
-                description: description,
                 children: []
             }
         );
@@ -169,7 +168,6 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 ? vscode.TreeItemCollapsibleState.Expanded
                 : vscode.TreeItemCollapsibleState.None
         );
-        //treeItem.description = "";
         // dynamic context value depending on item type (snippet or snippet folder)
         // context value is used in view/item/context in 'when' condition
         if (snippet.folder && snippet.folder === true) {

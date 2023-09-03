@@ -20,8 +20,8 @@ ul {
 	padding-left: var(--container-paddding);
 }
 
-body > *,
-form > * {
+body>*,
+form>* {
 	margin-block-start: var(--input-margin-vertical);
 	margin-block-end: var(--input-margin-vertical);
 }
@@ -73,11 +73,11 @@ button.secondary:hover {
 	background: var(--vscode-button-secondaryHoverBackground);
 }
 
-input:not([type='checkbox']),
+input:not([type="checkbox"]),
 textarea {
 	display: block;
-    width: 100%;
-    max-width: 100%;
+	width: 100%;
+	max-width: 100%;
 	border: none;
 	font-family: var(--vscode-font-family);
 	padding: var(--input-padding-vertical) var(--input-padding-horizontal);
@@ -92,24 +92,55 @@ textarea::placeholder {
 }
 
 .no-m {
-    margin: 0;
+	margin: 0;
 }
 
 div {
-    margin: 15px auto;
+	margin: 15px auto;
 }
 
 textarea {
-    font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
+	font-family: Lucida Console, Lucida Sans Typewriter, monaco,
+		Bitstream Vera Sans Mono, monospace;
 }
 
 .popup {
-    display: inline;
-    color: var(--vscode-button-secondaryForeground);
+	display: inline;
+	color: var(--vscode-button-secondaryForeground);
 	background: var(--vscode-button-secondaryBackground);
 }
 
 .changelog-header {
 	display: inline-block;
-    position: fixed;
+	position: fixed;
+}
+
+input.saveButton {
+	color: var(--vscode-button-foreground);
+	background-color: var(--vscode-button-background);
+}
+
+/* Tooltip */
+.tooltip {
+	margin: 0;
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+	margin-left: 3px;
+	visibility: hidden;
+	min-width: max-content;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 5px 5px;
+	border-radius: 6px;
+	position: absolute;
+	z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
 }

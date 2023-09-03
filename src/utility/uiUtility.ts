@@ -52,13 +52,6 @@ export class UIUtility {
         });
     }
 
-    static async requestSnippetDescription(): Promise<string | undefined> {
-        return await vscode.window.showInputBox({
-            prompt: Labels.snippetDescriptionPrompt,
-            placeHolder: Labels.snippetDescriptionPlaceholder
-        });
-    }
-
     static async requestSnippetFolderName(): Promise<string | undefined> {
         return await vscode.window.showInputBox({
             prompt: Labels.snippetNameFolderPrompt,
