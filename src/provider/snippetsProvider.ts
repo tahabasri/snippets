@@ -163,7 +163,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
 
     private snippetToTreeItem(snippet: Snippet): vscode.TreeItem {
         let treeItem = new vscode.TreeItem(
-            snippet.label,
+            snippet.label + (snippet.language ? snippet.language : ''),
             snippet.folder && snippet.folder === true
                 ? vscode.TreeItemCollapsibleState.Expanded
                 : vscode.TreeItemCollapsibleState.None
@@ -172,18 +172,18 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         // context value is used in view/item/context in 'when' condition
         if (snippet.folder && snippet.folder === true) {
             treeItem.contextValue = 'snippetFolder';
-            treeItem.iconPath = {
-                light: path.join(this._extensionPath, 'resources', 'icons', 'light', 'folder.svg'),
-                dark: path.join(this._extensionPath, 'resources', 'icons', 'dark', 'folder.svg')
-            };
+            if (snippet.icon) {
+                treeItem.iconPath = new vscode.ThemeIcon(snippet.icon);
+            } else {
+                treeItem.iconPath = vscode.ThemeIcon.Folder;
+            }
         } else {
             treeItem.tooltip = snippet.description ? `(${snippet.description})\n${snippet.value}` : `${snippet.value}`;
             treeItem.contextValue = 'snippet';
-            treeItem.iconPath = {
-                light: path.join(this._extensionPath, 'resources', 'icons', 'light', 'file.svg'),
-                dark: path.join(this._extensionPath, 'resources', 'icons', 'dark', 'file.svg')
-            };
-
+            treeItem.iconPath = vscode.ThemeIcon.File;
+            if (snippet.language) {
+                treeItem.resourceUri = vscode.Uri.parse(`_${snippet.language}`);
+            }
             // conditional in configuration
             treeItem.command = {
                 command: CommandsConsts.commonOpenSnippet,

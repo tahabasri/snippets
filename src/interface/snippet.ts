@@ -11,6 +11,8 @@ export class Snippet {
   resolveSyntax?: boolean;
   description?: string;
   prefix?: string;
+  language?: string;
+  icon?: string;
 
   constructor(
     id: number,

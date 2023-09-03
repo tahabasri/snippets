@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as mustache from 'mustache';
 import { Snippet } from '../interface/snippet';
+import { UIUtility } from '../utility/uiUtility';
 
 export abstract class EditView {
     private static snippetsConfigKey = "snippets";
@@ -46,7 +47,8 @@ export abstract class EditView {
                 jsUri: this._panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, EditView.viewsFolder, 'js', `${viewType}.js`))),
                 snippet: snippet,
                 docsUrl: EditView.docsUrl,
-                expertMode: vscode.workspace.getConfiguration(EditView.snippetsConfigKey).get("expertMode")
+                expertMode: vscode.workspace.getConfiguration(EditView.snippetsConfigKey).get("expertMode"),
+                languages: UIUtility.getLanguageNamesWithExtensions()
             }
         );
 

@@ -30,26 +30,43 @@
         <!-- expand advanced options if expert mode is on -->
         <details {{#expertMode}}open{{/expertMode}}> 
             <summary>Advanced options</summary>
-          <div>
-            <div class="no-m">
-                <label for="snippet-description">Snippet Description
-                    <div class="tooltip"> [?]
-                        <span class="tooltiptext">Trigger word that displays the snippet in IntelliSense.
-                            If unset, Snippet name will be used.
-                        </span>
-                    </div>
-                </label>
+            <div>
+                <div class="no-m">
+                    <label for="snippet-language">Snippet Language Scope
+                        <div class="tooltip"> [?]
+                            <span class="tooltiptext">Snippet will be suggested for files of the selected language only.
+                            </span>
+                        </div>
+                    </label>
+                </div>
+                <div>
+                    <select id="snippet-language" name="snippet-language" init-value="{{ snippet.language }}">
+                        <option value="">--none--</option>
+                        {{#languages}}
+                            <li>{{name}}</li>
+                            <option value="{{extension}}">{{alias}}</option>
+                        {{/languages}}
+                    </select>
+                </div>
+                <div class="no-m">
+                    <label for="snippet-description">Snippet Description
+                        <div class="tooltip"> [?]
+                            <span class="tooltiptext">Trigger word that displays the snippet in IntelliSense.
+                                If unset, Snippet name will be used.
+                            </span>
+                        </div>
+                    </label>
+                </div>
+                <div><input type="text" id="snippet-description" value="{{snippet.description}}"></div>
+                <div class="no-m">
+                    <label for="snippet-prefix">Snippet Prefix
+                        <div class="tooltip"> [?]
+                            <span class="tooltiptext">Optional description of the snippet displayed by IntelliSense.</span>
+                        </div>
+                    </label>
+                </div>
+                <div><input type="text" id="snippet-prefix" value="{{snippet.prefix}}"></div>
             </div>
-            <div><input type="text" id="snippet-description" value="{{snippet.description}}"></div>
-            <div class="no-m">
-                <label for="snippet-prefix">Snippet Prefix
-                    <div class="tooltip"> [?]
-                        <span class="tooltiptext">Optional description of the snippet displayed by IntelliSense.</span>
-                    </div>
-                </label>
-            </div>
-            <div><input type="text" id="snippet-prefix" value="{{snippet.prefix}}"></div>
-          </div>
         </details>
         <div><input class="saveButton" type="submit" value="Save"></div>
     </form>

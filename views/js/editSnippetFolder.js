@@ -5,10 +5,12 @@
         e.preventDefault();
         const form = document.querySelector('form[name="edit-folder-form"]');
         const snippetLabel = form.elements['folder-name'].value;
+        const snippetIcon = form.elements['folder-icon'].value;
 
         vscode.postMessage({
             data: {
-                label: snippetLabel
+                label: snippetLabel,
+                icon: snippetIcon
             },
             command: 'edit-folder'
         });

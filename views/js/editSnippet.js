@@ -1,4 +1,8 @@
 (function() {
+    // language auto select language
+    const select = document.getElementById('snippet-language');
+    select.value = select.getAttribute('init-value');
+
     // add TAB support
     const snippetValue = document.getElementById('snippet-value');
     snippetValue.addEventListener('keydown', function (e) {
@@ -29,6 +33,7 @@
         const form = document.querySelector('form[name="edit-snippet-form"]');
         const snippetLabel = form.elements['snippet-label'].value;
         const snippetDescription = form.elements['snippet-description'].value;
+        const snippetLanguage = form.elements['snippet-language'].value;
         let snippetPrefix = form.elements['snippet-prefix'].value;
         if (snippetPrefix) {
             snippetPrefix = camelize(snippetPrefix);
@@ -40,6 +45,7 @@
             data: {
                 label: snippetLabel,
                 prefix: snippetPrefix,
+                language: snippetLanguage,
                 description: snippetDescription,
                 value: snippetValue,
                 resolveSyntax: resolveSyntax
