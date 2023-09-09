@@ -81,8 +81,9 @@ export class UIUtility {
             .filter(i => i)
             .reduce((a, b) => a.concat(b), [])
             .filter(i => 0 < (i.aliases?.length ?? 0))
-            .map(i => { 
+            .map(i => {
                 return {
+                    id: i?.id,
                     alias: i?.aliases?.[0],
                     extension: i?.extensions?.[0]
                 };

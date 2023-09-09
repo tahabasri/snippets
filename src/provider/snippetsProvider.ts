@@ -181,6 +181,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
             treeItem.tooltip = snippet.description ? `(${snippet.description})\n${snippet.value}` : `${snippet.value}`;
             treeItem.contextValue = 'snippet';
             treeItem.iconPath = vscode.ThemeIcon.File;
+            treeItem.description = snippet.prefix;
             if (snippet.language) {
                 treeItem.resourceUri = vscode.Uri.parse(`_${snippet.language}`);
             }
