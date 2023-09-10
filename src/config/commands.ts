@@ -42,8 +42,10 @@ export const enum CommandsConsts {
 	wsFixSnippets = "wsSnippetsCmd.fixSnippets",
 }
 
-export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSnippetsProvider: SnippetsProvider, workspaceSnippetsAvailable: boolean) {
+export async function commonAddSnippet(allLanguages: any[], snippetsProvider: SnippetsProvider, 
+	wsSnippetsProvider: SnippetsProvider, workspaceSnippetsAvailable: boolean) {
 	var text: string | undefined;
+	var languageExt = '';
 
 	const editor = vscode.window.activeTextEditor;
 	// if no editor is open or editor has no text, get value from user
@@ -55,6 +57,12 @@ export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSni
 		}
 	} else {
 		text = editor.document.getText(editor.selection);
+		let language = allLanguages.find(l => l.id === editor.document.languageId);
+		// if language is different than plaintext
+		if (language && language.id !== 'plaintext') {
+			languageExt = language.extension;
+		}
+		
 		if (text.length === 0) {
 			vscode.window.showWarningMessage(Labels.noTextSelected);
 			return;
@@ -78,12 +86,12 @@ export async function commonAddSnippet(snippetsProvider: SnippetsProvider, wsSni
 		if (!targetView) {
 			vscode.window.showWarningMessage(Labels.noViewTypeSelected);
 		} else if (targetView === Labels.globalSnippets) {
-			snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
+			snippetsProvider.addSnippet(name, text, Snippet.rootParentId, languageExt);
 		} else if (targetView === Labels.wsSnippets) {
-			wsSnippetsProvider.addSnippet(name, text, Snippet.rootParentId);
+			wsSnippetsProvider.addSnippet(name, text, Snippet.rootParentId, languageExt);
 		}
 	} else {
-		snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
+		snippetsProvider.addSnippet(name, text, Snippet.rootParentId, languageExt);
 	}
 }
 

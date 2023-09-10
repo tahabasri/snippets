@@ -44,10 +44,19 @@ export function activate(context: vscode.ExtensionContext) {
     // sync global snippets
     context.globalState.setKeysForSync([MementoDataAccess.snippetsMementoPrefix]);
 
+    // get all local languages
+    let allLanguages: any[] = UIUtility.getLanguageNamesWithExtensions();
+    // add entry for documents not related to languages (pattern=**)
+    allLanguages.push({
+        id: '**',
+        extension: '',
+        alias: ''
+    });
+
     // initialize global snippets
     const dataAccess = new MementoDataAccess(context.globalState);
     const snippetService = new SnippetService(dataAccess);
-    const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
+    const snippetsProvider = new SnippetsProvider(snippetService, allLanguages);
     let cipDisposable: { dispose(): any } = {
         dispose: function () {
         }
@@ -58,15 +67,6 @@ export function activate(context: vscode.ExtensionContext) {
         }
     };
     let registerGlobalCIPSnippets: (() => vscode.Disposable) | undefined = undefined;
-
-    // get all local languages
-    let allLanguages: any[] = UIUtility.getLanguageNamesWithExtensions();
-    // add entry for documents not related to languages (pattern=**)
-    allLanguages.push({
-        id: '**',
-        extension: '',
-        alias: ''
-    });
     
 
     // make sure lastId is accurate
@@ -240,7 +240,7 @@ export function activate(context: vscode.ExtensionContext) {
                 if (!wsSnippetsExplorer) {
                     const wsDataAccess = new FileDataAccess(snippetsPath);
                     wsSnippetService = new SnippetService(wsDataAccess);
-                    wsSnippetsProvider = new SnippetsProvider(wsSnippetService, context.extensionPath);
+                    wsSnippetsProvider = new SnippetsProvider(wsSnippetService, allLanguages);
 
                     wsSnippetsExplorer = vscode.window.createTreeView('wsSnippetsExplorer', {
                         treeDataProvider: wsSnippetsProvider,
@@ -418,7 +418,7 @@ export function activate(context: vscode.ExtensionContext) {
     //** COMMAND : ADD SNIPPET **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddSnippet,
-        async _ => handleCommand(() => commands.commonAddSnippet(snippetsProvider, wsSnippetsProvider, workspaceSnippetsAvailable))
+        async _ => handleCommand(() => commands.commonAddSnippet(allLanguages, snippetsProvider, wsSnippetsProvider, workspaceSnippetsAvailable))
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalAddSnippet,
@@ -578,6 +578,8 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalImportSnippets,
         async _ => handleCommand(() => commands.importSnippets(snippetsProvider))
     ));
+
+    //** COMMAND : TROUBLESHOOT **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalFixSnippets,
         async _ => handleCommand(() => commands.fixSnippets(snippetsProvider))

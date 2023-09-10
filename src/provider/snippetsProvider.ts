@@ -6,7 +6,7 @@ import { SnippetService } from '../service/snippetService';
 import { Labels } from '../config/Labels';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
-    constructor(private _snippetService: SnippetService, private _extensionPath: string) { }
+    constructor(private _snippetService: SnippetService, private _languagesConfig: any[]) { }
 
     dropMimeTypes: readonly string[] = ['application/vnd.code.tree.snippetsProvider'];
     dragMimeTypes: readonly string[] = ['text/uri-list'];
@@ -97,8 +97,19 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         this.refresh();
     }
 
-    addSnippet(name: string, snippet: string, parentId: number) {
+    addSnippet(name: string, snippet: string, parentId: number, languageExt?: string) {
         let lastId = this._snippetService.incrementLastId();
+
+        let extStartPoint = name.lastIndexOf("\.");
+        
+        if (extStartPoint > 0 && extStartPoint < (name.length-1)) {
+            let extension = name.slice(extStartPoint);
+            let language = this._languagesConfig.find(l => l.extension === extension);
+            if (language) {
+                languageExt = language.extension;
+                name = name.substring(0, extStartPoint);
+            }
+        }
 
         this._snippetService.addSnippet(
             {
@@ -106,6 +117,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 parentId: parentId,
                 label: name,
                 value: snippet,
+                language: languageExt,
                 children: []
             }
         );
