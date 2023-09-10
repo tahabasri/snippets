@@ -75,4 +75,17 @@ export class UIUtility {
         // refer to selected snippet
         return selection;
 	}
+
+    static getLanguageNamesWithExtensions = () => vscode.extensions.all
+            .map(i => <any[]>(i.packageJSON as any)?.contributes?.languages)
+            .filter(i => i)
+            .reduce((a, b) => a.concat(b), [])
+            .filter(i => 0 < (i.aliases?.length ?? 0))
+            .map(i => {
+                return {
+                    id: i?.id,
+                    alias: i?.aliases?.[0],
+                    extension: i?.extensions?.[0]
+                };
+            });
 }

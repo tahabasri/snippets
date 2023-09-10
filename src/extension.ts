@@ -44,11 +44,30 @@ export function activate(context: vscode.ExtensionContext) {
     // sync global snippets
     context.globalState.setKeysForSync([MementoDataAccess.snippetsMementoPrefix]);
 
+    // get all local languages
+    let allLanguages: any[] = UIUtility.getLanguageNamesWithExtensions();
+    // add entry for documents not related to languages (pattern=**)
+    allLanguages.push({
+        id: '**',
+        extension: '',
+        alias: ''
+    });
+
     // initialize global snippets
     const dataAccess = new MementoDataAccess(context.globalState);
     const snippetService = new SnippetService(dataAccess);
-    const snippetsProvider = new SnippetsProvider(snippetService, context.extensionPath);
-    let cipDisposable: { dispose(): any };
+    const snippetsProvider = new SnippetsProvider(snippetService, allLanguages);
+    let cipDisposable: { dispose(): any } = {
+        dispose: function () {
+        }
+    };
+    // useful for non language related snippets
+    let globalCipDisposable: { dispose(): any } = {
+        dispose: function () {
+        }
+    };
+    let registerGlobalCIPSnippets: (() => vscode.Disposable) | undefined = undefined;
+    
 
     // make sure lastId is accurate
     snippetService.fixLastId();
@@ -167,7 +186,9 @@ export function activate(context: vscode.ExtensionContext) {
         } else {
             vscode.commands.executeCommand(setContextCmd, contextWSStateKey, contextWSFileNotAvailable);
         }
-        registerCIPSnippets();
+        if (registerGlobalCIPSnippets) {
+            registerGlobalCIPSnippets();
+        }
     }
 
     async function requestWSConfigSetup(requestInput = true) {
@@ -219,7 +240,7 @@ export function activate(context: vscode.ExtensionContext) {
                 if (!wsSnippetsExplorer) {
                     const wsDataAccess = new FileDataAccess(snippetsPath);
                     wsSnippetService = new SnippetService(wsDataAccess);
-                    wsSnippetsProvider = new SnippetsProvider(wsSnippetService, context.extensionPath);
+                    wsSnippetsProvider = new SnippetsProvider(wsSnippetService, allLanguages);
 
                     wsSnippetsExplorer = vscode.window.createTreeView('wsSnippetsExplorer', {
                         treeDataProvider: wsSnippetsProvider,
@@ -268,50 +289,68 @@ export function activate(context: vscode.ExtensionContext) {
 
     let globalPrefix: any = vscode.workspace.getConfiguration(snippetsConfigKey).get("globalPrefix");
     let camelize: any = vscode.workspace.getConfiguration(snippetsConfigKey).get("camelize");
-    
-    const registerCIPSnippets = () => cipDisposable = vscode.languages.registerCompletionItemProvider(
-        [{ pattern: '**', scheme: 'file' }, { pattern: '**', scheme: 'untitled' }], {
-            provideCompletionItems(document, position) {
-                if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
-                    return;
-                }
-                let isTriggeredByChar: boolean = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
-                // append workspace snippets if WS is available
-                let candidates = snippetService.getAllSnippets();
-                if (workspaceSnippetsAvailable) {
-                    // add suffix for all workspace items
-                    candidates = candidates.concat(wsSnippetService.getAllSnippets().map(
-                        elt => {
-                            elt.label = `${elt.label}`;
-                            elt.description = `${elt.description}__(ws)`;
-                            return elt;
-                        }
-                    ));
-                }
-                return candidates.map(element =>
-                    <vscode.CompletionItem>{
-                        // label = prefix or [globalPrefix]:snippetName
-                        label: element.prefix 
-                                ? element.prefix 
-                                : (globalPrefix ? `${globalPrefix}:` : '') 
-                                    + (camelize // camelize if it's set in preferences
-                                    ? element.label.replace(/-/g, ' ').replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-                                        return index === 0 ? word.toLowerCase() : word.toUpperCase();
-                                      }).replace(/\s+/g, '')
-                                    : element.label.replace(/\n/g, '').replace(/ /g, '-')),
-                        insertText: new vscode.SnippetString(element.value),
-                        detail: element.description?.replace("__(ws)", " (snippet from workspace)"),
-                        kind: vscode.CompletionItemKind.Snippet,
-                        // replace trigger character with the chosen suggestion
-                        additionalTextEdits: isTriggeredByChar
-                            ? [vscode.TextEdit.delete(new vscode.Range(position.with(position.line, position.character - 1), position))]
-                            : []
-                    });
-            },
-        }, triggerCharacter
-    );
 
-    context.subscriptions.push(registerCIPSnippets());
+    const registerCIPSnippetsList: (() => vscode.Disposable)[] = [];
+
+    for (const currentLanguage of allLanguages) {
+        let disposable =  currentLanguage.id === '**' ? globalCipDisposable : cipDisposable;
+        const registerCIPSnippets = () => disposable = vscode.languages.registerCompletionItemProvider(
+            currentLanguage.id === '**' // use pattern filter for non-language snippets
+            ? [{ language: 'plaintext', scheme: 'file' }, { language: 'plaintext', scheme: 'untitled' }]
+            : [{ language: currentLanguage.id, scheme: 'file' }, { language: currentLanguage.id, scheme: 'untitled' }]
+            , {
+                provideCompletionItems(document, position) {
+                    if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
+                        return;
+                    }
+                    let isTriggeredByChar: boolean = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
+                    let candidates = snippetService.getAllSnippets()
+                        .filter(s => (currentLanguage.id === '**' && (s.language === currentLanguage.extension || !s.language)) 
+                                        || s.language === currentLanguage.extension);
+                    // append workspace snippets if WS is available
+                    if (workspaceSnippetsAvailable) {
+                        // add suffix for all workspace items
+                        candidates = candidates.concat(
+                            wsSnippetService.getAllSnippets()
+                                .filter(s => s.language === currentLanguage.extension)
+                                .map(elt => {
+                                    elt.label = `${elt.label}`;
+                                    elt.description = `${elt.description}__(ws)`;
+                                    return elt;
+                                }
+                        ));
+                    }
+                    
+                    return candidates.map(element =>
+                        <vscode.CompletionItem>{
+                            // label = prefix or [globalPrefix]:snippetName
+                            label: element.prefix 
+                                    ? element.prefix 
+                                    : (globalPrefix ? `${globalPrefix}:` : '') 
+                                        + (camelize // camelize if it's set in preferences
+                                        ? element.label.replace(/-/g, ' ').replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+                                            return index === 0 ? word.toLowerCase() : word.toUpperCase();
+                                          }).replace(/\s+/g, '')
+                                        : element.label.replace(/\n/g, '').replace(/ /g, '-')),
+                            insertText: new vscode.SnippetString(element.value),
+                            detail: element.description?.replace("__(ws)", " (snippet from workspace)"),
+                            kind: vscode.CompletionItemKind.Snippet,
+                            // replace trigger character with the chosen suggestion
+                            additionalTextEdits: isTriggeredByChar
+                                ? [vscode.TextEdit.delete(new vscode.Range(position.with(position.line, position.character - 1), position))]
+                                : []
+                        });
+                },
+            }, triggerCharacter
+        );
+        // keep reference of this special one to invoke it on refreshUI
+        if (currentLanguage.id === '**') {
+            registerGlobalCIPSnippets = () => disposable;
+        }
+        registerCIPSnippetsList.push(registerCIPSnippets);
+    };
+
+    registerCIPSnippetsList.forEach(d => context.subscriptions.push(d()));
 
     //** COMMAND : OPEN SNIPPET **/
 
@@ -379,7 +418,7 @@ export function activate(context: vscode.ExtensionContext) {
     //** COMMAND : ADD SNIPPET **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddSnippet,
-        async _ => handleCommand(() => commands.commonAddSnippet(snippetsProvider, wsSnippetsProvider, workspaceSnippetsAvailable))
+        async _ => handleCommand(() => commands.commonAddSnippet(allLanguages, snippetsProvider, wsSnippetsProvider, workspaceSnippetsAvailable))
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalAddSnippet,
@@ -539,6 +578,8 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalImportSnippets,
         async _ => handleCommand(() => commands.importSnippets(snippetsProvider))
     ));
+
+    //** COMMAND : TROUBLESHOOT **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalFixSnippets,
         async _ => handleCommand(() => commands.fixSnippets(snippetsProvider))

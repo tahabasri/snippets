@@ -6,7 +6,7 @@ import { SnippetService } from '../service/snippetService';
 import { Labels } from '../config/Labels';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
-    constructor(private _snippetService: SnippetService, private _extensionPath: string) { }
+    constructor(private _snippetService: SnippetService, private _languagesConfig: any[]) { }
 
     dropMimeTypes: readonly string[] = ['application/vnd.code.tree.snippetsProvider'];
     dragMimeTypes: readonly string[] = ['text/uri-list'];
@@ -97,8 +97,19 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         this.refresh();
     }
 
-    addSnippet(name: string, snippet: string, parentId: number) {
+    addSnippet(name: string, snippet: string, parentId: number, languageExt?: string) {
         let lastId = this._snippetService.incrementLastId();
+
+        let extStartPoint = name.lastIndexOf("\.");
+        
+        if (extStartPoint > 0 && extStartPoint < (name.length-1)) {
+            let extension = name.slice(extStartPoint);
+            let language = this._languagesConfig.find(l => l.extension === extension);
+            if (language) {
+                languageExt = language.extension;
+                name = name.substring(0, extStartPoint);
+            }
+        }
 
         this._snippetService.addSnippet(
             {
@@ -106,6 +117,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 parentId: parentId,
                 label: name,
                 value: snippet,
+                language: languageExt,
                 children: []
             }
         );
@@ -163,7 +175,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
 
     private snippetToTreeItem(snippet: Snippet): vscode.TreeItem {
         let treeItem = new vscode.TreeItem(
-            snippet.label,
+            snippet.label + (snippet.language ? snippet.language : ''),
             snippet.folder && snippet.folder === true
                 ? vscode.TreeItemCollapsibleState.Expanded
                 : vscode.TreeItemCollapsibleState.None
@@ -172,18 +184,19 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         // context value is used in view/item/context in 'when' condition
         if (snippet.folder && snippet.folder === true) {
             treeItem.contextValue = 'snippetFolder';
-            treeItem.iconPath = {
-                light: path.join(this._extensionPath, 'resources', 'icons', 'light', 'folder.svg'),
-                dark: path.join(this._extensionPath, 'resources', 'icons', 'dark', 'folder.svg')
-            };
+            if (snippet.icon) {
+                treeItem.iconPath = new vscode.ThemeIcon(snippet.icon);
+            } else {
+                treeItem.iconPath = vscode.ThemeIcon.Folder;
+            }
         } else {
             treeItem.tooltip = snippet.description ? `(${snippet.description})\n${snippet.value}` : `${snippet.value}`;
             treeItem.contextValue = 'snippet';
-            treeItem.iconPath = {
-                light: path.join(this._extensionPath, 'resources', 'icons', 'light', 'file.svg'),
-                dark: path.join(this._extensionPath, 'resources', 'icons', 'dark', 'file.svg')
-            };
-
+            treeItem.iconPath = vscode.ThemeIcon.File;
+            treeItem.description = snippet.prefix;
+            if (snippet.language) {
+                treeItem.resourceUri = vscode.Uri.parse(`_${snippet.language}`);
+            }
             // conditional in configuration
             treeItem.command = {
                 command: CommandsConsts.commonOpenSnippet,

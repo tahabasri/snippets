@@ -18,9 +18,13 @@ export class EditSnippetFolder extends EditView {
         switch (message.command) {
             case 'edit-folder':
                 const label = message.data.label;
+                const icon = message.data.icon;
                 // call provider only if there is data change
                 if (label) {
                     this._snippet.label = label;
+                }
+                if (icon) {
+                    this._snippet.icon = icon;
                 }
                 this._snippetsProvider.editSnippetFolder(this._snippet);
                 this._panel.dispose();

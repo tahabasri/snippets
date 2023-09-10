@@ -13,9 +13,17 @@
 
 <body>
     <form name="edit-folder-form">
-        <div class="no-m"><label for="folder-name">Folder Name:</label></div>
+        <div class="no-m"><label for="folder-name">Folder Name</label></div>
         <div><input type="text" id="folder-name" value="{{snippet.label}}" required></div>
-        <div><input type="submit" value="Save"></div>
+        <div>
+            <label for="snippet-value">Folder Icon</label>
+            <div class="popup" name="_snippets_syntax">
+                Copy/paste the icon name from
+                <a href="https://microsoft.github.io/vscode-codicons/dist/codicon.html" target="_blank">here</a>
+            </div>
+        </div>
+        <div><input type="text" id="folder-icon" value="{{snippet.icon}}"></div>
+        <div><input class="saveButton" type="submit" value="Save"></div>
     </form>
 </body>
 
