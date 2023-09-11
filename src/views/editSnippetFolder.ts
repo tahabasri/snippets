@@ -23,9 +23,7 @@ export class EditSnippetFolder extends EditView {
                 if (label) {
                     this._snippet.label = label;
                 }
-                if (icon) {
-                    this._snippet.icon = icon;
-                }
+                this._snippet.icon = icon;
                 this._snippetsProvider.editSnippetFolder(this._snippet);
                 this._panel.dispose();
                 return;

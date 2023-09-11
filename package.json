@@ -34,9 +34,7 @@
 		"Bookmark"
 	],
 	"activationEvents": [
-		"onStartupFinished",
-		"onView:snippetsExplorer",
-		"onView:wsSnippetsExplorer"
+		"onStartupFinished"
 	],
 	"main": "./dist/extension",
 	"contributes": {
@@ -213,6 +211,12 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "wsSnippetsCmd.fixSnippets",
+				"title": "Troubleshoot Snippets",
+				"icon": "$(pulse)",
+				"category": "Snippets"
+			},
+			{
 				"command": "globalSnippetsCmd.exportSnippets",
 				"title": "Export Snippets",
 				"icon": "$(cloud-upload)",
@@ -358,6 +362,11 @@
 					"command": "wsSnippetsCmd.addSnippetFromClipboard",
 					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
 					"group": "other"
+				},
+				{
+					"command": "wsSnippetsCmd.fixSnippets",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
+					"group": "other@1"
 				},
 				{
 					"command": "commonSnippetsCmd.refreshEntry",

@@ -311,7 +311,9 @@ export async function fixSnippets(snippetsProvider: SnippetsProvider) {
 					let results = snippetsProvider.fixSnippets();
 					vscode.window.showInformationMessage(
 						(results[0] > 0 || results[1] > 0) 
-						? StringUtility.formatString(Labels.troubleshootResults, results[0].toString(), results[1].toString())
+						? Labels.troubleshootResultsDone + ' '
+							+ (results[0] > 0 ? StringUtility.formatString(Labels.troubleshootResultsDuplicate, results[0].toString()) : '')
+							+ (results[1] > 0 ? ( ' ' + StringUtility.formatString(Labels.troubleshootResultsCorrupted, results[1].toString())) : '')
 						: Labels.troubleshootResultsOk
 					);
 				}
