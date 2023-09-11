@@ -125,7 +125,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         this.sync();
     }
 
-    addSnippetFolder(name: string, parentId: number) {
+    addSnippetFolder(name: string, parentId: number, icon?: string) {
         let lastId = this._snippetService.incrementLastId();
 
         this._snippetService.addSnippet(
@@ -134,6 +134,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 parentId: parentId,
                 label: name,
                 folder: true,
+                icon: icon,
                 children: []
             }
         );
@@ -259,22 +260,25 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 this._snippetService.overrideSnippetId(cs);
             }
         }
-
+        // sync duplicates
+        if (duplicateCount > 0) {
+            this.sync();
+        }
         // extract snippets within non-folders snippets
         var nonFolderSnippets = 
             this._snippetService.getAllSnippetsAndFolders().filter(s=> !s.folder && s.children.length > 0);
         
         if (nonFolderSnippets.length > 0) {
             // create folder for extracted snippets
-            const folderId = this.addSnippetFolder(Labels.troubleshootFolder, Snippet.rootParentId);
+            const folderId = this.addSnippetFolder(Labels.troubleshootFolder, Snippet.rootParentId, 'warning');
             snippets = this._snippetService.getAllSnippetsAndFolders();
             let targetFolder = snippets.find(s => s.id === folderId);
             if (targetFolder) {
-                for (const snippet of nonFolderSnippets) {
+                for (let snippet of nonFolderSnippets) {
                     while (snippet.children.length > 0) {
                         corruptedCount++;
                         // after removing an item, snippet.children gets reduced
-                        let snippetChild = snippet.children[0];
+                        let snippetChild = snippet.children.shift() || snippet.children[0];
                         // remove snippet from original place and add it to the new folder
                         this._snippetService.removeSnippet(snippetChild);
                         // compared to normal addSnippet, we don't bump up lastId here 
@@ -292,6 +296,10 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                     this._snippetService.overrideSnippetId(s);
                 }
             }
+        }
+        // sync corrupted
+        if (corruptedCount > 0) {
+            this.sync();
         }
         return new Array(duplicateCount, corruptedCount);
     }

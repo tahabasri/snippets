@@ -584,6 +584,10 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalFixSnippets,
         async _ => handleCommand(() => commands.fixSnippets(snippetsProvider))
     ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsFixSnippets,
+        async _ => handleCommand(() => commands.fixSnippets(wsSnippetsProvider))
+    ));
     
     context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider('*', {
        async provideDocumentDropEdits(

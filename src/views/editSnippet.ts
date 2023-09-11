@@ -22,18 +22,12 @@ export class EditSnippet extends EditView {
                 if (label !== undefined) {
                     this._snippet.label = label;
                 }
-                if (prefix !== undefined) {
-                    this._snippet.prefix = prefix;
-                }
-                if (language !== undefined) {
-                    this._snippet.language = language;
-                }
-                if (description !== undefined) {
-                    this._snippet.description = description;
-                }
                 if (value !== undefined) {
                     this._snippet.value = value;
                 }
+                this._snippet.language = language;
+                this._snippet.description = description;
+                this._snippet.prefix = prefix;
                 // test against undefined so we don't mess with variable's state if user introduces an explicit value 'false'
                 if (resolveSyntax !== undefined) {
                     this._snippet.resolveSyntax = resolveSyntax;
