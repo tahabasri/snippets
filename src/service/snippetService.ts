@@ -75,6 +75,19 @@ export class SnippetService {
         }
     }
 
+    private _sortArray(arr: Snippet[]) {
+        arr.sort((a, b) => a.label.localeCompare(b.label));
+    }
+
+    private _sortSnippetsAndChildren(snippets: Snippet[]) {
+        this._sortArray(snippets);
+        snippets.forEach((s) => {
+            if (s.folder && s.children.length > 0) {
+                this._sortSnippetsAndChildren(s.children);
+            }
+        });
+    }
+
     private _updateLastId(newId: number): void {
         this._rootSnippet.lastId = newId;
     }
@@ -195,6 +208,19 @@ export class SnippetService {
             if (index > -1 && parentElement.children) {
                 this._reorderArray(parentElement.children, index, index + offset);
             }
+        }
+    }
+
+    sortSnippets(snippet: Snippet) {
+        if (snippet.folder && snippet.children.length > 0) {
+            this._sortArray(snippet.children);
+        }
+    }
+
+    sortAllSnippets() {
+        let snippet = this._rootSnippet;
+        if (snippet.children.length > 0) {
+            this._sortSnippetsAndChildren(snippet.children);
         }
     }
 

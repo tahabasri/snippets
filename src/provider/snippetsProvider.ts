@@ -121,7 +121,6 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 children: []
             }
         );
-
         this.sync();
     }
 
@@ -138,39 +137,42 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 children: []
             }
         );
-
         this.sync();
-
         return lastId;
     }
 
     editSnippet(snippet: Snippet) {
         this._snippetService.updateSnippet(snippet);
-
         this.sync();
     }
 
     editSnippetFolder(snippet: Snippet) {
         this._snippetService.updateSnippet(snippet);
-
         this.sync();
     }
 
     removeSnippet(snippet: Snippet) {
         this._snippetService.removeSnippet(snippet);
-
         this.sync();
     }
 
     moveSnippetUp(snippet: Snippet) {
         this._snippetService.moveSnippet(snippet, -1);
-
         this.sync();
     }
 
     moveSnippetDown(snippet: Snippet) {
         this._snippetService.moveSnippet(snippet, 1);
+        this.sync();
+    }
 
+    sortSnippets(snippet: Snippet) {
+        this._snippetService.sortSnippets(snippet);
+        this.sync();
+    }
+
+    sortAllSnippets() {
+        this._snippetService.sortAllSnippets();
         this.sync();
     }
 

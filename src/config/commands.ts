@@ -29,6 +29,8 @@ export const enum CommandsConsts {
 	globalFixSnippets = "globalSnippetsCmd.fixSnippets",
 	globalExportSnippets = "globalSnippetsCmd.exportSnippets",
 	globalImportSnippets = "globalSnippetsCmd.importSnippets",
+	globalSortSnippets = "globalSnippetsCmd.sortSnippets",
+	globalSortAllSnippets = "globalSnippetsCmd.sortAllSnippets",
 	// ws commands
 	wsAddSnippet = "wsSnippetsCmd.addSnippet",
 	wsAddSnippetFromClipboard = "wsSnippetsCmd.addSnippetFromClipboard",
@@ -40,6 +42,8 @@ export const enum CommandsConsts {
 	wsMoveSnippetUp = "wsSnippetsCmd.moveSnippetUp",
 	wsMoveSnippetDown = "wsSnippetsCmd.moveSnippetDown",
 	wsFixSnippets = "wsSnippetsCmd.fixSnippets",
+	wsSortSnippets = "wsSnippetsCmd.sortSnippets",
+	wsSortAllSnippets = "wsSnippetsCmd.sortAllSnippets",
 }
 
 export async function commonAddSnippet(allLanguages: any[], snippetsProvider: SnippetsProvider, 
