@@ -227,6 +227,30 @@
 				"title": "Import Snippets",
 				"icon": "$(cloud-download)",
 				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.sortSnippets",
+				"title": "Sort Snippets [A-Z]",
+				"icon": "$(list-ordered)",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.sortSnippets",
+				"title": "Sort Snippets [A-Z]",
+				"icon": "$(list-ordered)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.sortAllSnippets",
+				"title": "Sort All Snippets [A-Z]",
+				"icon": "$(list-ordered)",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.sortAllSnippets",
+				"title": "Sort All Snippets [A-Z]",
+				"icon": "$(list-ordered)",
+				"category": "Snippets"
 			}
 		],
 		"menus": {
@@ -304,6 +328,30 @@
 					"when": "false"
 				},
 				{
+					"command": "globalSnippetsCmd.fixSnippets",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.fixSnippets",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.sortSnippets",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.sortSnippets",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.sortAllSnippets",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.sortAllSnippets",
+					"when": "false"
+				},
+				{
 					"command": "globalSnippetsCmd.moveSnippetDown",
 					"when": "false"
 				},
@@ -339,6 +387,11 @@
 					"group": "navigation@3"
 				},
 				{
+					"command": "globalSnippetsCmd.sortAllSnippets",
+					"when": "view == snippetsExplorer",
+					"group": "navigation@4"
+				},
+				{
 					"command": "globalSnippetsCmd.addSnippetFromClipboard",
 					"when": "view == snippetsExplorer",
 					"group": "other@1"
@@ -372,6 +425,11 @@
 					"command": "commonSnippetsCmd.refreshEntry",
 					"when": "view == wsSnippetsExplorer",
 					"group": "navigation@3"
+				},
+				{
+					"command": "wsSnippetsCmd.sortAllSnippets",
+					"when": "view == wsSnippetsExplorer",
+					"group": "navigation@4"
 				}
 			],
 			"view/item/context": [
@@ -468,6 +526,16 @@
 				{
 					"command": "wsSnippetsCmd.moveSnippetDown",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^\\S*:(down|up&down)$/ && snippets.workspaceState == fileAvailable",
+					"group": "inline"
+				},
+				{
+					"command": "globalSnippetsCmd.sortSnippets",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/",
+					"group": "inline"
+				},
+				{
+					"command": "wsSnippetsCmd.sortSnippets",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable && viewItem =~ /^snippetFolder(:\\S+)?$/",
 					"group": "inline"
 				},
 				{

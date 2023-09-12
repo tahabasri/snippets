@@ -565,6 +565,24 @@ export function activate(context: vscode.ExtensionContext) {
         (snippet) => handleCommand(() => wsSnippetsProvider.moveSnippetDown(snippet))
     ));
 
+    //** COMMAND : SORT SNIPPETS **/
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalSortSnippets,
+        (snippet) => handleCommand(() => snippetsProvider.sortSnippets(snippet))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsSortSnippets,
+        (snippet) => handleCommand(() => wsSnippetsProvider.sortSnippets(snippet))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalSortAllSnippets,
+        async _ => handleCommand(() => snippetsProvider.sortAllSnippets())
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsSortAllSnippets,
+        async _ => handleCommand(() => wsSnippetsProvider.sortAllSnippets())
+    ));
+
     //** COMMAND : REFRESH **/
 
     context.subscriptions.push(vscode.commands.registerCommand("commonSnippetsCmd.refreshEntry", _ => refreshUI()));
