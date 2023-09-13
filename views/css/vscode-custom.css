@@ -111,8 +111,16 @@ textarea {
 }
 
 .changelog-header {
-	display: inline-block;
-	position: fixed;
+	display: inline-flex;
+}
+
+.thin-line {
+	border-top: thin;
+}
+
+.changelog-content {
+	text-align: center; 
+	display: inline-table;
 }
 
 input.saveButton {
