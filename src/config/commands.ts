@@ -99,8 +99,9 @@ export async function commonAddSnippet(allLanguages: any[], snippetsProvider: Sn
 	}
 }
 
-export async function addSnippet(snippetsExplorer: vscode.TreeView<Snippet>, snippetsProvider: SnippetsProvider, node: any) {
+export async function addSnippet(allLanguages: any[], snippetsExplorer: vscode.TreeView<Snippet>, snippetsProvider: SnippetsProvider, node: any) {
 	var text: string | undefined;
+	var languageExt = '';
 
 	const editor = vscode.window.activeTextEditor;
 	// if no editor is open or editor has no text, get value from user
@@ -112,6 +113,11 @@ export async function addSnippet(snippetsExplorer: vscode.TreeView<Snippet>, sni
 		}
 	} else {
 		text = editor.document.getText(editor.selection);
+		let language = allLanguages.find(l => l.id === editor.document.languageId);
+		// if language is different than plaintext
+		if (language && language.id !== 'plaintext') {
+			languageExt = language.extension;
+		}
 		if (text.length === 0) {
 			vscode.window.showWarningMessage(Labels.noTextSelected);
 			return;
@@ -130,13 +136,13 @@ export async function addSnippet(snippetsExplorer: vscode.TreeView<Snippet>, sni
 	// When triggering the command with right-click the parameter node of type Tree Node will be tested.
 	// When the command is invoked via the menu popup, this node will be the highlighted node, and not the selected node, the latter will undefined.
 	if (snippetsExplorer.selection.length === 0 && !node) {
-		snippetsProvider.addSnippet(name, text, Snippet.rootParentId);
+		snippetsProvider.addSnippet(name, text, Snippet.rootParentId, languageExt);
 	} else {
 		const selectedItem = node ? node : snippetsExplorer.selection[0];
 		if (selectedItem.folder && selectedItem.folder === true) {
-			snippetsProvider.addSnippet(name, text, selectedItem.id);
+			snippetsProvider.addSnippet(name, text, selectedItem.id, languageExt);
 		} else {
-			snippetsProvider.addSnippet(name, text, selectedItem.parentId ?? Snippet.rootParentId);
+			snippetsProvider.addSnippet(name, text, selectedItem.parentId ?? Snippet.rootParentId, languageExt);
 		}
 	}
 }

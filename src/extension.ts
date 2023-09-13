@@ -19,7 +19,7 @@ import { FileDataAccess } from './data/fileDataAccess';
  */
 export function activate(context: vscode.ExtensionContext) {
     // exact version for which show Changelog panel
-    const changelogVersion = '3.0.0';
+    const changelogVersion = '3.1.0';
 
     //** variables **//
     // global settings
@@ -422,11 +422,11 @@ export function activate(context: vscode.ExtensionContext) {
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalAddSnippet,
-        async (node) => handleCommand(() => commands.addSnippet(snippetsExplorer, snippetsProvider, node))
+        async (node) => handleCommand(() => commands.addSnippet(allLanguages, snippetsExplorer, snippetsProvider, node))
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsAddSnippet,
-        async (node) => handleCommand(() => commands.addSnippet(wsSnippetsExplorer, wsSnippetsProvider, node))
+        async (node) => handleCommand(() => commands.addSnippet(allLanguages, wsSnippetsExplorer, wsSnippetsProvider, node))
     ));
 
     //** COMMAND : ADD SNIPPET FROM CLIPBOARD **/
@@ -548,21 +548,21 @@ export function activate(context: vscode.ExtensionContext) {
     //** COMMAND : MOVE SNIPPET UP **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalMoveSnippetUp,
-        (snippet) => handleCommand(() => snippetsProvider.moveSnippetUp(snippet))
+        (snippet) => handleCommand(() => snippet && snippetsProvider.moveSnippetUp(snippet))
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsMoveSnippetUp,
-        (snippet) => handleCommand(() => wsSnippetsProvider.moveSnippetUp(snippet))
+        (snippet) => handleCommand(() => snippet && wsSnippetsProvider.moveSnippetUp(snippet))
     ));
 
     //** COMMAND : MOVE SNIPPET DOWN **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalMoveSnippetDown,
-        (snippet) => handleCommand(() => snippetsProvider.moveSnippetDown(snippet))
+        (snippet) => handleCommand(() => snippet && snippetsProvider.moveSnippetDown(snippet))
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsMoveSnippetDown,
-        (snippet) => handleCommand(() => wsSnippetsProvider.moveSnippetDown(snippet))
+        (snippet) => handleCommand(() => snippet && wsSnippetsProvider.moveSnippetDown(snippet))
     ));
 
     //** COMMAND : SORT SNIPPETS **/

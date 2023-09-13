@@ -1,4 +1,20 @@
 # Change Log
+### 3.1.0
+
+- [[#81](https://github.com/tahabasri/snippets/pull/81)] Added support for language scope with icons and auto-detect ✌.
+- [[#83](https://github.com/tahabasri/snippets/pull/83)] Added support for alphabetical sort.
+- [[#82](https://github.com/tahabasri/snippets/pull/82)] Added new action `Troubleshoot Snippets`.
+- [[#51](https://github.com/tahabasri/snippets/pull/51)] Added support for folder icons.
+- [[#76](https://github.com/tahabasri/snippets/pull/76)] Fixed tab key on Snippet content editor.
+- [[#80](https://github.com/tahabasri/snippets/pull/80)] Added Snippet prefix and Global prefix in Settings.
+- [[#79](https://github.com/tahabasri/snippets/pull/79)] Unchecked Syntax Resolving for new snippets.
+- [[#78](https://github.com/tahabasri/snippets/pull/78)] Added description field to Snippets.
+- [[#77](https://github.com/tahabasri/snippets/pull/77)] Expanded the Snippet tooltip size.
+- [[#70](https://github.com/tahabasri/snippets/pull/70)] Added support for Drag and Drop into active editor.
+- Added configurable `Camelize` to Snippets labels in IntelliSense (Checked by default).
+- Added Developer Mode setting.
+- Additional bug fixes.
+
 ### 3.0.0
 
 - [[#56](https://github.com/tahabasri/snippets/pull/56)] Added support for drag and drop 🙌.
@@ -36,7 +52,7 @@
 ### 2.0.0
 
 - Use `globalState` as default snippets location. No more files in filesystem !
-- Enable sync using VSCode API.
+- Enable sync using VS Code API.
 - Polish the usability of option `snippets.useWorkspaceFolder`.
 - Refresh snippets across multiple open workspaces in more efficient way.
 - Add GitHub Actions to automate Code Analysis.
