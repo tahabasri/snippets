@@ -12,7 +12,7 @@ export class NewRelease {
     constructor(
         context: vscode.ExtensionContext,
         ) {
-        const title = 'Snippets - What\'s New';
+        const title = 'Snippets — What\'s New';
         const version = context.extension.packageJSON.version;
         this._panel = vscode.window.createWebviewPanel(
             this._viewType,
