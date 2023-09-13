@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Labels } from '../config/Labels';
+import { Labels } from '../config/labels';
 import { Snippet } from '../interface/snippet';
 
 export class UIUtility {

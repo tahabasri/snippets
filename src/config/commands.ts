@@ -3,7 +3,7 @@ import { Snippet } from '../interface/snippet';
 import { SnippetsProvider } from '../provider/snippetsProvider';
 import { UIUtility } from "../utility/uiUtility";
 import { EditSnippet } from '../views/editSnippet';
-import { Labels } from "./Labels";
+import { Labels } from "./labels";
 import { StringUtility } from '../utility/stringUtility';
 
 

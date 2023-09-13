@@ -10,7 +10,7 @@ import { NewRelease } from './views/newRelease';
 import { SnippetService } from './service/snippetService';
 import { UIUtility } from './utility/uiUtility';
 import { StringUtility } from './utility/stringUtility';
-import { Labels } from './config/Labels';
+import { Labels } from './config/labels';
 import { FileDataAccess } from './data/fileDataAccess';
 
 /**

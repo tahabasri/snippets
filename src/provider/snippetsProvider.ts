@@ -3,7 +3,7 @@ import * as path from 'path';
 import { Snippet } from '../interface/snippet';
 import { CommandsConsts } from '../config/commands';
 import { SnippetService } from '../service/snippetService';
-import { Labels } from '../config/Labels';
+import { Labels } from '../config/labels';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
     constructor(private _snippetService: SnippetService, private _languagesConfig: any[]) { }
