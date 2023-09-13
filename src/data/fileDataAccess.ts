@@ -16,7 +16,7 @@ export class FileDataAccess implements DataAccess {
 
     hasNoChild(): boolean {
         const rootElt = this.load();
-        return rootElt instanceof Snippet && (!rootElt.children || rootElt.children.length === 0);
+        return rootElt.hasOwnProperty('children') && !rootElt.children || rootElt.children.length === 0;
     }
 
     setDataFile(dataFile: string) {
