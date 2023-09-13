@@ -621,7 +621,7 @@
 					"markdownDescription": "Default prefix to trigger Snippets suggestions (applicable for Snippets with no prefix). Snippets will be suggested as `prefix:snippetName`. This change requires a window restart."
 				},
 				"snippets.snippetsLocation": {
-					"deprecationMessage": "This is deprecated, the new default storage is VSCode globalState. This enables to sync snippets accross multiple machines. To keep using the file system as storage unit, consider using `#snippets.useWorkspaceFolder#`.",
+					"deprecationMessage": "This is deprecated, the new default storage is VS Code globalState. This enables to sync snippets accross multiple machines. To keep using the file system as storage unit, consider using `#snippets.useWorkspaceFolder#`.",
 					"type": [
 						"string",
 						"null"
@@ -642,7 +642,7 @@
 				},
 				"snippets.camelize": {
 					"type": "boolean",
-					"default": false,
+					"default": true,
 					"markdownDescription": "Set Snippets labels to camel case when displaying suggestions. Snippets with prefix are auto camelized (`awesome-and-cool snippet` => `awesomeAndCoolSnippet`)."
 				},
 				"snippets.expertMode": {

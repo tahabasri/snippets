@@ -1,139 +1,237 @@
-# Snippets for VSCode <!-- omit in toc -->
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/tahabasri.snippets.svg?style=flat-square)
+![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/tahabasri.snippets.svg?style=flat-square)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/tahabasri.snippets.svg?style=flat-square)
+![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/tahabasri.snippets.svg?style=flat-square)
+![GitHub Repo stars](https://img.shields.io/github/stars/tahabasri/snippets)
+![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)
 
-Code snippets are great additions to anyone who wants to save time while developing. They make it easier to enter repeating code, such as loops, complex HTML structures or reusable methods.
+# Snippets — Supercharge Snippets in VS Code
 
-Visual Studio Code already has great support for snippets, including snippets appearance in IntelliSense `(Ctrl+Space)`, tab-completion, as well as a dedicated snippet picker `(Insert Snippet in the Command Palette)`.
+Code snippets are valuable additions for anyone looking to save time during development. They simplify the process of entering repetitive code, such as loops, complex HTML structures or reusable methods.
 
-This extension takes snippets to another level bringing new features which will improve managing code snippets.
+Visual Studio Code already provides robust support for snippets, including their appearance in IntelliSense, tab-completion, and a dedicated snippet picker `(Insert Snippet in the Command Palette)`. This extension takes snippets to another level by introducing new features that enhance code snippet management.
 
-#### Table of contents  <!-- omit in toc -->
-- [Features](#features)
-  - [Create Snippet](#create-snippet)
-  - [Organize Snippets](#organize-snippets)
-  - [Open Snippet](#open-snippet)
-  - [Edit Snippet](#edit-snippet)
-  - [Sync your Snippets](#sync-your-snippets)
-- [Installation](#installation)
-- [Known Issues](#known-issues)
-- [Release Notes](#release-notes)
-- [Feedback](#feedback)
-- [Credits](#credits)
+## Getting Started
+
+Install **Snippets** by one of the following options:
+- clicking `Install` on the banner above
+- searching for `Snippets` from the Extensions side bar in VS Code
+- typing `ext install tahabasri.snippets` from the Command Palette in VS Code
+
+---
+
+[Features](#features) | [FAQ](#faq) | [Known Issues](#known-issues) | [Release Notes](#release-notes) | [Feedback](#feedback) | [Credits](#credits)
 
 ## Features
 
-### Create Snippet
+Boost your productivity with a set of powerful features that enhance snippet management:
 
-You can easily create a snippet from your open editor in VSCode.
+- [Create](#create) — Create Snippets easily with few clicks.
+- [Open](#open) — Open Snippets quickly from anywhere in VS Code.
+- [Search](#search) — Find your Snippet in 2 seconds, or less...
+- [Manage](#manage) — Organize your snippets freely, with no forced order, beyond editing and deleting.
+- [Customize](#customize) — Personalize your Snippets to match your style.
+- [Sync](#sync) — Various options for synchronizing your snippets across multiple devices and users.
+- [Boost](#boost) — Supercharge your snippets to make them more developer-friendly.
+
+## Create
+
+### Create Snippet from open editor
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/01-new-snippet.gif" 
 alt="Create Snippet">
 
-You can add code snippet directly from outside VSCode via your clipboard.
+### Create Snippet directly from the clipboard
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/02-new-snippet-clipboard.gif" 
 alt="Create Snippet from Clipboard">
 
-If you have a command in mind, just add it manually.
+### Create Snippet manually
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/03-new-snippet-manual.gif" 
 alt="Create Snippet Manually">
 
-### Organize Snippets
 
-Drag and drop ! That simple !
+## Open
 
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/056-drag-and-drop.gif" 
-alt="Drag and Drop Snippets">
-
-You have the flexibility to reorder your snippets, there is no forced order.
-
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/04-snippets-reorder.gif" 
-alt="Reorder Snippets">
-
-### Open Snippet
-
-Add your snippet with a single click.
+### Open Snippet with a single click
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/05-open-snippet-click.gif" 
 alt="Open Snippet">
 
-You're a keyboard guru ? Open your snippets using magic key `>` or using IntelliSense (`Ctrl+Space`).
+### Drop Snippet directly into the editor
 
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/051-open-snippet-suggestion.gif" 
-alt="Open Snippet using Suggestions">
+> You may need to hold `Shift` key while dragging to correctly drop the item in the editor.
 
-Your snippet has variables ? No worries.
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/063-drag-and-drop-into-editor.gif" 
+alt="Open Snippet">
 
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/06-open-intelligent-snippet.gif" 
-alt="Open Snippet with Variables">
+### Copy Snippet to Clipboard
 
-Lot of snippets ? Use Command Palette to quickly search for the wanted one.
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/10-copy-to-clipboard.jpg" 
+alt="Copy Snippet to Clipboard">
 
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/07-open-snippet-palette.gif" 
-alt="Open Snippets from Command Palette">
-
-You have some commands for terminal ? Open them directly.
+### Insert Snippet directly into Terminal
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/08-open-snippet-terminal.gif" 
 alt="Open Snippet in Terminal">
 
-### Edit Snippet
+## Search
 
-Edit your snippet easily and benefit from support of VSCode built-in [Snippet Syntax](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax).
+### Use IntelliSense to quickly access all your Snippets
 
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/09-edit-snippet.gif" 
-alt="Edit Snippet">
+> You can set a special key to trigger IntelliSense from the extension settings. Default key is `>`. More about **IntelliSense** [here](https://code.visualstudio.com/docs/editor/intellisense).
 
-### Sync your Snippets
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/051-open-snippet-suggestion.gif" 
+alt="Open Snippet using Suggestions">
 
-#### Sync your Snippets with VSCode
+### Search for Snippets using Command Palette
 
-> **Experimental feature** feel free to [file a bug](https://github.com/tahabasri/snippets/issues/new?labels=bug) as this is still an experimental change.
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/07-open-snippet-palette.gif" 
+alt="Open Snippets from Command Palette">
 
-Starting with version 2.0 and up, *Snippets* supports backup using **VSCode Settings Sync** feature. **This means that you will no longer need to deal with snippets location in your file local machine**. Your snippets will be saved alongside your VSCode data no matter your operating system.
+You can also search directly into the Snippets view similarly to the File Explorer.
 
-Check the [docs](https://code.visualstudio.com/docs/editor/settings-sync) to know more about Settings Sync feature and how to use it.
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/11-native-search.jpg" 
+alt="Native Search">
 
-> Note: **Settings Sync** is still a VSCode preview feature.
+### Preview Snippets before insertion
 
-#### Sync your Snippets with Version Control System
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/006-preview.gif" 
+alt="Preview Snippets">
 
-A huge number of users use a VCS (e.g Git) and they may want to bind snippets to a specific project (e.g share project specific snippets with team members). This is doable using the option `snippets.useWorkspaceFolder`. Once this option is enabled, the extension will read/write snippets from/in `.vscode/snippets.json` if that file is available (extension will ask to create the file for you the first time you enable the option).
+## Manage
 
-> Note: Enabling the option `snippets.useWorkspaceFolder` will omit synchronization via **Settings Sync**. You'll be responsible of backing up the file `.vscode/snippets.json` using your favorite VSC.
+### Drag and drop Snippets from one folder to another
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/056-drag-and-drop.gif" 
+alt="Drag and Drop Snippets">
+
+### Reorder Snippets using Up and Down actions
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/04-snippets-reorder.gif" 
+alt="Reorder Snippets">
+
+### Sort alphabetically a Snippets folder or all your Snippets
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/047-sort-snippets.gif" 
+alt="Reorder Snippets">
+
+## Customize
+### Set icons for your folders
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/051-folder-icons.gif" 
+alt="Set Folder Icon">
+
+### Add a description to your Snippet
+
+> Descriptions show when hovering on top of a Snippet and in IntelliSense.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/064-description.gif" 
+alt="Set Snippet Description">
+
+### Add a prefix to your Snippet
+
+> When displaying Snippets using IntelliSense, custom prefix will be used instead of the original Snippet label. A prefix is a recommended shortcut for Snippets with long labels.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/042-prefix.gif" 
+alt="Set Snippet Prefix">
+
+### Prefix all your Snippets
+
+You can set a prefix for all your snippets to distinguish them from other VS Code snippets.
+- set a keyword for the setting `Snippets: Global Prefix` e.g `snipp`
+- suggestions coming from your custom Snippets will be prefixed in IntelliSense 
+
+> An [explicit prefix](#add-a-prefix-to-your-snippet) in a single Snippet will override Global Prefix settings.
+> 
+> For example, if the global prefix in your settings is set to `foo`, and a custom snippet is explicitly prefixed with `boo`, the latter will be displayed in IntelliSense as `boo`. All other snippets with no explicit prefix will be displayed as `foo`.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/12-global-prefix.jpg" 
+alt="Global Prefix">
+
+
+## Sync
+
+### Import and Export Snippets using JSON files
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/13-import-export.jpg" 
+alt="Import and Export Snippets">
+
+### Sync Snippets between multiple devices
+
+> **⚠ Experimental feature:** feel free to [file a bug](https://github.com/tahabasri/snippets/issues/new?labels=bug) as this is still an experimental change.
+
+Starting with version 2.0 and up, *Snippets* supports backup using **VS Code Settings Sync** feature. Your snippets will be saved alongside your VS Code data no matter your operating system.
+
+Check the [docs](https://code.visualstudio.com/docs/editor/settings-sync) to know more about **Settings Sync** feature and how to use it.
+
+### Sync your Snippets with a Version Control System
+
+A large number of users utilize a VCS (e.g Git) and may need to associate a set of snippets with a specific project (e.g sharing project-specific snippets with team members). This can be achieved by enabling the `snippets.useWorkspaceFolder` setting. Once this option is enabled, the extension will read/write snippets to/from the `.vscode/snippets.json` file if it's available (the extension will prompt you to create the file the first time you enable this option).
+
+> Note: Workspace snippets are excluded from synchronization via **Settings Sync**. You will be responsible for backing up the `.vscode/snippets.json` file using your favorite VSC.
+
+
+## Boost
+
+### Bind Snippets to Programming Languages
+
+Snippets created from a language specific editor/file will keep reference of the programming language used. The same Snippet will be suggested only in editors/files of same programming language.
+
+> A Snippet bound to a programming language will get an icon for that particular language natively.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/038-language-scope.gif" 
+alt="Bind Snippets to Languages">
+
+You can explicitly set a programming language by appending the language file extension to the Snippet name at the creation prompt.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/038-language-scope-by-name.gif" 
+alt="Manually Bind Snippets to Languages">
+
+### Resolve Snippet Syntax
+
+> Learn more about the Snippet syntax [here](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax).
+> 
+> Option to **Resolve Snippet Syntax** is disabled by default for new Snippets, you may need to edit the Snippet to enable it.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/06-open-intelligent-snippet.gif" 
+alt="Open Snippet with Variables">
 
 **Enjoy!**
 
-## Installation
+## FAQ
 
-Open VSCode and type ctrl+P, type `ext install tahabasri.snippets`.
+### Q: Is there a limit on the number of snippets/folders I can create?
+**A: There is no limit; your disk space is the only limitation.**
+
+### Q: I'm feeling overwhelmed by multiple snippets. How can I better organize them?
+**A: Check this [section](#manage) for available organizational features**
+
+### Q: Clicking "Request to Initialize File" does nothing. What should I do?
+**A: If you're attempting to initialize the snippets file for a new [workspace](#sync-your-snippets-with-a-version-control-system) and nothing happens, ensure that the path to your current folder open in VS Code has the correct file permissions.**
 
 ## Known Issues
 
 ### Troubleshoot Snippets
 
-- The new option "Troubleshoot Snippets" will help fixing common issues:
-  - old snippets not appearing
-  - moving snippets not working
-  - vanishing new snippets
+- The new "Troubleshoot Snippets" option helps fix common issues, including:
+  - Old snippets not appearing.
+  - Moving snippets not working.
+  - New snippets disappearing.
 
-This is generally caused by two features conflicting at the same time; moving snippets and syncing them simultaneously. Fortunately, no snippet should be lost for good. All of them are stored locally, but the database being inconsistent is causing the snippets to be invisible.
+These issues often arise when two conflicting features, moving snippets and syncing them simultaneously, are in use. Fortunately, no snippets should be permanently lost. They are all stored locally, but inconsistencies in the database can make the snippets temporarily invisible.
 
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/issues/67-fix-snippets.gif" 
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/issues/068-troubleshoot-snippets.gif" 
 alt="Fix Snippets">
 
-### Upgrade to version 2+
+### Files Permissions on Windows
 
-- **With version 1.2 and bellow**, there was an issue regarding permissions when trying to change snippets location. In Windows in particular, changing location to some restricted folders (e.g `C:\\`) caused the extension to rollback to default path. This is due to lack of permissions on files from within VSCode itself.
-
-We recommend **upgrading to version 2+** to fix such issues.
-
-<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/issues/01-issue-windows-permissions.png" 
-alt="Permissions issue">
+You may encounter some inconsistencies when dealing with snippets on Windows. The first thing to check is whether all related VS Code files are accessible and if any folder permissions are affecting accessibility.
 
 ## Release Notes
 
-Check [CHANGELOG.md](CHANGELOG.md) for full release notes.
+Check the [CHANGELOG](CHANGELOG.md) for full release notes.
 
 ## Feedback
 
@@ -141,6 +239,5 @@ Check [CHANGELOG.md](CHANGELOG.md) for full release notes.
 * [File a bug](https://github.com/tahabasri/snippets/issues/new?labels=bug).
 
 ### Credits
-- <div>Icons made by <a href="https://www.flaticon.com/authors/darius-dan" title="Darius Dan">Darius Dan</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
-- <span>Social Preview Background Photo by <a href="https://unsplash.com/@jjying?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">JJ Ying</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+- <span>GitHub Repo Social Preview Background Photo by <a href="https://unsplash.com/@jjying?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">JJ Ying</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
