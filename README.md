@@ -3,6 +3,7 @@
 ![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/tahabasri.snippets.svg?style=flat-square)
 ![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/tahabasri.snippets.svg?style=flat-square)
 ![GitHub Repo stars](https://img.shields.io/github/stars/tahabasri/snippets)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/tahabasri/snippets/unit-tests.yml)
 ![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)
 
 # Snippets — Supercharge Snippets in VS Code
