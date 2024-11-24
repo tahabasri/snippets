@@ -372,6 +372,18 @@ export function activate(context: vscode.ExtensionContext) {
             if (!snippet) {
                 return;
             }
+            // Confirmation dialog before copying the snippet to the open editor
+            const confirm = await vscode.window.showInformationMessage(
+                `Do you want to insert the snippet "${snippet.label}"?`,
+                { modal: true },
+                "Yes",
+                "No"
+            );
+            if (confirm !== "Yes") {
+                vscode.window.showInformationMessage("Snippet insertion canceled.");
+                return;
+            }
+
             // 3.1 update: disable syntax resolving by default if property is not yet defined in JSON
             if (snippet.resolveSyntax === undefined) {
                 snippet.resolveSyntax = false;
@@ -407,13 +419,41 @@ export function activate(context: vscode.ExtensionContext) {
             if (!snippet) {
                 return;
             }
+            // Confirmation dialog before copying the snippet to the terminal
+            const confirm = await vscode.window.showInformationMessage(
+                `Do you want to insert the snippet "${snippet.label}"?`,
+                { modal: true },
+                "Yes",
+                "No"
+            );
+            if (confirm !== "Yes") {
+                vscode.window.showInformationMessage("Snippet insertion canceled.");
+                return;
+            }
+
             terminal.sendText(snippet.value, vscode.workspace.getConfiguration('snippets').get('runCommandInTerminal'));
         })
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonCopySnippetToClipboard,
-        async (snippet) => handleCommand(async () => vscode.env.clipboard.writeText(snippet.value))
-    ));
+        async (snippet) => handleCommand(async () =>{
+            // Confirmation dialog before copying the snippet to the clipboard
+            const confirm = await vscode.window.showInformationMessage(
+                `Do you want to copy the snippet "${snippet.label}" to the clipboard?`,
+                { modal: true },
+                "Yes",
+                "No"
+            );
+            if (confirm !== "Yes") {
+                vscode.window.showInformationMessage("Snippet copying to clipboard canceled.");
+                return;
+            }
+
+            vscode.env.clipboard.writeText(snippet.value);
+            vscode.window.showInformationMessage(`Snippet "${snippet.label}" copied to clipboard.`);
+        }))
+        
+    );
 
     //** COMMAND : ADD SNIPPET **/
 
