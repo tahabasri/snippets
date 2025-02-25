@@ -7,7 +7,6 @@ export class FileDataAccess implements DataAccess {
     static dataFileExt = '.json';
     private static dataFileName = `data${FileDataAccess.dataFileExt}`;
 
-    private _encoding = 'utf8';
     private _dataFile: string;
 
     constructor(dataFile: string) {
@@ -31,13 +30,13 @@ export class FileDataAccess implements DataAccess {
         if (!fs.existsSync(this._dataFile)) {
             this.save(DataAccessConsts.defaultRootElement);
         }
-        let rawData = fs.readFileSync(this._dataFile, this._encoding);
+        let rawData = fs.readFileSync(this._dataFile, { encoding: 'utf8' });
         
         if (this.isBlank(rawData)) {
             this.save(DataAccessConsts.defaultRootElement);
         }
 
-        rawData = fs.readFileSync(this._dataFile, this._encoding);
+        rawData = fs.readFileSync(this._dataFile, { encoding: 'utf8' });
         return JSON.parse(rawData);
     }
 

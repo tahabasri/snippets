@@ -12,6 +12,7 @@ import { UIUtility } from './utility/uiUtility';
 import { StringUtility } from './utility/stringUtility';
 import { Labels } from './config/labels';
 import { FileDataAccess } from './data/fileDataAccess';
+import { LoggingUtility } from './utility/loggingUtility';
 
 /**
  * Activate extension by initializing views for snippets and feature commands.
@@ -67,7 +68,6 @@ export function activate(context: vscode.ExtensionContext) {
         }
     };
     let registerGlobalCIPSnippets: (() => vscode.Disposable) | undefined = undefined;
-    
 
     // make sure lastId is accurate
     snippetService.fixLastId();
@@ -155,6 +155,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.workspace.onDidChangeConfiguration(event => {
         let affected = event.affectsConfiguration(`${snippetsConfigKey}.${useWorkspaceFolderKey}`);
         if (affected) {
+            LoggingUtility.getInstance().debug('Workspace setting changed');
             if (vscode.workspace.getConfiguration(snippetsConfigKey).get(useWorkspaceFolderKey)) {
                 requestWSConfigSetup();
             }
@@ -177,6 +178,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     //** common logic **//
     function refreshUI() {
+        LoggingUtility.getInstance().debug('Refreshing UI');
+        // dispose CIP snippets
         cipDisposable?.dispose();
         snippetsProvider.refresh();
         // re-check if .vscode/snippets.json is always available (use case when deleting file after enabling workspace in settings)
@@ -193,6 +196,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     async function requestWSConfigSetup(requestInput = true) {
         if (vscode.workspace.workspaceFolders && vscode.workspace.getConfiguration(snippetsConfigKey).get(useWorkspaceFolderKey)) {
+            LoggingUtility.getInstance().info('Configuring Workspace Configuration');
             snippetsPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, workspaceFileName);
             // request creation of file `.vscode/snippets.json` if :
             // - file not found
@@ -219,6 +223,7 @@ export function activate(context: vscode.ExtensionContext) {
                         fs.closeSync(fs.openSync(snippetsPath, 'w'));
                         // mark useWorkspaceFolder as enabled
                         workspaceSnippetsAvailable = true;
+                        LoggingUtility.getInstance().debug('Workspace Configuration Enabled');
                     } else if (selection === Labels.snippetsWorkspaceCreateFileRequestIgnore) {
                         // ignore at workspace level
                         context.workspaceState.update(ignoreCreateSnippetsFileKey, true);
@@ -263,6 +268,7 @@ export function activate(context: vscode.ExtensionContext) {
     function handleCommand(callback: (...args: any[]) => any) {
         new Promise(callback).catch(error => {
             vscode.window.showErrorMessage(StringUtility.formatString(Labels.genericError, error.message));
+            LoggingUtility.getInstance().error(JSON.stringify(error));
             refreshUI();
         });
     }
@@ -286,6 +292,7 @@ export function activate(context: vscode.ExtensionContext) {
     if (!triggerCharacter) {
         triggerCharacter = "snp"; // placeholder which is not a simple character in order to trigger IntelliSense
     }
+    LoggingUtility.getInstance().debug('Trigger Character : ' + triggerCharacter);
 
     let globalPrefix: any = vscode.workspace.getConfiguration(snippetsConfigKey).get("globalPrefix");
     let camelize: any = vscode.workspace.getConfiguration(snippetsConfigKey).get("camelize");
@@ -303,6 +310,7 @@ export function activate(context: vscode.ExtensionContext) {
                     if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
                         return;
                     }
+                    LoggingUtility.getInstance().debug('Registering completion items for language : ' + currentLanguage.id);
                     let isTriggeredByChar: boolean = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
                     let candidates = snippetService.getAllSnippets()
                         .filter(s => (currentLanguage.id === '**' && (s.language === currentLanguage.extension || !s.language)) 
@@ -320,8 +328,8 @@ export function activate(context: vscode.ExtensionContext) {
                                 }
                         ));
                     }
-                    
-                    return candidates.map(element =>
+                    LoggingUtility.getInstance().debug(`Unmapped Completion Items for language ${currentLanguage.id}: ${JSON.stringify(candidates)}`);
+                    let filteredCandidates = candidates.map(element =>
                         <vscode.CompletionItem>{
                             // label = prefix or [globalPrefix]:snippetName
                             label: element.prefix 
@@ -340,6 +348,8 @@ export function activate(context: vscode.ExtensionContext) {
                                 ? [vscode.TextEdit.delete(new vscode.Range(position.with(position.line, position.character - 1), position))]
                                 : []
                         });
+                    LoggingUtility.getInstance().debug(`Mapped Completion Items for language ${currentLanguage.id}: ${JSON.stringify(candidates)}`);
+                    return filteredCandidates;
                 },
             }, triggerCharacter
         );
