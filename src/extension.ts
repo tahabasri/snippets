@@ -379,7 +379,7 @@ export function activate(context: vscode.ExtensionContext) {
                 }
                 snippet = await UIUtility.requestSnippetFromUser(allSnippets);
             }
-            if (!snippet) {
+            if (!snippet || !snippet.value) {
                 return;
             }
             // 3.1 update: disable syntax resolving by default if property is not yet defined in JSON
@@ -414,7 +414,7 @@ export function activate(context: vscode.ExtensionContext) {
                 }
                 snippet = await UIUtility.requestSnippetFromUser(allSnippets);
             }
-            if (!snippet) {
+            if (!snippet || !snippet.value) {
                 return;
             }
             terminal.sendText(snippet.value, vscode.workspace.getConfiguration('snippets').get('runCommandInTerminal'));
