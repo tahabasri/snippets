@@ -76,7 +76,8 @@ export class UIUtility {
         return selection;
 	}
 
-    static getLanguageNamesWithExtensions = () => vscode.extensions.all
+    static getLanguageNamesWithExtensions = () => {
+        const languages = vscode.extensions.all
             .map(i => <any[]>(i.packageJSON as any)?.contributes?.languages)
             .filter(i => i)
             .reduce((a, b) => a.concat(b), [])
@@ -88,4 +89,17 @@ export class UIUtility {
                     extension: i?.extensions?.[0]
                 };
             });
+
+        // Remove duplicates based on language ID
+        const uniqueLanguages = new Map<string, { id: string, alias: string, extension: string }>();
+        languages.forEach(language => {
+            if (!uniqueLanguages.has(language.id)) {
+                uniqueLanguages.set(language.id, language);
+            }
+        });
+
+        // sort by alias
+        return Array.from(uniqueLanguages.values())
+            .sort((a, b) => a.alias.localeCompare(b.alias));
+    };
 }
