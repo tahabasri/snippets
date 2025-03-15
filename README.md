@@ -212,6 +212,9 @@ alt="Open Snippet with Variables">
 ### Q: Clicking "Request to Initialize File" does nothing. What should I do?
 **A: If you're attempting to initialize the snippets file for a new [workspace](#sync-your-snippets-with-a-version-control-system) and nothing happens, ensure that the path to your current folder open in VS Code has the correct file permissions.**
 
+### Q: Can I specify the cursor position so that, when the snippet is added, the cursor is moved to a particular position?
+**A: Yes, you can enable `Resolve Snippet Syntax` for a particular snippet and use [VS Code Tab Stops](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_tabstops).**
+
 ## Known Issues
 
 ### Troubleshoot Snippets

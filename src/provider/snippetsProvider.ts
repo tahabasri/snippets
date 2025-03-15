@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { Snippet } from '../interface/snippet';
 import { CommandsConsts } from '../config/commands';
 import { SnippetService } from '../service/snippetService';
 import { Labels } from '../config/labels';
+import { LoggingUtility } from '../utility/loggingUtility';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
     constructor(private _snippetService: SnippetService, private _languagesConfig: any[]) { }
@@ -87,12 +87,14 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
 
     // only read from data file
     refresh(): void {
+        LoggingUtility.getInstance().debug(`Refreshing snippets`);
         this._snippetService.refresh();
         this._onDidChangeTreeData.fire();
     }
 
     // save state of snippets, then refresh
     sync(): void {
+        LoggingUtility.getInstance().debug(`Syncing snippets`);
         this._snippetService.saveSnippets();
         this.refresh();
     }
@@ -288,11 +290,13 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                         // => only update parentId
                         snippetChild.parentId = targetFolder.id;
                         this._snippetService.addExistingSnippet(snippetChild);
+                        LoggingUtility.getInstance().debug(`Fixed corrupted snippet ${JSON.stringify(snippetChild)}`);
                     }
                 }
                 // fix duplicate ids
                 let unorganizedSnippets: Snippet[] = [];
                 SnippetService.flattenAndKeepFolders(targetFolder.children, unorganizedSnippets);
+                LoggingUtility.getInstance().debug(`Fixing duplicate ids (${JSON.stringify(unorganizedSnippets)})`);
                 for (const s of unorganizedSnippets.filter(s=>s.children.length === 0)) {
                     // increment last snippet Id
                     this._snippetService.overrideSnippetId(s);
@@ -301,6 +305,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         }
         // sync corrupted
         if (corruptedCount > 0) {
+            LoggingUtility.getInstance().debug(`Corrupted Count: ${corruptedCount}`);
             this.sync();
         }
         return new Array(duplicateCount, corruptedCount);

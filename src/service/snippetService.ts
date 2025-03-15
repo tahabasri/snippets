@@ -1,6 +1,7 @@
 import { DataAccess } from "../data/dataAccess";
 import { FileDataAccess } from "../data/fileDataAccess";
 import { Snippet } from "../interface/snippet";
+import { LoggingUtility } from "../utility/loggingUtility";
 
 export class SnippetService {
     private _rootSnippet: Snippet;
@@ -110,6 +111,7 @@ export class SnippetService {
         let snippetIds = this.getAllSnippetsAndFolders().map(s=>s.id);
         const maxId = Math.max.apply(Math, snippetIds);
         if (this._rootSnippet.lastId && this._rootSnippet.lastId < maxId) {
+            LoggingUtility.getInstance().debug(`Fixed last id, maxId=${maxId} & rootSnippet.lastId=${this._rootSnippet.lastId}`);
             this._updateLastId(maxId);
         }
     }
@@ -229,6 +231,7 @@ export class SnippetService {
         if (parentElement) {
             // save file using destroyable instance of FileDataAccess
             new FileDataAccess(destinationPath).save(parentElement);
+            LoggingUtility.getInstance().info(`Exported snippets to destination (${destinationPath})`);
         }
     }
 
@@ -241,5 +244,6 @@ export class SnippetService {
         let newSnippets: Snippet = new FileDataAccess(destinationPath).load();
         this._rootSnippet.children = newSnippets.children;
         this._rootSnippet.lastId = newSnippets.lastId;
+        LoggingUtility.getInstance().info(`Imported snippets from source (${destinationPath})`);
     }
 }

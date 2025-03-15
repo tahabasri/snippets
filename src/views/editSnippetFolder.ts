@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { Snippet } from '../interface/snippet';
 import { SnippetsProvider } from '../provider/snippetsProvider';
 import { EditView } from './editView';
+import { LoggingUtility } from '../utility/loggingUtility';
 
 export class EditSnippetFolder extends EditView {
     constructor(context: vscode.ExtensionContext, private _snippet: Snippet, private _snippetsProvider: SnippetsProvider) {
@@ -15,6 +16,7 @@ export class EditSnippetFolder extends EditView {
     }
 
     handleReceivedMessage(message: any): any {
+        LoggingUtility.getInstance().debug(`EditSnippetFolder Message Received ${JSON.stringify(message)}`);
         switch (message.command) {
             case 'edit-folder':
                 const label = message.data.label;
