@@ -31,6 +31,15 @@
     document.querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
         const form = document.querySelector('form[name="edit-snippet-form"]');
+
+        // Ensure all fields are synchronized before submitting
+        form.elements['snippet-label'].dispatchEvent(new Event('input'));
+        form.elements['snippet-description'].dispatchEvent(new Event('input'));
+        form.elements['snippet-language'].dispatchEvent(new Event('change'));
+        form.elements['snippet-prefix'].dispatchEvent(new Event('input'));
+        form.elements['snippet-value'].dispatchEvent(new Event('input'));
+        form.elements['snippet-resolveSyntax'].dispatchEvent(new Event('change'));
+        
         const snippetLabel = form.elements['snippet-label'].value;
         const snippetDescription = form.elements['snippet-description'].value;
         const snippetLanguage = form.elements['snippet-language'].value;
