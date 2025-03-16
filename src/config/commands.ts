@@ -5,12 +5,14 @@ import { UIUtility } from "../utility/uiUtility";
 import { EditSnippet } from '../views/editSnippet';
 import { Labels } from "./labels";
 import { StringUtility } from '../utility/stringUtility';
+import { SnippetService } from '../service/snippetService';
 
 
 export const enum CommandsConsts {
 	miscRequestWSConfig = "miscCmd.requestWSConfig",
 	// common commands across global & ws
 	commonOpenSnippet = "globalSnippetsCmd.openSnippet",
+	commonOpenSnippetButton = "globalSnippetsCmd.openSnippetButton",
 	commonOpenSnippetInTerminal = "globalSnippetsCmd.openSnippetInTerminal",
 	commonCopySnippetToClipboard = "globalSnippetsCmd.copySnippetToClipboard",
 	commonAddSnippet = "commonSnippetsCmd.addSnippet",
@@ -97,6 +99,43 @@ export async function commonAddSnippet(allLanguages: any[], snippetsProvider: Sn
 	} else {
 		snippetsProvider.addSnippet(name, text, Snippet.rootParentId, languageExt);
 	}
+}
+
+export async function openSnippet(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService,
+		workspaceSnippetsAvailable: boolean, actionButtonsEnabled?: boolean) {
+	const editor = vscode.window.activeTextEditor;
+	if (!editor) {
+		vscode.window.showInformationMessage(Labels.noOpenEditor);
+		return;
+	}
+	// if command is not triggered from treeView, a snippet must be selected by final user
+	if (!snippet) {
+		let allSnippets = snippetService.getAllSnippets();
+		if (workspaceSnippetsAvailable) {
+			allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+		}
+		snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+	// skip if command is triggered from treeview and not from action buttons when action buttons are enabled
+	} else if (snippet && actionButtonsEnabled) {
+		return;
+	}
+	if (!snippet || !snippet.value) {
+		return;
+	}
+	// 3.1 update: disable syntax resolving by default if property is not yet defined in JSON
+	if (snippet.resolveSyntax === undefined) {
+		snippet.resolveSyntax = false;
+	}
+	if (snippet.resolveSyntax) {
+		vscode.commands.executeCommand("editor.action.insertSnippet", { snippet: snippet.value }
+		);
+	} else {
+		editor.edit(edit => {
+			edit.insert(editor.selection.start, snippet.value ?? '');
+		});
+	}
+
+	vscode.window.showTextDocument(editor.document);
 }
 
 export async function addSnippet(allLanguages: any[], snippetsExplorer: vscode.TreeView<Snippet>, snippetsProvider: SnippetsProvider, node: any) {

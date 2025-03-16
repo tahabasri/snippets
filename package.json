@@ -185,6 +185,12 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "globalSnippetsCmd.openSnippetButton",
+				"title": "Open Snippet",
+				"icon": "$(notebook-open-as-text)",
+				"category": "Snippets"
+			},
+			{
 				"command": "globalSnippetsCmd.moveSnippetUp",
 				"title": "Move Snippet Up",
 				"icon": "$(marker-navigation-previous)",
@@ -324,6 +330,10 @@
 					"when": "false"
 				},
 				{
+					"command": "globalSnippetsCmd.openSnippetButton",
+					"when": "false"
+				},
+				{
 					"command": "globalSnippetsCmd.moveSnippetUp",
 					"when": "false"
 				},
@@ -439,18 +449,23 @@
 			"view/item/context": [
 				{
 					"command": "globalSnippetsCmd.openSnippet",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == inline",
 					"group": "1_snippets@1"
+				},
+				{
+					"command": "globalSnippetsCmd.openSnippetButton",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == button",
+					"group": "1_snippets@2"
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippetInTerminal",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
-					"group": "1_snippets@2"
+					"group": "1_snippets@3"
 				},
 				{
 					"command": "globalSnippetsCmd.copySnippetToClipboard",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
-					"group": "1_snippets@3"
+					"group": "1_snippets@4"
 				},
 				{
 					"command": "globalSnippetsCmd.addSnippet",
@@ -483,16 +498,6 @@
 					"group": "2_snippetManagement@3"
 				},
 				{
-					"command": "globalSnippetsCmd.editSnippetFolder",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/",
-					"group": "4_folderManagement@2"
-				},
-				{
-					"command": "wsSnippetsCmd.editSnippetFolder",
-					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
-					"group": "4_folderManagement@2"
-				},
-				{
 					"command": "globalSnippetsCmd.deleteSnippet",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
 					"group": "2_snippetManagement@4"
@@ -503,14 +508,39 @@
 					"group": "2_snippetManagement@4"
 				},
 				{
+					"command": "globalSnippetsCmd.addSnippetFolder",
+					"when": "view == snippetsExplorer",
+					"group": "3_folderManagement@1"
+				},
+				{
+					"command": "wsSnippetsCmd.addSnippetFolder",
+					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
+					"group": "3_folderManagement@1"
+				},
+				{
+					"command": "globalSnippetsCmd.editSnippetFolder",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/",
+					"group": "3_folderManagement@2"
+				},
+				{
+					"command": "wsSnippetsCmd.editSnippetFolder",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "3_folderManagement@2"
+				},
+				{
 					"command": "globalSnippetsCmd.deleteSnippetFolder",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/",
-					"group": "4_folderManagement@3"
+					"group": "3_folderManagement@3"
 				},
 				{
 					"command": "wsSnippetsCmd.deleteSnippetFolder",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippetFolder(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
-					"group": "4_folderManagement@3"
+					"group": "3_folderManagement@3"
+				},
+				{
+					"command": "globalSnippetsCmd.openSnippetButton",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == button",
+					"group": "inline"
 				},
 				{
 					"command": "globalSnippetsCmd.moveSnippetUp",
@@ -543,29 +573,24 @@
 					"group": "inline"
 				},
 				{
-					"command": "globalSnippetsCmd.addSnippetFolder",
-					"when": "view == snippetsExplorer",
-					"group": "4_folderManagement@1"
-				},
-				{
-					"command": "wsSnippetsCmd.addSnippetFolder",
-					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
-					"group": "4_folderManagement@1"
-				},
-				{
 					"command": "globalSnippetsCmd.openSnippet",
-					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == inline",
 					"group": "1_snippets@1"
+				},
+				{
+					"command": "globalSnippetsCmd.openSnippetButton",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == button",
+					"group": "1_snippets@2"
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippetInTerminal",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
-					"group": "1_snippets@2"
+					"group": "1_snippets@3"
 				},
 				{
 					"command": "globalSnippetsCmd.copySnippetToClipboard",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
-					"group": "1_snippets@3"
+					"group": "1_snippets@4"
 				}
 			],
 			"editor/context": [
@@ -653,6 +678,11 @@
 					"type": "boolean",
 					"default": false,
 					"markdownDescription": "I know what I'm doing : \n- Advanced Options visible when editing a snippet."
+				},
+				"snippets.openButton": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Click on Open button to open snippet in editor. This will disable openning snippet by clicking on snippet name."
 				}
 			}
 		}
