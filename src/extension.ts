@@ -13,6 +13,7 @@ import { StringUtility } from './utility/stringUtility';
 import { Labels } from './config/labels';
 import { FileDataAccess } from './data/fileDataAccess';
 import { LoggingUtility } from './utility/loggingUtility';
+import { DecorationProvider } from './provider/decorationProvider';
 
 /**
  * Activate extension by initializing views for snippets and feature commands.
@@ -61,7 +62,9 @@ export function activate(context: vscode.ExtensionContext) {
     // initialize global snippets
     const dataAccess = new MementoDataAccess(context.globalState);
     const snippetService = new SnippetService(dataAccess);
-    const snippetsProvider = new SnippetsProvider(snippetService, allLanguages);
+    const decorationProvider = new DecorationProvider();
+    context.subscriptions.push(decorationProvider);
+    const snippetsProvider = new SnippetsProvider(snippetService, allLanguages, decorationProvider);
     let cipDisposable: { dispose(): any } = {
         dispose: function () {
         }
@@ -254,7 +257,7 @@ export function activate(context: vscode.ExtensionContext) {
                 if (!wsSnippetsExplorer) {
                     const wsDataAccess = new FileDataAccess(snippetsPath);
                     wsSnippetService = new SnippetService(wsDataAccess);
-                    wsSnippetsProvider = new SnippetsProvider(wsSnippetService, allLanguages);
+                    wsSnippetsProvider = new SnippetsProvider(wsSnippetService, allLanguages, decorationProvider);
 
                     wsSnippetsExplorer = vscode.window.createTreeView('wsSnippetsExplorer', {
                         treeDataProvider: wsSnippetsProvider,

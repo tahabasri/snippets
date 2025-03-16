@@ -4,9 +4,10 @@ import { CommandsConsts } from '../config/commands';
 import { SnippetService } from '../service/snippetService';
 import { Labels } from '../config/labels';
 import { LoggingUtility } from '../utility/loggingUtility';
+import { DecorationProvider } from './decorationProvider';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
-    constructor(private _snippetService: SnippetService, private _languagesConfig: any[]) { }
+    constructor(private _snippetService: SnippetService, private _languagesConfig: any[], private _decorationProvider: DecorationProvider) { }
 
     dropMimeTypes: readonly string[] = ['application/vnd.code.tree.snippetsProvider'];
     dragMimeTypes: readonly string[] = ['text/uri-list'];
@@ -194,6 +195,9 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
             } else {
                 treeItem.iconPath = vscode.ThemeIcon.Folder;
             }
+            treeItem.resourceUri = vscode.Uri.parse(`snippets:${snippet.id}`);
+            // decorate item
+            this._decorationProvider.decorateSnippet(treeItem.resourceUri);
         } else {
             treeItem.tooltip = snippet.description ? `(${snippet.description})\n${snippet.value}` : `${snippet.value}`;
             treeItem.contextValue = 'snippet';
