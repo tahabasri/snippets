@@ -14,6 +14,7 @@ export const enum CommandsConsts {
 	commonOpenSnippet = "globalSnippetsCmd.openSnippet",
 	commonOpenSnippetButton = "globalSnippetsCmd.openSnippetButton",
 	commonOpenSnippetInTerminal = "globalSnippetsCmd.openSnippetInTerminal",
+	commonOpenSnippetInTerminalButton = "globalSnippetsCmd.openSnippetInTerminalButton",
 	commonCopySnippetToClipboard = "globalSnippetsCmd.copySnippetToClipboard",
 	commonAddSnippet = "commonSnippetsCmd.addSnippet",
 	commonAddSnippetFromClipboard = "commonSnippetsCmd.addSnippetFromClipboard",
@@ -136,6 +137,26 @@ export async function openSnippet(snippet: Snippet | undefined, snippetService: 
 	}
 
 	vscode.window.showTextDocument(editor.document);
+}
+
+export async function openSnippetInTerminal(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService, workspaceSnippetsAvailable: boolean, actionButtonsEnabled?: boolean) {
+	const terminal = vscode.window.activeTerminal;
+	if (!terminal) {
+		vscode.window.showInformationMessage(Labels.noOpenTerminal);
+		return;
+	}
+	// if command is not triggered from treeView, a snippet must be selected by final user
+	if (!snippet) {
+		let allSnippets = snippetService.getAllSnippets();
+		if (workspaceSnippetsAvailable) {
+			allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+		}
+		snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+	}
+	if (!snippet || !snippet.value) {
+		return;
+	}
+	terminal.sendText(snippet.value, vscode.workspace.getConfiguration('snippets').get('runCommandInTerminal'));
 }
 
 export async function addSnippet(allLanguages: any[], snippetsExplorer: vscode.TreeView<Snippet>, snippetsProvider: SnippetsProvider, node: any) {

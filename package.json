@@ -191,6 +191,12 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "globalSnippetsCmd.openSnippetInTerminalButton",
+				"title": "Open Snippet in Terminal",
+				"icon": "$(terminal-view-icon)",
+				"category": "Snippets"
+			},
+			{
 				"command": "globalSnippetsCmd.moveSnippetUp",
 				"title": "Move Snippet Up",
 				"icon": "$(marker-navigation-previous)",
@@ -334,6 +340,10 @@
 					"when": "false"
 				},
 				{
+					"command": "globalSnippetsCmd.openSnippetInTerminalButton",
+					"when": "false"
+				},
+				{
 					"command": "globalSnippetsCmd.moveSnippetUp",
 					"when": "false"
 				},
@@ -449,23 +459,28 @@
 			"view/item/context": [
 				{
 					"command": "globalSnippetsCmd.openSnippet",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == inline",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == inline",
 					"group": "1_snippets@1"
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippetButton",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == button",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
 					"group": "1_snippets@2"
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippetInTerminal",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == inline",
 					"group": "1_snippets@3"
+				},
+				{
+					"command": "globalSnippetsCmd.openSnippetInTerminalButton",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
+					"group": "1_snippets@4"
 				},
 				{
 					"command": "globalSnippetsCmd.copySnippetToClipboard",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
-					"group": "1_snippets@4"
+					"group": "1_snippets@5"
 				},
 				{
 					"command": "globalSnippetsCmd.addSnippet",
@@ -539,7 +554,12 @@
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippetButton",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == button",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
+					"group": "inline"
+				},
+				{
+					"command": "globalSnippetsCmd.openSnippetInTerminalButton",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
 					"group": "inline"
 				},
 				{
@@ -574,17 +594,22 @@
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippet",
-					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == inline",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == inline",
 					"group": "1_snippets@1"
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippetButton",
-					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.openButton == button",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
 					"group": "1_snippets@2"
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippetInTerminal",
-					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == inline",
+					"group": "1_snippets@3"
+				},
+				{
+					"command": "globalSnippetsCmd.openSnippetInTerminalButton",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
 					"group": "1_snippets@3"
 				},
 				{
@@ -682,7 +707,7 @@
 				"snippets.openButton": {
 					"type": "boolean",
 					"default": false,
-					"markdownDescription": "Click on Open button to open snippet in editor. This will disable openning snippet by clicking on snippet name."
+					"markdownDescription": "Click the action buttons to open snippet in editor/terminal. This will disable openning snippet by clicking on the snippet name."
 				}
 			}
 		}

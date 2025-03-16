@@ -40,7 +40,8 @@ export function activate(context: vscode.ExtensionContext) {
     const contextWSStateKey = "snippets.workspaceState";
     const contextWSFileAvailable = "fileAvailable";
     const contextWSFileNotAvailable = "fileNotAvailable";
-    const contextOpenButtonKey = "snippets.openButton";
+    // actionMode is either 'button' or 'inline'
+    const contextActionModeKey = "snippets.actionMode";
     let actionButtonsEnabled = false;
     //** variables **//
 
@@ -275,7 +276,7 @@ export function activate(context: vscode.ExtensionContext) {
         actionButtonsEnabled = vscode.workspace.getConfiguration(snippetsConfigKey).get(openButtonKey) ? true : false;
         vscode.commands.executeCommand(
             setContextCmd,
-            contextOpenButtonKey,
+            contextActionModeKey,
             actionButtonsEnabled ? 'button' : 'inline'
         );
     }
@@ -390,25 +391,11 @@ export function activate(context: vscode.ExtensionContext) {
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonOpenSnippetInTerminal,
-        async (snippet) => handleCommand(async () => {
-            const terminal = vscode.window.activeTerminal;
-            if (!terminal) {
-                vscode.window.showInformationMessage(Labels.noOpenTerminal);
-                return;
-            }
-            // if command is not triggered from treeView, a snippet must be selected by final user
-            if (!snippet) {
-                let allSnippets = snippetService.getAllSnippets();
-                if (workspaceSnippetsAvailable) {
-                    allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
-                }
-                snippet = await UIUtility.requestSnippetFromUser(allSnippets);
-            }
-            if (!snippet || !snippet.value) {
-                return;
-            }
-            terminal.sendText(snippet.value, vscode.workspace.getConfiguration('snippets').get('runCommandInTerminal'));
-        })
+        async (snippet) => handleCommand(async () => commands.openSnippetInTerminal(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, actionButtonsEnabled))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonOpenSnippetInTerminalButton,
+        async (snippet) => handleCommand(async () => commands.openSnippetInTerminal(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable))
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonCopySnippetToClipboard,
