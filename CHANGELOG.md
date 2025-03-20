@@ -1,4 +1,6 @@
 # Change Log
+### 4.0.0
+
 ### 3.1.0
 
 - [[#81](https://github.com/tahabasri/snippets/pull/81)] Added support for language scope with icons and auto-detect ✌.

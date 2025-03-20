@@ -44,6 +44,9 @@ export class SnippetService {
    * @param result final result
    */
     private static flatten(arr: any, result: any[] = []) {
+        if (!arr || !arr.length) {
+            return result;
+        }
         for (let i = 0, length = arr.length; i < length; i++) {
             const value = arr[i];
             if (value.folder === true) {
@@ -56,6 +59,9 @@ export class SnippetService {
     }
     
     public static flattenAndKeepFolders(arr: any, result: any[] = []) {
+        if (!arr || !arr.length) {
+            return result;
+        }
         for (let i = 0, length = arr.length; i < length; i++) {
             const value = arr[i];
             if (value.folder === true) {
@@ -245,5 +251,11 @@ export class SnippetService {
         this._rootSnippet.children = newSnippets.children;
         this._rootSnippet.lastId = newSnippets.lastId;
         LoggingUtility.getInstance().info(`Imported snippets from source (${destinationPath})`);
+    }
+
+    importSnippetsFromVSCode(newSnippets: any) {
+        this._rootSnippet.children = newSnippets.children;
+        this._rootSnippet.lastId = newSnippets.lastId;
+        LoggingUtility.getInstance().info(`Imported snippets from VS Code`);
     }
 }

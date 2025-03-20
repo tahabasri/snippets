@@ -6,6 +6,7 @@ import { EditSnippet } from '../views/editSnippet';
 import { Labels } from "./labels";
 import { StringUtility } from '../utility/stringUtility';
 import { SnippetService } from '../service/snippetService';
+import { SqliteDataAccess } from '../data/sqliteDataAccess';
 
 
 export const enum CommandsConsts {
@@ -32,6 +33,7 @@ export const enum CommandsConsts {
 	globalFixSnippets = "globalSnippetsCmd.fixSnippets",
 	globalExportSnippets = "globalSnippetsCmd.exportSnippets",
 	globalImportSnippets = "globalSnippetsCmd.importSnippets",
+	globalImportSnippetsForCursor = "globalSnippetsCmd.importSnippetsForCursor",
 	globalSortSnippets = "globalSnippetsCmd.sortSnippets",
 	globalSortAllSnippets = "globalSnippetsCmd.sortAllSnippets",
 	// ws commands
@@ -329,6 +331,43 @@ export async function exportSnippets(snippetsProvider: SnippetsProvider) {
 	).then(fileUri => {
 		if (fileUri && fileUri.fsPath) {
 			snippetsProvider.exportSnippets(fileUri.fsPath);
+		}
+	});
+}
+
+export async function importSnippetsForCursor(context: vscode.ExtensionContext, snippetsProvider: SnippetsProvider) {
+	await vscode.window.withProgress({
+		location: vscode.ProgressLocation.Window,
+		cancellable: false,
+		title: 'Checking/Importing VS Code Snippets'
+	}, async (progress) => {
+		progress.report({  increment: 0 });
+		const vscodeGlobalStoragePath = context.globalStorageUri.fsPath.replace('\\Cursor\\', '\\Code\\');
+		let snippets = await new SqliteDataAccess().getSnippetsFromSQLiteDb(vscodeGlobalStoragePath, context.extension.id);
+		let snippetsData = JSON.parse(snippets ?? '{}');
+		if (snippetsData && snippetsData.snippetsData) {
+			vscode.window.showWarningMessage(
+				Labels.cursorImportRequestConfirmation,
+				...[Labels.importSnippets, Labels.discardImport])
+				.then(selection => {
+					switch (selection) {
+						case Labels.importSnippets:
+							if (snippetsProvider.importSnippetsFromVSCode(snippetsData.snippetsData)) {
+								snippetsProvider.fixLastId();
+								vscode.window.showInformationMessage(Labels.cursorImportSuccess);
+							} else {
+								vscode.window.showErrorMessage(Labels.cursorImportFailure);
+							}
+							progress.report({ increment: 100 });
+						case Labels.discardImport:
+							progress.report({ increment: 100 });
+							break;
+					}
+				});
+		} else {
+			vscode.window.showWarningMessage(Labels.cursorImportNoDataErrorMsg);
+			progress.report({ increment: 100 });
+			return;
 		}
 	});
 }

@@ -3,6 +3,7 @@
 'use strict';
 
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 /**@type {import('webpack').Configuration}*/
 const config = {
@@ -37,6 +38,14 @@ const config = {
         ]
       }
     ]
-  }
+  },
+  // https://github.com/TryGhost/node-sqlite3/issues/1783#issuecomment-2406481228
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, '..', "node_modules/sqlite3/build/Release/node_sqlite3.node"), to: path.resolve(__dirname, '..', "build/node_sqlite3.node") }
+      ]
+    })
+  ]
 };
 module.exports = config;
