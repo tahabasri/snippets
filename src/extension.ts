@@ -38,6 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
     // context config (shared between package.json and this function)
     const setContextCmd = 'setContext';
     const contextWSStateKey = "snippets.workspaceState";
+    const contextHostStateKey = "snippets.host";
     const contextWSFileAvailable = "fileAvailable";
     const contextWSFileNotAvailable = "fileNotAvailable";
     // actionMode is either 'button' or 'inline'
@@ -85,6 +86,9 @@ export function activate(context: vscode.ExtensionContext) {
         new NewRelease(context);
         context.globalState.update(releaseChangelogId, true);
     }
+
+    // check if host is vscode or cursor
+    vscode.commands.executeCommand(setContextCmd, contextHostStateKey, vscode.hasOwnProperty('cursor') ? 'cursor' : 'vscode');
 
     //** upgrade from 1.x to 2.x **//
     let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get('snippetsLocation')
@@ -582,6 +586,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalImportSnippets,
         async _ => handleCommand(() => commands.importSnippets(snippetsProvider))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalImportSnippetsForCursor,
+        async _ => handleCommand(() => commands.importSnippetsForCursor(context, snippetsProvider))
     ));
 
     //** COMMAND : TROUBLESHOOT **/

@@ -240,6 +240,13 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         return parentElt !== undefined && parentElt.children!== undefined && parentElt.children.length > 0;
     }
 
+    importSnippetsFromVSCode(newSnippets: any) : boolean {
+        this._snippetService.importSnippetsFromVSCode(newSnippets);
+        this.sync();
+        const parentElt = this._snippetService.getParent(undefined);
+        return parentElt !== undefined && parentElt.children!== undefined && parentElt.children.length > 0;
+    }
+
     fixLastId() : void {
         this._snippetService.fixLastId();
     }
