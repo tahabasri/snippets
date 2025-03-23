@@ -342,10 +342,11 @@ export function activate(context: vscode.ExtensionContext) {
                         // add suffix for all workspace items
                         candidates = candidates.concat(
                             wsSnippetService.getAllSnippets()
-                                .filter(s => s.language === currentLanguage.extension)
+                                .filter(s => (currentLanguage.id === '**' 
+                                    && (s.language === currentLanguage.extension || !s.language)) 
+                                    || s.language === currentLanguage.extension)
                                 .map(elt => {
-                                    elt.label = `${elt.label}`;
-                                    elt.description = `${elt.description}__(ws)`;
+                                    elt.completionDescription = `${elt.description ? elt.description + ' ' : ''}__(ws)`;
                                     return elt;
                                 }
                         ));
@@ -363,7 +364,7 @@ export function activate(context: vscode.ExtensionContext) {
                                           }).replace(/\s+/g, '')
                                         : element.label.replace(/\n/g, '').replace(/ /g, '-')),
                             insertText: new vscode.SnippetString(element.value),
-                            detail: element.description?.replace("__(ws)", " (snippet from workspace)"),
+                            detail: element.completionDescription?.replace("__(ws)", "(snippet from local workspace)"),
                             kind: vscode.CompletionItemKind.Snippet,
                             // replace trigger character with the chosen suggestion
                             additionalTextEdits: isTriggeredByChar

@@ -511,19 +511,9 @@
 					"group": "1_snippets@1"
 				},
 				{
-					"command": "globalSnippetsCmd.openSnippetButton",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
-					"group": "1_snippets@2"
-				},
-				{
 					"command": "globalSnippetsCmd.openSnippetInTerminal",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == inline",
 					"group": "1_snippets@3"
-				},
-				{
-					"command": "globalSnippetsCmd.openSnippetInTerminalButton",
-					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
-					"group": "1_snippets@4"
 				},
 				{
 					"command": "globalSnippetsCmd.copySnippetToClipboard",
@@ -683,7 +673,7 @@
 				{
 					"command": "globalSnippetsCmd.openSnippetButton",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
-					"group": "1_snippets@2"
+					"group": "inline"
 				},
 				{
 					"command": "globalSnippetsCmd.openSnippetInTerminal",
@@ -693,7 +683,7 @@
 				{
 					"command": "globalSnippetsCmd.openSnippetInTerminalButton",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
-					"group": "1_snippets@3"
+					"group": "inline"
 				},
 				{
 					"command": "globalSnippetsCmd.copySnippetToClipboard",
@@ -757,11 +747,13 @@
 			"snippets-explorer": [
 				{
 					"id": "snippetsExplorer",
-					"name": "Global Snippets"
+					"name": "Global Snippets",
+					"icon": "resources/icons/logo_w.svg"
 				},
 				{
 					"id": "wsSnippetsExplorer",
 					"name": "Workspace Snippets",
+					"icon": "resources/icons/logo_w.svg",
 					"when": "config.snippets.useWorkspaceFolder"
 				}
 			]
@@ -820,7 +812,7 @@
 				"snippets.expertMode": {
 					"type": "boolean",
 					"default": false,
-					"markdownDescription": "I know what I'm doing : \n- Advanced Options visible when editing a snippet."
+					"markdownDescription": "I know what I'm doing : \n- Advanced Options visible by default when editing a snippet."
 				},
 				"snippets.openButton": {
 					"type": "boolean",
