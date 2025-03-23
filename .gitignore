@@ -3,3 +3,4 @@ dist
 node_modules
 .vscode-test/
 *.vsix
+build/node_sqlite3.node

@@ -601,6 +601,34 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsFixSnippets,
         async _ => handleCommand(() => commands.fixSnippets(wsSnippetsProvider))
     ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAskGithubCopilot,
+        async (snippet) => handleCommand(async () => commands.askGithubCopilot(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddToGithubCopilot,
+        async (snippet) => handleCommand(async () => commands.addToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'workbench.action.chat.openInSidebar'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddAsCodeSnippetToGithubCopilot,
+        async (snippet) => handleCommand(async () => commands.addAsCodeSnippetToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'workbench.action.chat.openInSidebar'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddToCursorAIPane,
+        async (snippet) => handleCommand(async () => commands.addToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'workbench.action.focusAuxiliaryBar'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddAsCodeSnippetToCursorAIPane,
+        async (snippet) => handleCommand(async () => commands.addAsCodeSnippetToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'workbench.action.focusAuxiliaryBar'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddToGeminiCodeAssist,
+        async (snippet) => handleCommand(async () => commands.addToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'cloudcode.gemini.chatView.focus'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddAsCodeSnippetToGeminiCodeAssist,
+        async (snippet) => handleCommand(async () => commands.addAsCodeSnippetToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'cloudcode.gemini.chatView.focus'))
+    ));
     
     context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider('*', {
        async provideDocumentDropEdits(
@@ -642,7 +670,7 @@ export function activate(context: vscode.ExtensionContext) {
                 // throws error when parsing `dataItem?.value`, just skip
             }
         }
-      }));
+    }));
 }
 
 export function deactivate() { }
