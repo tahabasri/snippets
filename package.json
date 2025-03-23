@@ -92,38 +92,73 @@
 			},
 			{
 				"command": "commonSnippetsCmd.addSnippet",
-				"title": "New Snippet",
+				"title": "Add New Snippet",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
 				"command": "globalSnippetsCmd.addSnippet",
-				"title": "New Snippet",
+				"title": "Add New Snippet",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
 				"command": "wsSnippetsCmd.addSnippet",
-				"title": "New Snippet",
+				"title": "Add New Snippet",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
 				"command": "commonSnippetsCmd.addSnippetFromClipboard",
-				"title": "New Snippet from Clipboard",
+				"title": "Add New Snippet from Clipboard",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
 				"command": "globalSnippetsCmd.addSnippetFromClipboard",
-				"title": "New Snippet from Clipboard",
+				"title": "Add New Snippet from Clipboard",
 				"icon": "$(search-new-editor)",
 				"category": "Snippets"
 			},
 			{
 				"command": "wsSnippetsCmd.addSnippetFromClipboard",
-				"title": "New Snippet from Clipboard",
+				"title": "Add New Snippet from Clipboard",
 				"icon": "$(search-new-editor)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.askGithubCopilot",
+				"title": "Ask Github Copilot",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.addToGithubCopilot",
+				"title": "Add to Github Copilot",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.addAsCodeSnippetToGithubCopilot",
+				"title": "Add as Code Snippet to Github Copilot",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.addToCursorAIPane",
+				"title": "Add to Cursor AI Pane",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.addAsCodeSnippetToCursorAIPane",
+				"title": "Add as Code Snippet to Cursor AI Pane",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.addToGeminiCodeAssist",
+				"title": "Add to Gemini Code Assist",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.addAsCodeSnippetToGeminiCodeAssist",
+				"title": "Add as Code Snippet to Gemini Code Assist",
 				"category": "Snippets"
 			},
 			{
@@ -566,6 +601,41 @@
 					"group": "3_folderManagement@3"
 				},
 				{
+					"command": "globalSnippetsCmd.askGithubCopilot",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && chatIsEnabled && github.copilot.activated",
+					"group": "4_copilot@1"
+				},
+				{
+					"command": "globalSnippetsCmd.addToGithubCopilot",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && chatIsEnabled && github.copilot.activated",
+					"group": "4_copilot@2"
+				},
+				{
+					"command": "globalSnippetsCmd.addAsCodeSnippetToGithubCopilot",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && chatIsEnabled && github.copilot.activated",
+					"group": "4_copilot@3"
+				},
+				{
+					"command": "globalSnippetsCmd.addToCursorAIPane",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.host == cursor",
+					"group": "5_copilot@1"
+				},
+				{
+					"command": "globalSnippetsCmd.addAsCodeSnippetToCursorAIPane",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.host == cursor",
+					"group": "5_copilot@2"
+				},
+				{
+					"command": "globalSnippetsCmd.addToGeminiCodeAssist",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && config.geminicodeassist.enable",
+					"group": "6_gemini@1"
+				},
+				{
+					"command": "globalSnippetsCmd.addAsCodeSnippetToGeminiCodeAssist",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && config.geminicodeassist.enable",
+					"group": "6_gemini@2"
+				},
+				{
 					"command": "globalSnippetsCmd.openSnippetButton",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.actionMode == button",
 					"group": "inline"
@@ -629,6 +699,41 @@
 					"command": "globalSnippetsCmd.copySnippetToClipboard",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
 					"group": "1_snippets@4"
+				},
+				{
+					"command": "globalSnippetsCmd.askGithubCopilot",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && chatIsEnabled && github.copilot.activated",
+					"group": "4_copilot@1"
+				},
+				{
+					"command": "globalSnippetsCmd.addToGithubCopilot",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && chatIsEnabled && github.copilot.activated",
+					"group": "4_copilot@2"
+				},
+				{
+					"command": "globalSnippetsCmd.addAsCodeSnippetToGithubCopilot",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && chatIsEnabled && github.copilot.activated",
+					"group": "4_copilot@3"
+				},
+				{
+					"command": "globalSnippetsCmd.addToCursorAIPane",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.host == cursor",
+					"group": "5_copilot@1"
+				},
+				{
+					"command": "globalSnippetsCmd.addAsCodeSnippetToCursorAIPane",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.host == cursor",
+					"group": "5_copilot@2"
+				},
+				{
+					"command": "globalSnippetsCmd.addToGeminiCodeAssist",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && config.geminicodeassist.enable",
+					"group": "6_gemini@1"
+				},
+				{
+					"command": "globalSnippetsCmd.addAsCodeSnippetToGeminiCodeAssist",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && config.geminicodeassist.enable",
+					"group": "6_gemini@2"
 				}
 			],
 			"editor/context": [
