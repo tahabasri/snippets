@@ -7,6 +7,7 @@ import { Labels } from "./labels";
 import { StringUtility } from '../utility/stringUtility';
 import { SnippetService } from '../service/snippetService';
 import { SqliteDataAccess } from '../data/sqliteDataAccess';
+import { LoggingUtility } from '../utility/loggingUtility';
 
 
 export const enum CommandsConsts {
@@ -20,6 +21,14 @@ export const enum CommandsConsts {
 	commonAddSnippet = "commonSnippetsCmd.addSnippet",
 	commonAddSnippetFromClipboard = "commonSnippetsCmd.addSnippetFromClipboard",
 	commonAddSnippetFolder = "commonSnippetsCmd.addSnippetFolder",
+	// ai commands
+	commonAskGithubCopilot = "globalSnippetsCmd.askGithubCopilot",
+	commonAddToGithubCopilot = "globalSnippetsCmd.addToGithubCopilot",
+	commonAddAsCodeSnippetToGithubCopilot = "globalSnippetsCmd.addAsCodeSnippetToGithubCopilot",
+	commonAddToCursorAIPane = "globalSnippetsCmd.addToCursorAIPane",
+	commonAddAsCodeSnippetToCursorAIPane = "globalSnippetsCmd.addAsCodeSnippetToCursorAIPane",
+	commonAddToGeminiCodeAssist = "globalSnippetsCmd.addToGeminiCodeAssist",
+	commonAddAsCodeSnippetToGeminiCodeAssist = "globalSnippetsCmd.addAsCodeSnippetToGeminiCodeAssist",
 	// global commands
 	globalAddSnippet = "globalSnippetsCmd.addSnippet",
 	globalAddSnippetFromClipboard = "globalSnippetsCmd.addSnippetFromClipboard",
@@ -429,4 +438,69 @@ export async function fixSnippets(snippetsProvider: SnippetsProvider) {
 			});
 		progress.report({ increment: 100 });
 	});
+}
+
+export async function askGithubCopilot(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService, workspaceSnippetsAvailable: boolean) {
+	// if command is not triggered from treeView, a snippet must be selected by final user
+	if (!snippet) {
+		let allSnippets = snippetService.getAllSnippets();
+		if (workspaceSnippetsAvailable) {
+			allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+		}
+		snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+	}
+	if (!snippet || !snippet.value) {
+		return;
+	}
+	try {
+		vscode.commands.executeCommand('workbench.action.chat.open', snippet.value);
+	} catch (error) {
+		LoggingUtility.getInstance().error('' + error);
+	}
+}
+
+export async function addToChat(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService, workspaceSnippetsAvailable: boolean, chatCommand: string) {
+	// if command is not triggered from treeView, a snippet must be selected by final user
+	if (!snippet) {
+		let allSnippets = snippetService.getAllSnippets();
+		if (workspaceSnippetsAvailable) {
+			allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+		}
+		snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+	}
+	if (!snippet || !snippet.value) {
+		return;
+	}
+	try {
+		await vscode.commands.executeCommand(chatCommand);
+		const oldContent = await vscode.env.clipboard.readText();
+		vscode.env.clipboard.writeText(snippet.value);
+		vscode.commands.executeCommand('editor.action.clipboardPasteAction');
+		vscode.env.clipboard.writeText(oldContent);
+	} catch (error) {
+		LoggingUtility.getInstance().error('' + error);
+	}
+}
+
+export async function addAsCodeSnippetToChat(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService, workspaceSnippetsAvailable: boolean, chatCommand: string) {
+	// if command is not triggered from treeView, a snippet must be selected by final user
+	if (!snippet) {
+		let allSnippets = snippetService.getAllSnippets();
+		if (workspaceSnippetsAvailable) {
+			allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+		}
+		snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+	}
+	if (!snippet || !snippet.value) {
+		return;
+	}
+	try {
+		await vscode.commands.executeCommand(chatCommand);
+		const oldContent = await vscode.env.clipboard.readText();
+		vscode.env.clipboard.writeText(`\n\`\`\`\n${snippet.value}\n\`\`\`\n`);
+		vscode.commands.executeCommand('editor.action.clipboardPasteAction');
+		vscode.env.clipboard.writeText(oldContent);
+	} catch (error) {
+		LoggingUtility.getInstance().error('' + error);
+	}
 }
