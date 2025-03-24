@@ -1,9 +1,9 @@
 {
 	"name": "snippets",
 	"displayName": "Snippets",
-	"description": "Supercharge your Snippets in VS Code — Manage your code snippets without quitting your editor.",
+	"description": "Supercharge your Snippets in VS Code — Manage your code snippets & AI prompts without quitting your editor.",
 	"version": "4.0.0",
-	"preview": true,
+	"preview": false,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
 	"author": {
@@ -25,18 +25,25 @@
 	},
 	"categories": [
 		"Snippets",
+		"AI",
+		"Chat",
+		"Programming Languages",
 		"Other"
 	],
 	"keywords": [
 		"Snippets",
 		"Snippet",
-		"Collections",
-		"Collection",
+		"AI Prompts",
+		"AI Prompt",
 		"Bookmarks",
 		"Bookmark",
 		"Code Block",
 		"IntelliSense"
 	],
+	"galleryBanner": {
+		"color": "#ffc107",
+		"theme": "dark"
+	},
 	"activationEvents": [
 		"onStartupFinished"
 	],
