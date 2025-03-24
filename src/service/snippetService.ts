@@ -252,10 +252,4 @@ export class SnippetService {
         this._rootSnippet.lastId = newSnippets.lastId;
         LoggingUtility.getInstance().info(`Imported snippets from source (${destinationPath})`);
     }
-
-    importSnippetsFromVSCode(newSnippets: any) {
-        this._rootSnippet.children = newSnippets.children;
-        this._rootSnippet.lastId = newSnippets.lastId;
-        LoggingUtility.getInstance().info(`Imported snippets from VS Code`);
-    }
 }

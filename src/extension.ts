@@ -589,10 +589,6 @@ export function activate(context: vscode.ExtensionContext) {
         async _ => handleCommand(() => commands.importSnippets(snippetsProvider))
     ));
 
-    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalImportSnippetsForCursor,
-        async _ => handleCommand(() => commands.importSnippetsForCursor(context, snippetsProvider))
-    ));
-
     //** COMMAND : TROUBLESHOOT **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalFixSnippets,

@@ -52,12 +52,12 @@
 		"viewsWelcome": [
 			{
 				"view": "snippetsExplorer",
-				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:globalSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:globalSnippetsCmd.addSnippetFolder)\n[Import Snippets](command:globalSnippetsCmd.importSnippets)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md).",
+				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:globalSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:globalSnippetsCmd.addSnippetFolder)\n[Import Snippets](command:globalSnippetsCmd.importSnippets)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md#features).",
 				"when": "snippets.host == vscode"
 			},
 			{
 				"view": "snippetsExplorer",
-				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:globalSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:globalSnippetsCmd.addSnippetFolder)\n[Import Snippets](command:globalSnippetsCmd.importSnippets)\n[Import Snippets from VS Code](command:globalSnippetsCmd.importSnippetsForCursor)\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md).",
+				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:globalSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:globalSnippetsCmd.addSnippetFolder)\n[Import Snippets](command:globalSnippetsCmd.importSnippets)\nTo import Snippets from VS Code, you can export them from an open VS Code window, and then, use the Import Snippets command in Cursor.\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md#features).",
 				"when": "snippets.host == cursor"
 			},
 			{
@@ -290,13 +290,6 @@
 				"command": "globalSnippetsCmd.importSnippets",
 				"title": "Import Snippets",
 				"icon": "$(cloud-download)",
-				"category": "Snippets"
-			},
-			{
-				"command": "globalSnippetsCmd.importSnippetsForCursor",
-				"title": "Import Snippets from VS Code",
-				"icon": "$(code)",
-				"enablement": "snippets.host == cursor",
 				"category": "Snippets"
 			},
 			{
@@ -843,17 +836,13 @@
 	"devDependencies": {
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.0",
-		"@types/sqlite3": "^3.1.11",
 		"@types/vscode": "^1.75.0",
 		"@typescript-eslint/eslint-plugin": "^4.1.1",
 		"@typescript-eslint/parser": "^4.1.1",
 		"@vscode/test-electron": "^2.3.4",
-		"copy-webpack-plugin": "^13.0.0",
 		"eslint": "^7.9.0",
 		"glob": "^7.1.6",
 		"mocha": "^11.1.0",
-		"sqlite": "^5.1.1",
-		"sqlite3": "^5.1.7",
 		"ts-loader": "8.2.0",
 		"typescript": "^5.7.3",
 		"vscode-test": "^1.4.0",

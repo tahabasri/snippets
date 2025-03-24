@@ -71,9 +71,5 @@ export const enum Labels {
 	troubleshootResultsDuplicate = "Cleaned {0} duplicate IDs.",
 	troubleshootResultsCorrupted = "Moved {0} corrupted snippets to special folder (check last folder in your list).",
 	troubleshootResultsOk = "Troubleshooting done ! Nothing wrong with your snippets ✔",
-
-	cursorImportRequestConfirmation = "All your global snippets will be replaced with the imported ones (except for workspace snippets)! Do you want to proceed ? A backup is always recommended before proceeding with such action.",
-	cursorImportNoDataErrorMsg = "No VS Code data was found.",
-	cursorImportSuccess = "Snippets imported. Enjoy!",
-	cursorImportFailure = "Snippets weren't imported. Please check that Cursor is installed in default path.",
+	
 }
