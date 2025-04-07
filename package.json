@@ -61,6 +61,11 @@
 				"when": "snippets.host == cursor"
 			},
 			{
+				"view": "snippetsExplorer",
+				"contents": "In order to use snippets, save some code here.\n[Add Snippet](command:globalSnippetsCmd.addSnippet)\n[Add Snippet Folder](command:globalSnippetsCmd.addSnippetFolder)\n[Import Snippets](command:globalSnippetsCmd.importSnippets)\nTo import Snippets from VS Code, you can export them from an open VS Code window, and then, use the Import Snippets command in Windsurf.\nTo learn more about how to use snippets [read the docs](https://github.com/tahabasri/snippets/blob/main/README.md#features).",
+				"when": "snippets.host == windsurf"
+			},
+			{
 				"view": "wsSnippetsExplorer",
 				"when": "config.snippets.useWorkspaceFolder && snippets.workspaceState != fileAvailable",
 				"contents": "In order to use snippets in current workspace, you should initialize `snippets.json` file inside folder `.vscode`.\n[Request to Initialize File](command:miscCmd.requestWSConfig)"
