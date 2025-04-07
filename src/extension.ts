@@ -87,8 +87,17 @@ export function activate(context: vscode.ExtensionContext) {
         context.globalState.update(releaseChangelogId, true);
     }
 
-    // check if host is vscode or cursor
-    vscode.commands.executeCommand(setContextCmd, contextHostStateKey, vscode.hasOwnProperty('cursor') ? 'cursor' : 'vscode');
+    // check if host is vscode, cursor or windsurf
+    vscode.commands.executeCommand(
+        setContextCmd,
+        contextHostStateKey,
+        vscode.hasOwnProperty('cursor') ? 'cursor' : 'vscode'
+    );
+    vscode.commands.executeCommand(
+        setContextCmd,
+        contextHostStateKey,
+        context.globalStorageUri.fsPath.toLowerCase().includes('windsurf') ? 'windsurf' : 'vscode'
+    );
 
     //** upgrade from 1.x to 2.x **//
     let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get('snippetsLocation')
