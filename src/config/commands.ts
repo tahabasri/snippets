@@ -434,9 +434,11 @@ export async function addToChat(snippet: Snippet | undefined, snippetService: Sn
 	try {
 		await vscode.commands.executeCommand(chatCommand);
 		const oldContent = await vscode.env.clipboard.readText();
-		vscode.env.clipboard.writeText(snippet.value);
-		vscode.commands.executeCommand('editor.action.clipboardPasteAction');
-		vscode.env.clipboard.writeText(oldContent);
+		vscode.env.clipboard.writeText(snippet.value).then(() => {
+			vscode.commands.executeCommand('editor.action.clipboardPasteAction').then(() => {
+				setTimeout(() => vscode.env.clipboard.writeText(oldContent), 100);
+			});
+		});
 	} catch (error) {
 		LoggingUtility.getInstance().error('' + error);
 	}
@@ -457,9 +459,11 @@ export async function addAsCodeSnippetToChat(snippet: Snippet | undefined, snipp
 	try {
 		await vscode.commands.executeCommand(chatCommand);
 		const oldContent = await vscode.env.clipboard.readText();
-		vscode.env.clipboard.writeText(`\n\`\`\`\n${snippet.value}\n\`\`\`\n`);
-		vscode.commands.executeCommand('editor.action.clipboardPasteAction');
-		vscode.env.clipboard.writeText(oldContent);
+		vscode.env.clipboard.writeText(`\n\`\`\`\n${snippet.value}\n\`\`\`\n`).then(() => {
+			vscode.commands.executeCommand('editor.action.clipboardPasteAction').then(() => {
+				setTimeout(() => vscode.env.clipboard.writeText(oldContent), 100);
+			});
+		});
 	} catch (error) {
 		LoggingUtility.getInstance().error('' + error);
 	}

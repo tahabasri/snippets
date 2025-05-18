@@ -613,12 +613,12 @@
 				{
 					"command": "globalSnippetsCmd.addToCursorAIPane",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.host == cursor",
-					"group": "5_copilot@1"
+					"group": "5_cursor@1"
 				},
 				{
 					"command": "globalSnippetsCmd.addAsCodeSnippetToCursorAIPane",
 					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.host == cursor",
-					"group": "5_copilot@2"
+					"group": "5_cursor@2"
 				},
 				{
 					"command": "globalSnippetsCmd.addToGeminiCodeAssist",
@@ -713,12 +713,12 @@
 				{
 					"command": "globalSnippetsCmd.addToCursorAIPane",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.host == cursor",
-					"group": "5_copilot@1"
+					"group": "5_cursor@1"
 				},
 				{
 					"command": "globalSnippetsCmd.addAsCodeSnippetToCursorAIPane",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.host == cursor",
-					"group": "5_copilot@2"
+					"group": "5_cursor@2"
 				},
 				{
 					"command": "globalSnippetsCmd.addToGeminiCodeAssist",
