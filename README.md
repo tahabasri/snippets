@@ -216,13 +216,29 @@ Seamlessly integrate your snippets with AI assistants in VS Code:
 
 Use your snippets directly with GitHub Copilot Chat for enhanced productivity and context-aware code generation.
 
+- Save prompts as snippets and use them directly in Github Copilot.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/14-ai-ask-copilot.gif" 
+alt="Ask Github Copilot using Snippets">
+
+- Use code snippets directly in Github Copilot
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/15-add-to-copilot-snippet.gif" 
+alt="Add Code Snippets to Github Copilot">
+
 ### Cursor AI Pane
 
 Integrate with Cursor's AI capabilities to get intelligent suggestions based on your snippets library.
 
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/17-ai-cursor.gif" 
+alt="Add Code Snippets to Cursor AI Pane">
+
 ### Gemini Code Assist
 
 Leverage Google's Gemini Code Assist alongside your snippets for more powerful code completion and generation.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/16-ai-gemini.gif" 
+alt="Use Snippets with Gemini Code Assist">
 
 **Enjoy!**
 
