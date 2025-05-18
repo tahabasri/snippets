@@ -123,6 +123,11 @@ alt="Reorder Snippets">
 
 The extension now features enhanced action buttons throughout the interface for improved usability, making it easier to perform common operations with fewer clicks.
 
+> When Action Buttons are enabled, they become the primary method for interacting with Snippets in the Tree view, replacing the default click behavior.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/18-action-buttons.png" 
+alt="Action Buttons">
+
 ## Customize
 ### Set icons for your folders
 

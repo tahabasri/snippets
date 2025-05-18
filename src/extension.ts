@@ -20,7 +20,7 @@ import { LoggingUtility } from './utility/loggingUtility';
  */
 export function activate(context: vscode.ExtensionContext) {
     // exact version for which show Changelog panel
-    const changelogVersion = '3.1.0';
+    const changelogVersion = '4.0.0';
 
     //** variables **//
     // global settings
