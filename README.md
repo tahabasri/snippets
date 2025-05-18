@@ -8,16 +8,16 @@
 
 # Snippets — Supercharge Snippets in VS Code
 
-Code snippets are valuable additions for anyone looking to save time during development. They simplify the process of entering repetitive code, such as loops, complex HTML structures or reusable methods.
+Code snippets are valuable additions for anyone looking to save time during development. They simplify the process of entering repetitive code, such as loops, complex HTML structures, or reusable methods.
 
-Visual Studio Code already provides robust support for snippets, including their appearance in IntelliSense, tab-completion, and a dedicated snippet picker `(Insert Snippet in the Command Palette)`. This extension takes snippets to another level by introducing new features that enhance code snippet management.
+Visual Studio Code already provides robust support for snippets, including their appearance in IntelliSense, tab-completion, and a dedicated snippet picker (`Insert Snippet` in the Command Palette). This extension takes snippets to another level by introducing new features that enhance code snippet management.
 
 ## Getting Started
 
 Install **Snippets** by one of the following options:
-- clicking `Install` on the banner above
-- searching for `Snippets` from the Extensions side bar in VS Code
-- typing `ext install tahabasri.snippets` from the Command Palette in VS Code
+- Clicking `Install` on the banner above
+- Searching for `Snippets` from the Extensions side bar in VS Code
+- Typing `ext install tahabasri.snippets` from the Command Palette in VS Code
 
 ---
 
@@ -27,13 +27,14 @@ Install **Snippets** by one of the following options:
 
 Boost your productivity with a set of powerful features that enhance snippet management:
 
-- [Create](#create) — Create Snippets easily with few clicks.
+- [Create](#create) — Create Snippets easily with a few clicks.
 - [Open](#open) — Open Snippets quickly from anywhere in VS Code.
-- [Search](#search) — Find your Snippet in 2 seconds, or less...
+- [Search](#search) — Find your Snippet in 2 seconds or less.
 - [Manage](#manage) — Organize your snippets freely, with no forced order, beyond editing and deleting.
 - [Customize](#customize) — Personalize your Snippets to match your style.
 - [Sync](#sync) — Various options for synchronizing your snippets across multiple devices and users.
 - [Boost](#boost) — Supercharge your snippets to make them more developer-friendly.
+- [AI Integration](#ai-integration) — Seamlessly work with AI assistants in VS Code.
 
 ## Create
 
@@ -118,6 +119,15 @@ alt="Reorder Snippets">
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/047-sort-snippets.gif" 
 alt="Reorder Snippets">
 
+### Action Buttons
+
+The extension now features enhanced action buttons throughout the interface for improved usability, making it easier to perform common operations with fewer clicks.
+
+> When Action Buttons are enabled, they become the primary method for interacting with Snippets in the Tree view, replacing the default click behavior.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/18-action-buttons.png" 
+alt="Action Buttons">
+
 ## Customize
 ### Set icons for your folders
 
@@ -159,6 +169,10 @@ alt="Global Prefix">
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/13-import-export.jpg" 
 alt="Import and Export Snippets">
 
+### Import VS Code Snippets to Cursor or Windsurf
+
+You can import your existing VS Code snippets directly to Cursor or Windsurf combining the best snippets you collected for both editors.
+
 ### Sync Snippets between multiple devices
 
 > **⚠ Experimental feature:** feel free to [file a bug](https://github.com/tahabasri/snippets/issues/new?labels=bug) as this is still an experimental change.
@@ -199,6 +213,38 @@ alt="Manually Bind Snippets to Languages">
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/06-open-intelligent-snippet.gif" 
 alt="Open Snippet with Variables">
 
+## AI Integration
+
+Seamlessly integrate your snippets with AI assistants in VS Code:
+
+### GitHub Copilot Chat
+
+Use your snippets directly with GitHub Copilot Chat for enhanced productivity and context-aware code generation.
+
+- Save prompts as snippets and use them directly in Github Copilot.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/14-ai-ask-copilot.gif" 
+alt="Ask Github Copilot using Snippets">
+
+- Use code snippets directly in Github Copilot
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/15-add-to-copilot-snippet.gif" 
+alt="Add Code Snippets to Github Copilot">
+
+### Cursor AI Pane
+
+Integrate with Cursor's AI capabilities to get intelligent suggestions based on your snippets library.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/17-ai-cursor.gif" 
+alt="Add Code Snippets to Cursor AI Pane">
+
+### Gemini Code Assist
+
+Leverage Google's Gemini Code Assist alongside your snippets for more powerful code completion and generation.
+
+<img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/16-ai-gemini.gif" 
+alt="Use Snippets with Gemini Code Assist">
+
 **Enjoy!**
 
 ## FAQ
@@ -207,13 +253,19 @@ alt="Open Snippet with Variables">
 **A: There is no limit; your disk space is the only limitation.**
 
 ### Q: I'm feeling overwhelmed by multiple snippets. How can I better organize them?
-**A: Check this [section](#manage) for available organizational features**
+**A: Check the [Manage](#manage) section for available organizational features including folders, drag-and-drop, reordering, and alphabetical sorting.**
 
 ### Q: Clicking "Request to Initialize File" does nothing. What should I do?
 **A: If you're attempting to initialize the snippets file for a new [workspace](#sync-your-snippets-with-a-version-control-system) and nothing happens, ensure that the path to your current folder open in VS Code has the correct file permissions.**
 
 ### Q: Can I specify the cursor position so that, when the snippet is added, the cursor is moved to a particular position?
 **A: Yes, you can enable `Resolve Snippet Syntax` for a particular snippet and use [VS Code Tab Stops](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_tabstops).**
+
+### Q: How do I use snippets with AI assistants?
+**A: The extension now integrates with GitHub Copilot Chat, Cursor AI Pane, and Gemini Code Assist. Check the [AI Integration](#ai-integration) section for details.**
+
+### Q: I'm switching to Cursor/Windsurf. How do I import my existing VS Code snippets?
+**A: You can import your VS Code snippets directly to Cursor/Windsurf using the import feature. See the [Import VS Code Snippets to Cursor Position](#import-vs-code-snippets-to-cursor-or-windsurf) section.**
 
 ## Known Issues
 

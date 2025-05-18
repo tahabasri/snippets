@@ -20,7 +20,7 @@ import { LoggingUtility } from './utility/loggingUtility';
  */
 export function activate(context: vscode.ExtensionContext) {
     // exact version for which show Changelog panel
-    const changelogVersion = '3.1.0';
+    const changelogVersion = '4.0.0';
 
     //** variables **//
     // global settings
@@ -87,8 +87,18 @@ export function activate(context: vscode.ExtensionContext) {
         context.globalState.update(releaseChangelogId, true);
     }
 
-    // check if host is vscode or cursor
-    vscode.commands.executeCommand(setContextCmd, contextHostStateKey, vscode.hasOwnProperty('cursor') ? 'cursor' : 'vscode');
+    // check if host is vscode, cursor or windsurf
+    if (vscode.hasOwnProperty('cursor')) {
+        vscode.commands.executeCommand(
+            setContextCmd, contextHostStateKey, 'cursor'
+        );
+    } else {
+        vscode.commands.executeCommand(
+            setContextCmd,
+            contextHostStateKey,
+            context.globalStorageUri.fsPath.toLowerCase().includes('windsurf') ? 'windsurf' : 'vscode'
+        );
+    }
 
     //** upgrade from 1.x to 2.x **//
     let oldSnippetsPath: string = vscode.workspace.getConfiguration('snippets').get('snippetsLocation')

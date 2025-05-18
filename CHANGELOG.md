@@ -1,6 +1,22 @@
 # Change Log
 ### 4.0.0
 
+- [[#116](https://github.com/tahabasri/snippets/pull/116)]
+  - Added integration with GitHub Copilot Chat
+  - Added integration with Cursor AI Pane
+  - Added integration with Gemini Code Assist
+- [[#112](https://github.com/tahabasri/snippets/pull/112)] Added action buttons for improved usability
+- [[#111](https://github.com/tahabasri/snippets/pull/111)]
+  - Removed duplicate languages in language selector
+  - Sorted languages by alias for better navigation
+- [[#110](https://github.com/tahabasri/snippets/pull/110)]
+  - Fixed tooltip descriptions
+  - Enforced value change before updating snippet/folder
+- [[#108](https://github.com/tahabasri/snippets/pull/108)]
+  - Improved logging capabilities
+  - Updated FAQ documentation
+  - Fixed security vulnerabilities
+
 ### 3.1.0
 
 - [[#81](https://github.com/tahabasri/snippets/pull/81)] Added support for language scope with icons and auto-detect ✌.
