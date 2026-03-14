@@ -6,7 +6,7 @@
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/tahabasri/snippets/unit-tests.yml)
 ![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)
 
-# Snippets — Supercharge Snippets in VS Code
+# Snippets — Supercharge Snippets in VS Code and Cursor
 
 Code snippets are valuable additions for anyone looking to save time during development. They simplify the process of entering repetitive code, such as loops, complex HTML structures, or reusable methods.
 
@@ -16,8 +16,8 @@ Visual Studio Code already provides robust support for snippets, including their
 
 Install **Snippets** by one of the following options:
 - Clicking `Install` on the banner above
-- Searching for `Snippets` from the Extensions side bar in VS Code
-- Typing `ext install tahabasri.snippets` from the Command Palette in VS Code
+- Searching for `Snippets` from the Extensions side bar in VS Code and Cursor
+- Typing `ext install tahabasri.snippets` from the Command Palette in VS Code and Cursor
 
 ---
 
@@ -28,7 +28,7 @@ Install **Snippets** by one of the following options:
 Boost your productivity with a set of powerful features that enhance snippet management:
 
 - [Create](#create) — Create Snippets easily with a few clicks.
-- [Open](#open) — Open Snippets quickly from anywhere in VS Code.
+- [Open](#open) — Open Snippets quickly from anywhere in VS Code and Cursor.
 - [Search](#search) — Find your Snippet in 2 seconds or less.
 - [Manage](#manage) — Organize your snippets freely, with no forced order, beyond editing and deleting.
 - [Customize](#customize) — Personalize your Snippets to match your style.
@@ -150,7 +150,7 @@ alt="Set Snippet Prefix">
 
 ### Prefix all your Snippets
 
-You can set a prefix for all your snippets to distinguish them from other VS Code snippets.
+You can set a prefix for all your snippets to distinguish them from other VS Code and Cursor snippets.
 - set a keyword for the setting `Snippets: Global Prefix` e.g `snipp`
 - suggestions coming from your custom Snippets will be prefixed in IntelliSense 
 
@@ -215,7 +215,7 @@ alt="Open Snippet with Variables">
 
 ## AI Integration
 
-Seamlessly integrate your snippets with AI assistants in VS Code:
+Seamlessly integrate your snippets with AI assistants in VS Code and Cursor:
 
 ### GitHub Copilot Chat
 
@@ -231,12 +231,12 @@ alt="Ask Github Copilot using Snippets">
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/15-add-to-copilot-snippet.gif" 
 alt="Add Code Snippets to Github Copilot">
 
-### Cursor AI Pane
+### Cursor Pane
 
 Integrate with Cursor's AI capabilities to get intelligent suggestions based on your snippets library.
 
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/17-ai-cursor.gif" 
-alt="Add Code Snippets to Cursor AI Pane">
+alt="Add Code Snippets to Cursor Pane">
 
 ### Gemini Code Assist
 
@@ -262,7 +262,7 @@ alt="Use Snippets with Gemini Code Assist">
 **A: Yes, you can enable `Resolve Snippet Syntax` for a particular snippet and use [VS Code Tab Stops](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_tabstops).**
 
 ### Q: How do I use snippets with AI assistants?
-**A: The extension now integrates with GitHub Copilot Chat, Cursor AI Pane, and Gemini Code Assist. Check the [AI Integration](#ai-integration) section for details.**
+**A: The extension now integrates with GitHub Copilot Chat, Cursor Pane, and Gemini Code Assist. Check the [AI Integration](#ai-integration) section for details.**
 
 ### Q: I'm switching to Cursor/Windsurf. How do I import my existing VS Code snippets?
 **A: You can import your VS Code snippets directly to Cursor/Windsurf using the import feature. See the [Import VS Code Snippets to Cursor Position](#import-vs-code-snippets-to-cursor-or-windsurf) section.**
