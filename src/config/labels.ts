@@ -59,6 +59,10 @@ export const enum Labels {
 	snippetsImported = "Snippets imported. Kept a backup of old snippets next to the imported file in case of a rollback.",
 	snippetsNotImported = "Snippets weren't imported. Please check the file content or redo a proper export/import (A copy of your old snippets was saved next to the recently imported file)",
 
+	importedSnippetsFolderLabel = "Imported Snippets",
+	snippetsImportedIntoFolder = "Snippets imported into folder [{0}].",
+	snippetsImportIntoFolderErrorMsg = "Couldn't import snippets. Please check the file content.",
+
 	confirmationYes = "Yes",
 	confirmationNo = "No",
 
@@ -71,4 +75,5 @@ export const enum Labels {
 	troubleshootResultsDuplicate = "Cleaned {0} duplicate IDs.",
 	troubleshootResultsCorrupted = "Moved {0} corrupted snippets to special folder (check last folder in your list).",
 	troubleshootResultsOk = "Troubleshooting done ! Nothing wrong with your snippets ✔",
+	
 }

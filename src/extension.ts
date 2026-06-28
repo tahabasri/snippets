@@ -21,7 +21,7 @@ import { DecorationProvider } from './provider/decorationProvider';
  */
 export function activate(context: vscode.ExtensionContext) {
     // exact version for which show Changelog panel
-    const changelogVersion = '3.1.0';
+    const changelogVersion = '4.0.0';
 
     //** variables **//
     // global settings
@@ -31,6 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
     // workspace config
     const useWorkspaceFolderKey = "useWorkspaceFolder";
     const openButtonKey = "openButton";
+    const collapseFoldersKey = "collapseFolders";
     const workspaceFileName = ".vscode/snippets.json";
     let workspaceSnippetsAvailable = false;
     let wsSnippetService: SnippetService;
@@ -39,6 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
     // context config (shared between package.json and this function)
     const setContextCmd = 'setContext';
     const contextWSStateKey = "snippets.workspaceState";
+    const contextHostStateKey = "snippets.host";
     const contextWSFileAvailable = "fileAvailable";
     const contextWSFileNotAvailable = "fileNotAvailable";
     // actionMode is either 'button' or 'inline'
@@ -87,6 +89,19 @@ export function activate(context: vscode.ExtensionContext) {
     if (!context.globalState.get(releaseChangelogId) && currentVersion === changelogVersion) {
         new NewRelease(context);
         context.globalState.update(releaseChangelogId, true);
+    }
+
+    // check if host is vscode, cursor or windsurf
+    if (vscode.hasOwnProperty('cursor')) {
+        vscode.commands.executeCommand(
+            setContextCmd, contextHostStateKey, 'cursor'
+        );
+    } else {
+        vscode.commands.executeCommand(
+            setContextCmd,
+            contextHostStateKey,
+            context.globalStorageUri.fsPath.toLowerCase().includes('windsurf') ? 'windsurf' : 'vscode'
+        );
     }
 
     //** upgrade from 1.x to 2.x **//
@@ -169,6 +184,9 @@ export function activate(context: vscode.ExtensionContext) {
         }
         if (event.affectsConfiguration(`${snippetsConfigKey}.${openButtonKey}`)) {
             handleButtonsVisibility();
+            refreshUI();
+        }
+        if (event.affectsConfiguration(`${snippetsConfigKey}.${collapseFoldersKey}`)) {
             refreshUI();
         }
     });
@@ -321,11 +339,27 @@ export function activate(context: vscode.ExtensionContext) {
     const registerCIPSnippetsList: (() => vscode.Disposable)[] = [];
 
     for (const currentLanguage of allLanguages) {
+        // plaintext is served by the '**' provider below, which shows every snippet
+        // regardless of language scope. Skipping the regular plaintext iteration here
+        // avoids registering two providers against the same language.
+        if (currentLanguage.id === 'plaintext') {
+            continue;
+        }
+        // '**' is the dedicated plaintext provider: it surfaces every snippet so users
+        // get full IntelliSense in untitled files (which default to plaintext).
+        // For real languages, snippets with no language are treated as global and shown
+        // alongside language-scoped ones.
+        const isGlobalProvider = currentLanguage.id === '**';
+        const matches = (s: Snippet) => isGlobalProvider || !s.language || s.language === currentLanguage.extension;
         let disposable =  currentLanguage.id === '**' ? globalCipDisposable : cipDisposable;
         const registerCIPSnippets = () => disposable = vscode.languages.registerCompletionItemProvider(
+            // No `scheme` filter: the provider must match every host, not just local
+            // files. Pinning scheme:'file'/'untitled' hid completions in remote sessions
+            // (Remote-SSH/WSL use vscode-remote, web/Codespaces use vscode-vfs) whenever
+            // the extension ran on the UI side — see issue #95.
             currentLanguage.id === '**' // use pattern filter for non-language snippets
-            ? [{ language: 'plaintext', scheme: 'file' }, { language: 'plaintext', scheme: 'untitled' }]
-            : [{ language: currentLanguage.id, scheme: 'file' }, { language: currentLanguage.id, scheme: 'untitled' }]
+            ? [{ language: 'plaintext' }]
+            : [{ language: currentLanguage.id }]
             , {
                 provideCompletionItems(document, position) {
                     if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
@@ -333,18 +367,15 @@ export function activate(context: vscode.ExtensionContext) {
                     }
                     LoggingUtility.getInstance().debug('Registering completion items for language : ' + currentLanguage.id);
                     let isTriggeredByChar: boolean = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
-                    let candidates = snippetService.getAllSnippets()
-                        .filter(s => (currentLanguage.id === '**' && (s.language === currentLanguage.extension || !s.language)) 
-                                        || s.language === currentLanguage.extension);
+                    let candidates = snippetService.getAllSnippets().filter(matches);
                     // append workspace snippets if WS is available
                     if (workspaceSnippetsAvailable) {
                         // add suffix for all workspace items
                         candidates = candidates.concat(
                             wsSnippetService.getAllSnippets()
-                                .filter(s => s.language === currentLanguage.extension)
+                                .filter(matches)
                                 .map(elt => {
-                                    elt.label = `${elt.label}`;
-                                    elt.description = `${elt.description}__(ws)`;
+                                    elt.completionDescription = `${elt.description ? elt.description + ' ' : ''}__(ws)`;
                                     return elt;
                                 }
                         ));
@@ -362,7 +393,7 @@ export function activate(context: vscode.ExtensionContext) {
                                           }).replace(/\s+/g, '')
                                         : element.label.replace(/\n/g, '').replace(/ /g, '-')),
                             insertText: new vscode.SnippetString(element.value),
-                            detail: element.description?.replace("__(ws)", " (snippet from workspace)"),
+                            detail: element.completionDescription?.replace("__(ws)", "(snippet from local workspace)"),
                             kind: vscode.CompletionItemKind.Snippet,
                             // replace trigger character with the chosen suggestion
                             additionalTextEdits: isTriggeredByChar
@@ -587,6 +618,10 @@ export function activate(context: vscode.ExtensionContext) {
         async _ => handleCommand(() => commands.importSnippets(snippetsProvider))
     ));
 
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalImportSnippetsIntoFolder,
+        async _ => handleCommand(() => commands.importSnippetsIntoFolder(snippetsProvider))
+    ));
+
     //** COMMAND : TROUBLESHOOT **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalFixSnippets,
@@ -595,6 +630,34 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsFixSnippets,
         async _ => handleCommand(() => commands.fixSnippets(wsSnippetsProvider))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAskGithubCopilot,
+        async (snippet) => handleCommand(async () => commands.askGithubCopilot(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddToGithubCopilot,
+        async (snippet) => handleCommand(async () => commands.addToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'workbench.action.chat.openInSidebar'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddAsCodeSnippetToGithubCopilot,
+        async (snippet) => handleCommand(async () => commands.addAsCodeSnippetToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'workbench.action.chat.openInSidebar'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddToCursorAIPane,
+        async (snippet) => handleCommand(async () => commands.addToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'workbench.action.focusAuxiliaryBar'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddAsCodeSnippetToCursorAIPane,
+        async (snippet) => handleCommand(async () => commands.addAsCodeSnippetToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'workbench.action.focusAuxiliaryBar'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddToGeminiCodeAssist,
+        async (snippet) => handleCommand(async () => commands.addToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'cloudcode.gemini.chatView.focus'))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonAddAsCodeSnippetToGeminiCodeAssist,
+        async (snippet) => handleCommand(async () => commands.addAsCodeSnippetToChat(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, 'cloudcode.gemini.chatView.focus'))
     ));
     
     context.subscriptions.push(vscode.languages.registerDocumentDropEditProvider('*', {
@@ -637,7 +700,7 @@ export function activate(context: vscode.ExtensionContext) {
                 // throws error when parsing `dataItem?.value`, just skip
             }
         }
-      }));
+    }));
 }
 
 export function deactivate() { }

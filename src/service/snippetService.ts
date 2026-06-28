@@ -1,3 +1,4 @@
+import { Labels } from "../config/labels";
 import { DataAccess } from "../data/dataAccess";
 import { FileDataAccess } from "../data/fileDataAccess";
 import { Snippet } from "../interface/snippet";
@@ -44,6 +45,9 @@ export class SnippetService {
    * @param result final result
    */
     private static flatten(arr: any, result: any[] = []) {
+        if (!arr || !arr.length) {
+            return result;
+        }
         for (let i = 0, length = arr.length; i < length; i++) {
             const value = arr[i];
             if (value.folder === true) {
@@ -56,6 +60,9 @@ export class SnippetService {
     }
     
     public static flattenAndKeepFolders(arr: any, result: any[] = []) {
+        if (!arr || !arr.length) {
+            return result;
+        }
         for (let i = 0, length = arr.length; i < length; i++) {
             const value = arr[i];
             if (value.folder === true) {
@@ -165,19 +172,25 @@ export class SnippetService {
         const parentElement = SnippetService.findParent(snippet.parentId ?? Snippet.rootParentId, this._rootSnippet);
 
         if (parentElement) {
-            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
+            // Look the node up by id in the *current* in-memory tree and mutate it in place.
+            // Relying on the caller mutating a shared reference is unsafe: the tree is reloaded
+            // (getAllSnippets/refresh -> loadSnippets) on every IntelliSense lookup, which can
+            // leave an open edit webview holding a stale, orphaned node and silently drop the save.
+            const target = parentElement.children.find(obj => obj.id === snippet.id);
 
-            if (index > -1) {
-                parentElement.children.map(obj =>
-                    obj.id === snippet.id ? {
-                        ...obj,
-                        label: snippet.label,
-                        // if its a folder, don't update content, use old value instead
-                        // if its a snippet, update its content
-                        value: [snippet.folder ? obj.value : snippet.value]
-                    }
-                        : obj
-                );
+            if (target) {
+                target.label = snippet.label;
+                if (snippet.folder) {
+                    // folders: update icon, keep existing content untouched
+                    target.icon = snippet.icon;
+                } else {
+                    // snippets: update content and snippet-specific metadata
+                    target.value = snippet.value;
+                    target.language = snippet.language;
+                    target.description = snippet.description;
+                    target.prefix = snippet.prefix;
+                    target.resolveSyntax = snippet.resolveSyntax;
+                }
             }
         }
     }
@@ -245,5 +258,51 @@ export class SnippetService {
         this._rootSnippet.children = newSnippets.children;
         this._rootSnippet.lastId = newSnippets.lastId;
         LoggingUtility.getInstance().info(`Imported snippets from source (${destinationPath})`);
+    }
+
+    importSnippetsIntoFolder(sourcePath: string): string | undefined {
+        const imported: Snippet = new FileDataAccess(sourcePath).load();
+        if (!imported || !imported.children) {
+            return undefined;
+        }
+
+        // Pick a unique folder name at root, deduping with " (N)" suffix on collisions
+        const baseName: string = Labels.importedSnippetsFolderLabel;
+        let folderName: string = baseName;
+        let counter = 2;
+        const existingLabels = new Set(this._rootSnippet.children.map(c => c.label));
+        while (existingLabels.has(folderName)) {
+            folderName = `${baseName} (${counter++})`;
+        }
+
+        const newFolderId = this.incrementLastId();
+        this._updateLastId(newFolderId);
+        const newFolder: Snippet = {
+            id: newFolderId,
+            parentId: Snippet.rootParentId,
+            label: folderName,
+            folder: true,
+            children: []
+        };
+
+        // Recursively re-id the imported subtree so ids never collide with existing ones
+        const reId = (nodes: Snippet[], parentId: number): Snippet[] => {
+            const out: Snippet[] = [];
+            for (const n of (nodes || [])) {
+                const id = this.incrementLastId();
+                this._updateLastId(id);
+                const copy: Snippet = { ...n, id, parentId, children: [] };
+                if (n.folder && n.children && n.children.length) {
+                    copy.children = reId(n.children, id);
+                }
+                out.push(copy);
+            }
+            return out;
+        };
+
+        newFolder.children = reId(imported.children, newFolderId);
+        this._rootSnippet.children.push(newFolder);
+        LoggingUtility.getInstance().info(`Imported snippets from ${sourcePath} into folder "${folderName}"`);
+        return folderName;
     }
 }

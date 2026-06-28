@@ -13,6 +13,7 @@ export class Snippet {
   prefix?: string;
   language?: string;
   icon?: string;
+  completionDescription?: string;
 
   constructor(
     id: number,

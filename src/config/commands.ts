@@ -6,7 +6,7 @@ import { EditSnippet } from '../views/editSnippet';
 import { Labels } from "./labels";
 import { StringUtility } from '../utility/stringUtility';
 import { SnippetService } from '../service/snippetService';
-
+import { LoggingUtility } from '../utility/loggingUtility';
 
 export const enum CommandsConsts {
 	miscRequestWSConfig = "miscCmd.requestWSConfig",
@@ -19,6 +19,14 @@ export const enum CommandsConsts {
 	commonAddSnippet = "commonSnippetsCmd.addSnippet",
 	commonAddSnippetFromClipboard = "commonSnippetsCmd.addSnippetFromClipboard",
 	commonAddSnippetFolder = "commonSnippetsCmd.addSnippetFolder",
+	// ai commands
+	commonAskGithubCopilot = "globalSnippetsCmd.askGithubCopilot",
+	commonAddToGithubCopilot = "globalSnippetsCmd.addToGithubCopilot",
+	commonAddAsCodeSnippetToGithubCopilot = "globalSnippetsCmd.addAsCodeSnippetToGithubCopilot",
+	commonAddToCursorAIPane = "globalSnippetsCmd.addToCursorAIPane",
+	commonAddAsCodeSnippetToCursorAIPane = "globalSnippetsCmd.addAsCodeSnippetToCursorAIPane",
+	commonAddToGeminiCodeAssist = "globalSnippetsCmd.addToGeminiCodeAssist",
+	commonAddAsCodeSnippetToGeminiCodeAssist = "globalSnippetsCmd.addAsCodeSnippetToGeminiCodeAssist",
 	// global commands
 	globalAddSnippet = "globalSnippetsCmd.addSnippet",
 	globalAddSnippetFromClipboard = "globalSnippetsCmd.addSnippetFromClipboard",
@@ -32,6 +40,7 @@ export const enum CommandsConsts {
 	globalFixSnippets = "globalSnippetsCmd.fixSnippets",
 	globalExportSnippets = "globalSnippetsCmd.exportSnippets",
 	globalImportSnippets = "globalSnippetsCmd.importSnippets",
+	globalImportSnippetsIntoFolder = "globalSnippetsCmd.importSnippetsIntoFolder",
 	globalSortSnippets = "globalSnippetsCmd.sortSnippets",
 	globalSortAllSnippets = "globalSnippetsCmd.sortAllSnippets",
 	// ws commands
@@ -367,6 +376,32 @@ export async function importSnippets(snippetsProvider: SnippetsProvider) {
 	});
 }
 
+export async function importSnippetsIntoFolder(snippetsProvider: SnippetsProvider) {
+	vscode.window.showOpenDialog({
+		canSelectFiles: true,
+		canSelectFolders: false,
+		canSelectMany: false,
+		filters: {
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			'JSON': ['json']
+		},
+		openLabel: 'Import',
+		title: 'Import Snippets into New Folder'
+	}).then((fileUris: vscode.Uri[] | undefined) => {
+		if (fileUris && fileUris[0] && fileUris[0].fsPath) {
+			const folderName = snippetsProvider.importSnippetsIntoFolder(fileUris[0].fsPath);
+			if (folderName) {
+				snippetsProvider.fixLastId();
+				vscode.window.showInformationMessage(
+					StringUtility.formatString(Labels.snippetsImportedIntoFolder, folderName)
+				);
+			} else {
+				vscode.window.showErrorMessage(Labels.snippetsImportIntoFolderErrorMsg);
+			}
+		}
+	});
+}
+
 export async function fixSnippets(snippetsProvider: SnippetsProvider) {
 	vscode.window.withProgress({
 		location: vscode.ProgressLocation.Window,
@@ -390,4 +425,73 @@ export async function fixSnippets(snippetsProvider: SnippetsProvider) {
 			});
 		progress.report({ increment: 100 });
 	});
+}
+
+export async function askGithubCopilot(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService, workspaceSnippetsAvailable: boolean) {
+	// if command is not triggered from treeView, a snippet must be selected by final user
+	if (!snippet) {
+		let allSnippets = snippetService.getAllSnippets();
+		if (workspaceSnippetsAvailable) {
+			allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+		}
+		snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+	}
+	if (!snippet || !snippet.value) {
+		return;
+	}
+	try {
+		vscode.commands.executeCommand('workbench.action.chat.open', snippet.value);
+	} catch (error) {
+		LoggingUtility.getInstance().error('' + error);
+	}
+}
+
+export async function addToChat(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService, workspaceSnippetsAvailable: boolean, chatCommand: string) {
+	// if command is not triggered from treeView, a snippet must be selected by final user
+	if (!snippet) {
+		let allSnippets = snippetService.getAllSnippets();
+		if (workspaceSnippetsAvailable) {
+			allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+		}
+		snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+	}
+	if (!snippet || !snippet.value) {
+		return;
+	}
+	try {
+		await vscode.commands.executeCommand(chatCommand);
+		const oldContent = await vscode.env.clipboard.readText();
+		vscode.env.clipboard.writeText(snippet.value).then(() => {
+			vscode.commands.executeCommand('editor.action.clipboardPasteAction').then(() => {
+				setTimeout(() => vscode.env.clipboard.writeText(oldContent), 100);
+			});
+		});
+	} catch (error) {
+		LoggingUtility.getInstance().error('' + error);
+	}
+}
+
+export async function addAsCodeSnippetToChat(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService, workspaceSnippetsAvailable: boolean, chatCommand: string) {
+	// if command is not triggered from treeView, a snippet must be selected by final user
+	if (!snippet) {
+		let allSnippets = snippetService.getAllSnippets();
+		if (workspaceSnippetsAvailable) {
+			allSnippets = allSnippets.concat(wsSnippetService.getAllSnippets());
+		}
+		snippet = await UIUtility.requestSnippetFromUser(allSnippets);
+	}
+	if (!snippet || !snippet.value) {
+		return;
+	}
+	try {
+		await vscode.commands.executeCommand(chatCommand);
+		const oldContent = await vscode.env.clipboard.readText();
+		vscode.env.clipboard.writeText(`\n\`\`\`\n${snippet.value}\n\`\`\`\n`).then(() => {
+			vscode.commands.executeCommand('editor.action.clipboardPasteAction').then(() => {
+				setTimeout(() => vscode.env.clipboard.writeText(oldContent), 100);
+			});
+		});
+	} catch (error) {
+		LoggingUtility.getInstance().error('' + error);
+	}
 }
