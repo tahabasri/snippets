@@ -30,6 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
     // workspace config
     const useWorkspaceFolderKey = "useWorkspaceFolder";
     const openButtonKey = "openButton";
+    const collapseFoldersKey = "collapseFolders";
     const workspaceFileName = ".vscode/snippets.json";
     let workspaceSnippetsAvailable = false;
     let wsSnippetService: SnippetService;
@@ -180,6 +181,9 @@ export function activate(context: vscode.ExtensionContext) {
         }
         if (event.affectsConfiguration(`${snippetsConfigKey}.${openButtonKey}`)) {
             handleButtonsVisibility();
+            refreshUI();
+        }
+        if (event.affectsConfiguration(`${snippetsConfigKey}.${collapseFoldersKey}`)) {
             refreshUI();
         }
     });
