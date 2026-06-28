@@ -179,10 +179,15 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
     }
 
     private snippetToTreeItem(snippet: Snippet): vscode.TreeItem {
+        // when 'collapseFolders' is enabled, folders open collapsed so that
+        // expanding one only reveals its immediate children (one level at a time)
+        const folderCollapsibleState = vscode.workspace.getConfiguration('snippets').get('collapseFolders')
+            ? vscode.TreeItemCollapsibleState.Collapsed
+            : vscode.TreeItemCollapsibleState.Expanded;
         let treeItem = new vscode.TreeItem(
             snippet.label + (snippet.language ? snippet.language : ''),
             snippet.folder && snippet.folder === true
-                ? vscode.TreeItemCollapsibleState.Expanded
+                ? folderCollapsibleState
                 : vscode.TreeItemCollapsibleState.None
         );
         // dynamic context value depending on item type (snippet or snippet folder)

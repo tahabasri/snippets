@@ -834,6 +834,11 @@
 					"type": "boolean",
 					"default": false,
 					"markdownDescription": "Click the action buttons to open snippet in editor/terminal. This will disable openning snippet by clicking on the snippet name."
+				},
+				"snippets.collapseFolders": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Open folders collapsed. Expanding a folder then reveals only its immediate children, one level at a time, instead of expanding the whole subtree. This change requires a window restart."
 				}
 			}
 		}
