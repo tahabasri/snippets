@@ -350,9 +350,13 @@ export function activate(context: vscode.ExtensionContext) {
         const matches = (s: Snippet) => isGlobalProvider || !s.language || s.language === currentLanguage.extension;
         let disposable =  currentLanguage.id === '**' ? globalCipDisposable : cipDisposable;
         const registerCIPSnippets = () => disposable = vscode.languages.registerCompletionItemProvider(
+            // No `scheme` filter: the provider must match every host, not just local
+            // files. Pinning scheme:'file'/'untitled' hid completions in remote sessions
+            // (Remote-SSH/WSL use vscode-remote, web/Codespaces use vscode-vfs) whenever
+            // the extension ran on the UI side — see issue #95.
             currentLanguage.id === '**' // use pattern filter for non-language snippets
-            ? [{ language: 'plaintext', scheme: 'file' }, { language: 'plaintext', scheme: 'untitled' }]
-            : [{ language: currentLanguage.id, scheme: 'file' }, { language: currentLanguage.id, scheme: 'untitled' }]
+            ? [{ language: 'plaintext' }]
+            : [{ language: currentLanguage.id }]
             , {
                 provideCompletionItems(document, position) {
                     if (!vscode.workspace.getConfiguration(snippetsConfigKey).get("showSuggestions")) {
