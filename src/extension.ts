@@ -13,6 +13,7 @@ import { StringUtility } from './utility/stringUtility';
 import { Labels } from './config/labels';
 import { FileDataAccess } from './data/fileDataAccess';
 import { LoggingUtility } from './utility/loggingUtility';
+import { DecorationProvider } from './provider/decorationProvider';
 
 /**
  * Activate extension by initializing views for snippets and feature commands.
@@ -31,6 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
     const useWorkspaceFolderKey = "useWorkspaceFolder";
     const openButtonKey = "openButton";
     const collapseFoldersKey = "collapseFolders";
+    const disableFolderColorCascadeKey = "disableFolderColorCascade";
     const workspaceFileName = ".vscode/snippets.json";
     let workspaceSnippetsAvailable = false;
     let wsSnippetService: SnippetService;
@@ -63,6 +65,9 @@ export function activate(context: vscode.ExtensionContext) {
     // initialize global snippets
     const dataAccess = new MementoDataAccess(context.globalState);
     const snippetService = new SnippetService(dataAccess);
+    // tints snippet/folder labels (icons are tinted via ThemeIcon in the provider)
+    const decorationProvider = new DecorationProvider();
+    context.subscriptions.push(decorationProvider);
     const snippetsProvider = new SnippetsProvider(snippetService, allLanguages);
     let cipDisposable: { dispose(): any } = {
         dispose: function () {
@@ -186,6 +191,9 @@ export function activate(context: vscode.ExtensionContext) {
         if (event.affectsConfiguration(`${snippetsConfigKey}.${collapseFoldersKey}`)) {
             refreshUI();
         }
+        if (event.affectsConfiguration(`${snippetsConfigKey}.${disableFolderColorCascadeKey}`)) {
+            refreshUI();
+        }
     });
 
     let snippetsExplorer = vscode.window.createTreeView('snippetsExplorer', {
@@ -208,6 +216,8 @@ export function activate(context: vscode.ExtensionContext) {
         LoggingUtility.getInstance().debug('Refreshing UI');
         // dispose CIP snippets
         cipDisposable?.dispose();
+        // invalidate cached label decorations so colors (incl. cascade) re-resolve
+        decorationProvider.refresh();
         snippetsProvider.refresh();
         // re-check if .vscode/snippets.json is always available (use case when deleting file after enabling workspace in settings)
         requestWSConfigSetup(false);

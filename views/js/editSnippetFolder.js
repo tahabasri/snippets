@@ -1,6 +1,12 @@
 (function() {
     const vscode = acquireVsCodeApi();
 
+    // preselect the folder's saved color
+    const colorSelect = document.getElementById('folder-color');
+    if (colorSelect) {
+        colorSelect.value = colorSelect.dataset.current || '';
+    }
+
     document.querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
         const form = document.querySelector('form[name="edit-folder-form"]');
@@ -11,11 +17,13 @@
 
         const snippetLabel = form.elements['folder-name'].value;
         const snippetIcon = form.elements['folder-icon'].value;
+        const snippetColor = form.elements['folder-color'].value;
 
         vscode.postMessage({
             data: {
                 label: snippetLabel,
-                icon: snippetIcon
+                icon: snippetIcon,
+                color: snippetColor
             },
             command: 'edit-folder'
         });

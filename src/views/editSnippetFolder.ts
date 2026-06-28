@@ -21,11 +21,13 @@ export class EditSnippetFolder extends EditView {
             case 'edit-folder':
                 const label = message.data.label;
                 const icon = message.data.icon;
+                const color = message.data.color;
                 // call provider only if there is data change
                 if (label) {
                     this._snippet.label = label;
                 }
                 this._snippet.icon = icon;
+                this._snippet.color = color || undefined;
                 this._snippetsProvider.editSnippetFolder(this._snippet);
                 this._panel.dispose();
                 return;

@@ -76,6 +76,7 @@ button.secondary:hover {
 }
 
 input:not([type="checkbox"]),
+select,
 textarea {
 	display: block;
 	width: 100%;
@@ -96,6 +97,10 @@ textarea::placeholder {
 
 .no-m {
 	margin: 0;
+}
+
+.upper-p {
+	padding-top: 10px;
 }
 
 div {
