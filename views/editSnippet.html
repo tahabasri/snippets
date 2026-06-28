@@ -34,14 +34,14 @@
                 <div class="no-m">
                     <label for="snippet-language">Snippet Language Scope
                         <div class="tooltip"> [?]
-                            <span class="tooltiptext">Snippet will be suggested for files of the selected language only.
+                            <span class="tooltiptext">Pick a language to scope the snippet, or Global to show it in every file. Plain Text always shows all snippets.
                             </span>
                         </div>
                     </label>
                 </div>
                 <div>
                     <select id="snippet-language" name="snippet-language" init-value="{{ snippet.language }}">
-                        <option value="">--none--</option>
+                        <option value="">Global (all languages)</option>
                         {{#languages}}
                             <li>{{name}}</li>
                             <option value="{{extension}}">{{alias}}</option>

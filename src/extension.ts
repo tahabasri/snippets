@@ -332,6 +332,18 @@ export function activate(context: vscode.ExtensionContext) {
     const registerCIPSnippetsList: (() => vscode.Disposable)[] = [];
 
     for (const currentLanguage of allLanguages) {
+        // plaintext is served by the '**' provider below, which shows every snippet
+        // regardless of language scope. Skipping the regular plaintext iteration here
+        // avoids registering two providers against the same language.
+        if (currentLanguage.id === 'plaintext') {
+            continue;
+        }
+        // '**' is the dedicated plaintext provider: it surfaces every snippet so users
+        // get full IntelliSense in untitled files (which default to plaintext).
+        // For real languages, snippets with no language are treated as global and shown
+        // alongside language-scoped ones.
+        const isGlobalProvider = currentLanguage.id === '**';
+        const matches = (s: Snippet) => isGlobalProvider || !s.language || s.language === currentLanguage.extension;
         let disposable =  currentLanguage.id === '**' ? globalCipDisposable : cipDisposable;
         const registerCIPSnippets = () => disposable = vscode.languages.registerCompletionItemProvider(
             currentLanguage.id === '**' // use pattern filter for non-language snippets
@@ -344,17 +356,13 @@ export function activate(context: vscode.ExtensionContext) {
                     }
                     LoggingUtility.getInstance().debug('Registering completion items for language : ' + currentLanguage.id);
                     let isTriggeredByChar: boolean = triggerCharacter === document.lineAt(position).text.charAt(position.character - 1);
-                    let candidates = snippetService.getAllSnippets()
-                        .filter(s => (currentLanguage.id === '**' && (s.language === currentLanguage.extension || !s.language)) 
-                                        || s.language === currentLanguage.extension);
+                    let candidates = snippetService.getAllSnippets().filter(matches);
                     // append workspace snippets if WS is available
                     if (workspaceSnippetsAvailable) {
                         // add suffix for all workspace items
                         candidates = candidates.concat(
                             wsSnippetService.getAllSnippets()
-                                .filter(s => (currentLanguage.id === '**' 
-                                    && (s.language === currentLanguage.extension || !s.language)) 
-                                    || s.language === currentLanguage.extension)
+                                .filter(matches)
                                 .map(elt => {
                                     elt.completionDescription = `${elt.description ? elt.description + ' ' : ''}__(ws)`;
                                     return elt;
