@@ -298,6 +298,12 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "globalSnippetsCmd.importSnippetsIntoFolder",
+				"title": "Import Snippets into New Folder",
+				"icon": "$(cloud-download)",
+				"category": "Snippets"
+			},
+			{
 				"command": "globalSnippetsCmd.sortSnippets",
 				"title": "Sort Snippets [A-Z]",
 				"icon": "$(list-ordered)",
@@ -484,9 +490,14 @@
 					"group": "other@3"
 				},
 				{
-					"command": "globalSnippetsCmd.fixSnippets",
+					"command": "globalSnippetsCmd.importSnippetsIntoFolder",
 					"when": "view == snippetsExplorer",
 					"group": "other@4"
+				},
+				{
+					"command": "globalSnippetsCmd.fixSnippets",
+					"when": "view == snippetsExplorer",
+					"group": "other@5"
 				},
 				{
 					"command": "wsSnippetsCmd.addSnippetFromClipboard",

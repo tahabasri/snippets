@@ -40,6 +40,7 @@ export const enum CommandsConsts {
 	globalFixSnippets = "globalSnippetsCmd.fixSnippets",
 	globalExportSnippets = "globalSnippetsCmd.exportSnippets",
 	globalImportSnippets = "globalSnippetsCmd.importSnippets",
+	globalImportSnippetsIntoFolder = "globalSnippetsCmd.importSnippetsIntoFolder",
 	globalSortSnippets = "globalSnippetsCmd.sortSnippets",
 	globalSortAllSnippets = "globalSnippetsCmd.sortAllSnippets",
 	// ws commands
@@ -371,6 +372,32 @@ export async function importSnippets(snippetsProvider: SnippetsProvider) {
 							break;
 					}
 				});
+		}
+	});
+}
+
+export async function importSnippetsIntoFolder(snippetsProvider: SnippetsProvider) {
+	vscode.window.showOpenDialog({
+		canSelectFiles: true,
+		canSelectFolders: false,
+		canSelectMany: false,
+		filters: {
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			'JSON': ['json']
+		},
+		openLabel: 'Import',
+		title: 'Import Snippets into New Folder'
+	}).then((fileUris: vscode.Uri[] | undefined) => {
+		if (fileUris && fileUris[0] && fileUris[0].fsPath) {
+			const folderName = snippetsProvider.importSnippetsIntoFolder(fileUris[0].fsPath);
+			if (folderName) {
+				snippetsProvider.fixLastId();
+				vscode.window.showInformationMessage(
+					StringUtility.formatString(Labels.snippetsImportedIntoFolder, folderName)
+				);
+			} else {
+				vscode.window.showErrorMessage(Labels.snippetsImportIntoFolderErrorMsg);
+			}
 		}
 	});
 }
