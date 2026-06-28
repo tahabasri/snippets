@@ -204,6 +204,12 @@ You can explicitly set a programming language by appending the language file ext
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/038-language-scope-by-name.gif" 
 alt="Manually Bind Snippets to Languages">
 
+#### Global Snippets
+
+Snippets saved without a language scope are **global**: they appear in IntelliSense in every file, regardless of the active language. Pick `Global (all languages)` from the language picker on a Snippet to make it available everywhere.
+
+> Plain Text files always show every Snippet, global or language-scoped, since they are the default language for new untitled files.
+
 ### Resolve Snippet Syntax
 
 > Learn more about the Snippet syntax [here](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax).
