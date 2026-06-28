@@ -2,7 +2,7 @@
 	"name": "snippets",
 	"displayName": "Snippets",
 	"description": "Supercharge your Snippets in VS Code — Manage your code snippets & AI prompts without quitting your editor.",
-	"version": "4.0.0",
+	"version": "4.1.0",
 	"preview": false,
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"publisher": "tahabasri",
