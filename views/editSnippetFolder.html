@@ -13,19 +13,41 @@
 
 <body>
     <form name="edit-folder-form">
-        <div class="no-m"><label for="folder-name">Folder Name</label></div>
-        <div><input type="text" id="folder-name" value="{{snippet.label}}" required></div>
-        <div>
-            <label for="snippet-value">Folder Icon</label>
-            <div class="popup" name="_snippets_syntax">
-                Copy/paste the icon name from
-                <a href="https://microsoft.github.io/vscode-codicons/dist/codicon.html" target="_blank">here</a>
+        <div class="edit-layout">
+            <div class="left-panel">
+                <div class="no-m upper-p"><label for="folder-name">Folder Name</label></div>
+                <div><input type="text" id="folder-name" value="{{snippet.label}}" required></div>
+            </div>
+            <div class="right-panel">
+                <div><input class="saveButton" type="submit" value="Save"></div>
+                <div class="no-m"><label for="folder-icon">Folder Icon</label></div>
+                <p class="hint">Optional. Copy/paste an icon name from
+                    <a href="https://microsoft.github.io/vscode-codicons/dist/codicon.html" target="_blank">the codicon
+                        list</a>.</p>
+                <div><input type="text" id="folder-icon" value="{{snippet.icon}}"></div>
+                <div class="no-m"><label for="folder-color">Folder Color</label></div>
+                <p class="hint">Tints the folder label. Unless the cascade is disabled in settings, it also colors the
+                    snippets and subfolders inside.</p>
+                <div class="select-wrapper">
+                    <select id="folder-color" data-current="{{snippet.color}}">
+                        <option value="">Default</option>
+                        <option value="charts.red">Red</option>
+                        <option value="charts.orange">Orange</option>
+                        <option value="charts.yellow">Yellow</option>
+                        <option value="charts.green">Green</option>
+                        <option value="terminal.ansiCyan">Cyan</option>
+                        <option value="charts.blue">Blue</option>
+                        <option value="charts.purple">Purple</option>
+                        <option value="terminal.ansiMagenta">Magenta</option>
+                        <option value="charts.foreground">Gray</option>
+                        <option value="terminal.ansiWhite">White</option>
+                    </select>
+                </div>
             </div>
         </div>
-        <div><input type="text" id="folder-icon" value="{{snippet.icon}}"></div>
-        <div><input class="saveButton" type="submit" value="Save"></div>
     </form>
 </body>
 
 <script src="{{jsUri}}"></script>
+
 </html>

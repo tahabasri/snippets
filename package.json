@@ -839,6 +839,11 @@
 					"type": "boolean",
 					"default": false,
 					"markdownDescription": "Open folders collapsed. Expanding a folder then reveals only its immediate children, one level at a time, instead of expanding the whole subtree. This change requires a window restart."
+				},
+				"snippets.disableFolderColorCascade": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "By default, a folder's color cascades to all snippets and subfolders nested inside it. Enable this to limit the color to the folder and the items directly inside it (deeper descendants keep their default color)."
 				}
 			}
 		}

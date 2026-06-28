@@ -134,6 +134,10 @@ alt="Action Buttons">
 <img src="https://raw.githubusercontent.com/tahabasri/snippets/main/images/features/051-folder-icons.gif" 
 alt="Set Folder Icon">
 
+### Color your folders
+
+> Give a folder a color from the **Edit Folder** screen to make it stand out in the tree. By default the color cascades to the snippets and subfolders nested inside it. Set `snippets.disableFolderColorCascade` to limit the color to the folder and the items directly inside it instead.
+
 ### Add a description to your Snippet
 
 > Descriptions show when hovering on top of a Snippet and in IntelliSense.

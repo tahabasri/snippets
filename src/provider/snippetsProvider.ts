@@ -4,10 +4,9 @@ import { CommandsConsts } from '../config/commands';
 import { SnippetService } from '../service/snippetService';
 import { Labels } from '../config/labels';
 import { LoggingUtility } from '../utility/loggingUtility';
-import { DecorationProvider } from './decorationProvider';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
-    constructor(private _snippetService: SnippetService, private _languagesConfig: any[], private _decorationProvider: DecorationProvider) { }
+    constructor(private _snippetService: SnippetService, private _languagesConfig: any[]) { }
 
     dropMimeTypes: readonly string[] = ['application/vnd.code.tree.snippetsProvider'];
     dragMimeTypes: readonly string[] = ['text/uri-list'];
@@ -179,6 +178,32 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         this.sync();
     }
 
+    // resolve the color an item should display: its own color, otherwise the nearest
+    // colored ancestor folder. When the cascade is disabled the search stops at the
+    // direct parent, so a folder's color still reaches the items immediately inside it
+    // but not deeper descendants.
+    private getEffectiveColor(snippet: Snippet): string | undefined {
+        if (snippet.color) {
+            return snippet.color;
+        }
+        const cascadeDisabled = vscode.workspace.getConfiguration('snippets').get('disableFolderColorCascade');
+        let current = this._snippetService.getParent(snippet.parentId);
+        while (current) {
+            if (current.color) {
+                return current.color;
+            }
+            // direct parent had no color; with the cascade off we don't look further up
+            if (cascadeDisabled) {
+                return undefined;
+            }
+            if (current.parentId === undefined || current.parentId < 0) {
+                break;
+            }
+            current = this._snippetService.getParent(current.parentId);
+        }
+        return undefined;
+    }
+
     private snippetToTreeItem(snippet: Snippet): vscode.TreeItem {
         // when 'collapseFolders' is enabled, folders open collapsed so that
         // expanding one only reveals its immediate children (one level at a time)
@@ -191,26 +216,45 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 ? folderCollapsibleState
                 : vscode.TreeItemCollapsibleState.None
         );
+        // effective color is the folder's own color, or the nearest colored ancestor's
+        // (so a folder's color cascades down to everything inside it). When set, the
+        // color tints both the icon and the label:
+        //  - icon: a directly-rendered codicon (file-directory == folder glyph, symbol-file
+        //    == file glyph) tinted via ThemeIcon. The 'file'/'folder' ThemeIcon ids can't
+        //    be used here because VS Code derives them from the file-icon theme using the
+        //    resourceUri, which blanks the icon for our synthetic uris.
+        //  - label: the color rides in the resourceUri query read by DecorationProvider.
+        // Uncolored items keep the themed ThemeIcon.Folder/File exactly as before.
+        const color = this.getEffectiveColor(snippet);
+        const themeColor = color ? new vscode.ThemeColor(color) : undefined;
+        const colorUri = color
+            ? vscode.Uri.from({ scheme: 'snippets', path: `/${snippet.id}`, query: `color=${color}` })
+            : undefined;
         // dynamic context value depending on item type (snippet or snippet folder)
         // context value is used in view/item/context in 'when' condition
         if (snippet.folder && snippet.folder === true) {
             treeItem.contextValue = 'snippetFolder';
-            if (snippet.icon) {
-                treeItem.iconPath = new vscode.ThemeIcon(snippet.icon);
+            if (color) {
+                treeItem.iconPath = new vscode.ThemeIcon(snippet.icon || 'file-directory', themeColor);
+                treeItem.resourceUri = colorUri;
             } else {
-                treeItem.iconPath = vscode.ThemeIcon.Folder;
+                treeItem.iconPath = snippet.icon ? new vscode.ThemeIcon(snippet.icon) : vscode.ThemeIcon.Folder;
             }
-            treeItem.resourceUri = vscode.Uri.parse(`snippets:${snippet.id}`);
-            // decorate item
-            this._decorationProvider.decorateSnippet(treeItem.resourceUri);
         } else {
             treeItem.tooltip = snippet.description ? `(${snippet.description})\n${snippet.value}` : `${snippet.value}`;
             treeItem.contextValue = 'snippet';
-            treeItem.iconPath = vscode.ThemeIcon.File;
-            treeItem.description = snippet.prefix;
             if (snippet.language) {
-                treeItem.resourceUri = vscode.Uri.parse(`_${snippet.language}`);
+                // keep the themed language icon (resolved from the resourceUri path); a
+                // themed icon can't be tinted, so only the label is colored via the query
+                treeItem.iconPath = vscode.ThemeIcon.File;
+                treeItem.resourceUri = vscode.Uri.parse(`_${snippet.language}${color ? `?color=${color}` : ''}`);
+            } else if (color) {
+                treeItem.iconPath = new vscode.ThemeIcon('symbol-file', themeColor);
+                treeItem.resourceUri = colorUri;
+            } else {
+                treeItem.iconPath = vscode.ThemeIcon.File;
             }
+            treeItem.description = snippet.prefix;
             // conditional in configuration
             treeItem.command = {
                 command: CommandsConsts.commonOpenSnippet,
