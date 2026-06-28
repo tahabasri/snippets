@@ -172,19 +172,25 @@ export class SnippetService {
         const parentElement = SnippetService.findParent(snippet.parentId ?? Snippet.rootParentId, this._rootSnippet);
 
         if (parentElement) {
-            const index = parentElement.children.findIndex((obj => obj.id === snippet.id));
+            // Look the node up by id in the *current* in-memory tree and mutate it in place.
+            // Relying on the caller mutating a shared reference is unsafe: the tree is reloaded
+            // (getAllSnippets/refresh -> loadSnippets) on every IntelliSense lookup, which can
+            // leave an open edit webview holding a stale, orphaned node and silently drop the save.
+            const target = parentElement.children.find(obj => obj.id === snippet.id);
 
-            if (index > -1) {
-                parentElement.children.map(obj =>
-                    obj.id === snippet.id ? {
-                        ...obj,
-                        label: snippet.label,
-                        // if its a folder, don't update content, use old value instead
-                        // if its a snippet, update its content
-                        value: [snippet.folder ? obj.value : snippet.value]
-                    }
-                        : obj
-                );
+            if (target) {
+                target.label = snippet.label;
+                if (snippet.folder) {
+                    // folders: update icon, keep existing content untouched
+                    target.icon = snippet.icon;
+                } else {
+                    // snippets: update content and snippet-specific metadata
+                    target.value = snippet.value;
+                    target.language = snippet.language;
+                    target.description = snippet.description;
+                    target.prefix = snippet.prefix;
+                    target.resolveSyntax = snippet.resolveSyntax;
+                }
             }
         }
     }
