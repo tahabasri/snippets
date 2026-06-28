@@ -73,7 +73,7 @@
         const regex = '\\${?\\w+(:?\\S*)}?';
         let re = new RegExp(regex);
         var res = element.value.search(re);
-        div.style.display = res < 0 ? "none" : "inline";
+        div.style.display = res < 0 ? "none" : "block";
     };
 
     const div = document.lastChild.querySelector('div[name="_snippets_syntax"]');
