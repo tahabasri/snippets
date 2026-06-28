@@ -4,6 +4,7 @@
 	--input-padding-horizontal: 4px;
 	--input-margin-vertical: 4px;
 	--input-margin-horizontal: 0;
+	--radius: 4px;
 }
 
 body {
@@ -46,6 +47,7 @@ code {
 
 button {
 	border: none;
+	border-radius: var(--radius);
 	padding: var(--input-padding-vertical) var(--input-padding-horizontal);
 	width: 100%;
 	text-align: center;
@@ -79,6 +81,7 @@ textarea {
 	width: 100%;
 	max-width: 100%;
 	border: none;
+	border-radius: var(--radius);
 	font-family: var(--vscode-font-family);
 	padding: var(--input-padding-vertical) var(--input-padding-horizontal);
 	color: var(--vscode-input-foreground);
@@ -104,10 +107,64 @@ textarea {
 		Bitstream Vera Sans Mono, monospace;
 }
 
+/* Style the native language picker to match a VS Code dropdown. */
+.select-wrapper {
+	position: relative;
+}
+
+.select-wrapper::after {
+	/* custom chevron drawn in CSS (webview CSP blocks data-URI images) */
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+	transform: translateY(-50%);
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-top: 5px solid var(--vscode-dropdown-foreground, var(--vscode-foreground));
+}
+
+select {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	padding: var(--input-padding-vertical) 28px var(--input-padding-vertical) var(--input-padding-horizontal);
+	border: 1px solid var(--vscode-dropdown-border, transparent);
+	border-radius: var(--radius);
+	font-family: var(--vscode-font-family);
+	font-size: var(--vscode-font-size);
+	color: var(--vscode-dropdown-foreground, var(--vscode-foreground));
+	background-color: var(--vscode-dropdown-background, var(--vscode-input-background));
+	cursor: pointer;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+select:hover {
+	background-color: var(--vscode-dropdown-background, var(--vscode-input-background));
+}
+
+select:focus {
+	outline-color: var(--vscode-focusBorder);
+}
+
+select option {
+	color: var(--vscode-dropdown-foreground, var(--vscode-foreground));
+	background-color: var(--vscode-dropdown-listBackground, var(--vscode-dropdown-background, var(--vscode-input-background)));
+}
+
+/* Snippet-syntax notice: quote-styled like .hint but green (VS Code success text).
+   Toggled to display:block by editSnippet.js when snippet syntax is detected. */
 .popup {
-	display: inline;
-	color: var(--vscode-button-secondaryForeground);
-	background: var(--vscode-button-secondaryBackground);
+	margin: 2px 0 0;
+	padding: 2px 0 2px 8px;
+	border-left: 2px solid var(--vscode-charts-green, #89d185);
+	color: var(--vscode-charts-green, #89d185);
+	font-size: 0.9em;
 }
 
 .changelog-header {
@@ -128,27 +185,34 @@ input.saveButton {
 	background-color: var(--vscode-button-background);
 }
 
-/* Tooltip */
-.tooltip {
+/* Two-panel edit layout: content on the left (60%), Save + advanced options
+   on the right (40%) so the Save button stays visible (see issue #129). */
+.edit-layout {
+	display: flex;
+	gap: var(--container-paddding);
+	align-items: flex-start;
 	margin: 0;
-	position: relative;
-	display: inline-block;
-	border-bottom: 1px dotted black;
 }
 
-.tooltip .tooltiptext {
-	margin-left: 3px;
-	visibility: hidden;
-	min-width: max-content;
-	background-color: black;
-	color: #fff;
-	text-align: center;
-	padding: 5px 5px;
-	border-radius: 6px;
-	position: absolute;
-	z-index: 1;
+.left-panel {
+	flex: 3;
+	min-width: 0;
+	margin: 0;
 }
 
-.tooltip:hover .tooltiptext {
-	visibility: visible;
+.right-panel {
+	flex: 2;
+	min-width: 0;
+	margin: 0;
+}
+
+/* Field hint: always-visible helper text under a label, quote-styled with a
+   muted accent bar (replaces the old hover tooltip). */
+.hint {
+	margin: 2px 0 0;
+	padding: 2px 0 2px 8px;
+	border-left: 2px solid var(--vscode-input-border, var(--vscode-button-background));
+	color: var(--vscode-descriptionForeground, var(--vscode-foreground));
+	font-size: 0.9em;
+	opacity: 0.85;
 }
