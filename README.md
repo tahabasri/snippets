@@ -1,10 +1,11 @@
-![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/tahabasri.snippets.svg?style=flat-square)
-![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/tahabasri.snippets.svg?style=flat-square)
-![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/tahabasri.snippets.svg?style=flat-square)
-![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/tahabasri.snippets.svg?style=flat-square)
-![GitHub Repo stars](https://img.shields.io/github/stars/tahabasri/snippets)
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/tahabasri/snippets/unit-tests.yml)
-![The MIT License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)
+[![Visual Studio Marketplace Version](https://vsmarketplacebadges.dev/version/tahabasri.snippets.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=tahabasri.snippets)
+[![Open VSX Version](https://img.shields.io/open-vsx/v/tahabasri/snippets?style=flat-square&label=Open%20VSX&logo=eclipseide&logoColor=white&color=a60ee5)](https://open-vsx.org/extension/tahabasri/snippets)
+[![Visual Studio Marketplace Installs](https://vsmarketplacebadges.dev/installs/tahabasri.snippets.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=tahabasri.snippets)
+[![Visual Studio Marketplace Downloads](https://vsmarketplacebadges.dev/downloads/tahabasri.snippets.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=tahabasri.snippets)
+[![Visual Studio Marketplace Rating](https://vsmarketplacebadges.dev/rating-star/tahabasri.snippets.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=tahabasri.snippets&ssr=false#review-details)
+[![GitHub Repo stars](https://img.shields.io/github/stars/tahabasri/snippets?style=flat-square&logo=github&logoColor=white&color=2bbc8a)](https://github.com/tahabasri/snippets/stargazers)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/tahabasri/snippets/unit-tests.yml?style=flat-square&logo=githubactions&logoColor=white&label=tests)](https://github.com/tahabasri/snippets/actions/workflows/unit-tests.yml)
+![The MIT License](https://img.shields.io/badge/license-MIT-orange?style=flat-square&logo=opensourceinitiative&logoColor=white)
 
 # Snippets — Supercharge Snippets in VS Code and Cursor
 
