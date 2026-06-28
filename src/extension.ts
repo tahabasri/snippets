@@ -21,7 +21,7 @@ import { DecorationProvider } from './provider/decorationProvider';
  */
 export function activate(context: vscode.ExtensionContext) {
     // exact version for which show Changelog panel
-    const changelogVersion = '4.0.0';
+    const changelogVersion = '4.1.0';
 
     //** variables **//
     // global settings

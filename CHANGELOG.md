@@ -1,4 +1,15 @@
 # Change Log
+### 4.1.0
+
+- [[#113](https://github.com/tahabasri/snippets/pull/113)] Added folder coloring with optional cascade to child folders.
+- [[#137](https://github.com/tahabasri/snippets/pull/137)]
+  - Redesigned the snippet editor into a two-panel layout.
+  - Fixed snippet edits randomly not saving.
+- [[#138](https://github.com/tahabasri/snippets/pull/138)] Fixed snippet IntelliSense missing in remote (SSH) sessions.
+- [[#136](https://github.com/tahabasri/snippets/pull/136)] Added setting to open folders collapsed by default.
+- [[#135](https://github.com/tahabasri/snippets/pull/135)] Surfaced language-less Snippets as Global in IntelliSense.
+- [[#134](https://github.com/tahabasri/snippets/pull/134)] Added support for importing snippets into a dedicated folder (without overwriting).
+
 ### 4.0.0
 
 - [[#116](https://github.com/tahabasri/snippets/pull/116)]
