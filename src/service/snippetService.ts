@@ -1,3 +1,4 @@
+import { Labels } from "../config/labels";
 import { DataAccess } from "../data/dataAccess";
 import { FileDataAccess } from "../data/fileDataAccess";
 import { Snippet } from "../interface/snippet";
@@ -251,5 +252,51 @@ export class SnippetService {
         this._rootSnippet.children = newSnippets.children;
         this._rootSnippet.lastId = newSnippets.lastId;
         LoggingUtility.getInstance().info(`Imported snippets from source (${destinationPath})`);
+    }
+
+    importSnippetsIntoFolder(sourcePath: string): string | undefined {
+        const imported: Snippet = new FileDataAccess(sourcePath).load();
+        if (!imported || !imported.children) {
+            return undefined;
+        }
+
+        // Pick a unique folder name at root, deduping with " (N)" suffix on collisions
+        const baseName: string = Labels.importedSnippetsFolderLabel;
+        let folderName: string = baseName;
+        let counter = 2;
+        const existingLabels = new Set(this._rootSnippet.children.map(c => c.label));
+        while (existingLabels.has(folderName)) {
+            folderName = `${baseName} (${counter++})`;
+        }
+
+        const newFolderId = this.incrementLastId();
+        this._updateLastId(newFolderId);
+        const newFolder: Snippet = {
+            id: newFolderId,
+            parentId: Snippet.rootParentId,
+            label: folderName,
+            folder: true,
+            children: []
+        };
+
+        // Recursively re-id the imported subtree so ids never collide with existing ones
+        const reId = (nodes: Snippet[], parentId: number): Snippet[] => {
+            const out: Snippet[] = [];
+            for (const n of (nodes || [])) {
+                const id = this.incrementLastId();
+                this._updateLastId(id);
+                const copy: Snippet = { ...n, id, parentId, children: [] };
+                if (n.folder && n.children && n.children.length) {
+                    copy.children = reId(n.children, id);
+                }
+                out.push(copy);
+            }
+            return out;
+        };
+
+        newFolder.children = reId(imported.children, newFolderId);
+        this._rootSnippet.children.push(newFolder);
+        LoggingUtility.getInstance().info(`Imported snippets from ${sourcePath} into folder "${folderName}"`);
+        return folderName;
     }
 }

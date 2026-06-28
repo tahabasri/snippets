@@ -197,14 +197,91 @@ suite('SnippetsProvider Advanced Tests', () => {
     const testPath = path.join(__dirname, 'test-import.json');
     const importSpy = sandbox.spy(mockSnippetService, 'importSnippets');
     const syncSpy = sandbox.spy(snippetsProvider, 'sync');
-    
+
     // Act
     snippetsProvider.importSnippets(testPath);
-    
+
     // Assert
     assert.ok(importSpy.calledOnce);
     assert.ok(importSpy.calledWith(testPath));
     assert.ok(syncSpy.calledOnce);
+  });
+
+  test('importSnippetsIntoFolder preserves existing snippets and re-ids imported subtree', async () => {
+    // Arrange — real SnippetService backed by MockDataAccess (no file IO for storage)
+    const service = new SnippetService(new MockDataAccess());
+    const provider = new SnippetsProvider(service, []);
+
+    // Add an existing snippet so we can assert it isn't touched by the import
+    const existing: Snippet = {
+      id: service.incrementLastId(),
+      parentId: Snippet.rootParentId,
+      label: 'Existing Snippet',
+      value: 'existing',
+      children: []
+    };
+    service.addSnippet(existing);
+
+    // Write a JSON file mimicking an export — ids here intentionally collide with existing ids
+    const tmpFile = path.join(__dirname, `test-import-into-folder-${Date.now()}.json`);
+    const importedTree: Snippet = {
+      id: 1,
+      parentId: -1,
+      label: 'snippets',
+      folder: true,
+      lastId: 3,
+      children: [
+        {
+          id: 2,
+          parentId: 1,
+          label: 'Imported Folder',
+          folder: true,
+          children: [
+            { id: 3, parentId: 2, label: 'Inner Snippet', value: 'inner', children: [] }
+          ]
+        }
+      ]
+    };
+    fs.writeFileSync(tmpFile, JSON.stringify(importedTree));
+
+    try {
+      // Act
+      const folderName = provider.importSnippetsIntoFolder(tmpFile);
+
+      // Assert — first import lands in the default folder name
+      assert.strictEqual(folderName, 'Imported Snippets');
+
+      const rootChildren = service.getRootChildren();
+      const stillThere = rootChildren.find(c => c.id === existing.id && c.label === 'Existing Snippet');
+      assert.ok(stillThere, 'existing snippet should be preserved');
+
+      const newFolder = rootChildren.find(c => c.label === 'Imported Snippets');
+      assert.ok(newFolder, 'new folder should be created at root');
+      assert.strictEqual(newFolder!.folder, true);
+
+      // All ids in the new subtree must be unique and not collide with the existing snippet id
+      const allIds: number[] = [];
+      const collect = (nodes: Snippet[]) => {
+        for (const n of nodes) {
+          allIds.push(n.id);
+          if (n.children) { collect(n.children); }
+        }
+      };
+      collect([newFolder!]);
+      assert.strictEqual(new Set(allIds).size, allIds.length, 'imported ids must be unique');
+      assert.ok(!allIds.includes(existing.id), 'imported ids must not collide with existing ids');
+
+      // ParentId chain must be rewired to the new ids
+      const innerFolder = newFolder!.children[0];
+      assert.strictEqual(innerFolder.parentId, newFolder!.id);
+      assert.strictEqual(innerFolder.children[0].parentId, innerFolder.id);
+
+      // Second import on the same data should dedupe the folder name
+      const secondName = provider.importSnippetsIntoFolder(tmpFile);
+      assert.strictEqual(secondName, 'Imported Snippets (2)');
+    } finally {
+      if (fs.existsSync(tmpFile)) { fs.unlinkSync(tmpFile); }
+    }
   });
 
   test('dragAndDrop functionality moves snippet to target folder', async function() {
