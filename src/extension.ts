@@ -428,7 +428,7 @@ export function activate(context: vscode.ExtensionContext) {
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonOpenSnippetButton,
-        async (snippet) => handleCommand(async () => commands.openSnippet(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable))
+        async (snippet) => handleCommand(async () => commands.openSnippet(snippet, snippetService, wsSnippetService, workspaceSnippetsAvailable, false, true))
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.commonOpenSnippetInTerminal,

@@ -840,6 +840,11 @@
 					"type": "boolean",
 					"default": false,
 					"markdownDescription": "By default, a folder's color cascades to all snippets and subfolders nested inside it. Enable this to limit the color to the folder and the items directly inside it (deeper descendants keep their default color)."
+				},
+				"snippets.doubleClickToOpen": {
+					"type": "boolean",
+					"default": false,
+					"markdownDescription": "Require a double-click to insert a snippet from the tree, instead of a single click. The first click only selects the snippet; a second click within a short delay inserts it. Has no effect when action buttons are enabled (`#snippets.openButton#`)."
 				}
 			}
 		}

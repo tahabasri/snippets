@@ -1,6 +1,8 @@
 # Change Log
 ### 4.2.0
 
+- [[#142](https://github.com/tahabasri/snippets/pull/142)] Added setting to require a double-click to insert a snippet from the tree (off by default).
+
 ### 4.1.0
 
 - [[#113](https://github.com/tahabasri/snippets/pull/113)] Added folder coloring with optional cascade to child folders.
