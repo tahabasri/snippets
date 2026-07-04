@@ -1,4 +1,6 @@
 # Change Log
+### 4.2.0
+
 ### 4.1.0
 
 - [[#113](https://github.com/tahabasri/snippets/pull/113)] Added folder coloring with optional cascade to child folders.
