@@ -8,6 +8,12 @@ import { StringUtility } from '../utility/stringUtility';
 import { SnippetService } from '../service/snippetService';
 import { LoggingUtility } from '../utility/loggingUtility';
 
+// tracks the last snippet clicked in the tree so we can emulate a double-click
+// (VS Code tree views only expose a single-click `command`, so we measure the
+// delay between two successive clicks on the same item ourselves).
+const doubleClickThresholdMs = 500;
+let lastSnippetClick: { id: number; time: number } | undefined;
+
 export const enum CommandsConsts {
 	miscRequestWSConfig = "miscCmd.requestWSConfig",
 	// common commands across global & ws
@@ -112,12 +118,15 @@ export async function commonAddSnippet(allLanguages: any[], snippetsProvider: Sn
 }
 
 export async function openSnippet(snippet: Snippet | undefined, snippetService: SnippetService, wsSnippetService: SnippetService,
-		workspaceSnippetsAvailable: boolean, actionButtonsEnabled?: boolean) {
+		workspaceSnippetsAvailable: boolean, actionButtonsEnabled?: boolean, fromActionButton?: boolean) {
 	const editor = vscode.window.activeTextEditor;
 	if (!editor) {
 		vscode.window.showInformationMessage(Labels.noOpenEditor);
 		return;
 	}
+	// snippet is defined when the command is triggered from the tree (row click),
+	// undefined when triggered from the command palette (user picks it below)
+	const triggeredFromTreeView = snippet !== undefined;
 	// if command is not triggered from treeView, a snippet must be selected by final user
 	if (!snippet) {
 		let allSnippets = snippetService.getAllSnippets();
@@ -131,6 +140,23 @@ export async function openSnippet(snippet: Snippet | undefined, snippetService: 
 	}
 	if (!snippet || !snippet.value) {
 		return;
+	}
+	// double-click to open: when enabled (and buttons are off, i.e. the row click
+	// still opens), the first click on a snippet only selects it — the insert
+	// happens on a second click on the same snippet within the threshold. An
+	// action button always inserts on the first click, so it bypasses this gate.
+	if (triggeredFromTreeView && !actionButtonsEnabled && !fromActionButton
+		&& vscode.workspace.getConfiguration('snippets').get<boolean>('doubleClickToOpen')) {
+		const now = Date.now();
+		const isSecondClick = lastSnippetClick !== undefined
+			&& lastSnippetClick.id === snippet.id
+			&& (now - lastSnippetClick.time) <= doubleClickThresholdMs;
+		if (isSecondClick) {
+			lastSnippetClick = undefined;
+		} else {
+			lastSnippetClick = { id: snippet.id, time: now };
+			return;
+		}
 	}
 	// 3.1 update: disable syntax resolving by default if property is not yet defined in JSON
 	if (snippet.resolveSyntax === undefined) {
