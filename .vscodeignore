@@ -13,3 +13,7 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 out/**
+# README/docs images are served from GitHub (absolute raw URLs), so keep them out
+# of the VSIX; only the extension icon under images/logo is needed at runtime.
+images/**
+!images/logo/**
