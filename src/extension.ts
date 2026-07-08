@@ -21,7 +21,9 @@ import { DecorationProvider } from './provider/decorationProvider';
  */
 export function activate(context: vscode.ExtensionContext) {
     // exact version for which show Changelog panel
-    const changelogVersion = '4.2.0';
+    // 4.2.0 intentionally skips the "What's New" panel, so this stays at 4.1.0
+    // (currentVersion !== changelogVersion => NewRelease is never shown)
+    const changelogVersion = '4.1.0';
 
     //** variables **//
     // global settings
