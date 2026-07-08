@@ -1,7 +1,9 @@
 # Change Log
+
 ### 4.2.0
 
 - [[#142](https://github.com/tahabasri/snippets/pull/142)] Added setting to require a double-click to insert a snippet from the tree (off by default).
+- [[#143](https://github.com/tahabasri/snippets/pull/143)] Reduced the published extension size from ~19MB to ~850KB by excluding README images from the package.
 
 ### 4.1.0
 
