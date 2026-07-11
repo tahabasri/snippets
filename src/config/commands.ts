@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Snippet } from '../interface/snippet';
 import { SnippetsProvider } from '../provider/snippetsProvider';
+import { SnippetEditorProvider } from '../provider/snippetEditorProvider';
 import { UIUtility } from "../utility/uiUtility";
 import { EditSnippet } from '../views/editSnippet';
 import { Labels } from "./labels";
@@ -16,6 +17,7 @@ let lastSnippetClick: { id: number; time: number } | undefined;
 
 export const enum CommandsConsts {
 	miscRequestWSConfig = "miscCmd.requestWSConfig",
+	miscOpenBackupsFolder = "miscCmd.openBackupsFolder",
 	// common commands across global & ws
 	commonOpenSnippet = "globalSnippetsCmd.openSnippet",
 	commonOpenSnippetButton = "globalSnippetsCmd.openSnippetButton",
@@ -38,6 +40,7 @@ export const enum CommandsConsts {
 	globalAddSnippetFromClipboard = "globalSnippetsCmd.addSnippetFromClipboard",
 	globalAddSnippetFolder = "globalSnippetsCmd.addSnippetFolder",
 	globalEditSnippet = "globalSnippetsCmd.editSnippet",
+	globalQuickEditSnippet = "globalSnippetsCmd.quickEditSnippet",
 	globalEditSnippetFolder = "globalSnippetsCmd.editSnippetFolder",
 	globalDeleteSnippet = "globalSnippetsCmd.deleteSnippet",
 	globalDeleteSnippetFolder = "globalSnippetsCmd.deleteSnippetFolder",
@@ -54,6 +57,7 @@ export const enum CommandsConsts {
 	wsAddSnippetFromClipboard = "wsSnippetsCmd.addSnippetFromClipboard",
 	wsAddSnippetFolder = "wsSnippetsCmd.addSnippetFolder",
 	wsEditSnippet = "wsSnippetsCmd.editSnippet",
+	wsQuickEditSnippet = "wsSnippetsCmd.quickEditSnippet",
 	wsEditSnippetFolder = "wsSnippetsCmd.editSnippetFolder",
 	wsDeleteSnippet = "wsSnippetsCmd.deleteSnippet",
 	wsDeleteSnippetFolder = "wsSnippetsCmd.deleteSnippetFolder",
@@ -341,6 +345,13 @@ export async function addSnippetFolder(snippetsExplorer: vscode.TreeView<Snippet
 	}
 }
 
+export async function quickEditSnippet(snippet: Snippet, view: string, editorProvider: SnippetEditorProvider) {
+	// open the snippet body in a real editor tab backed by the virtual file system;
+	// ctrl+s routes through SnippetEditorProvider.writeFile which applies the change
+	const document = await vscode.workspace.openTextDocument(editorProvider.buildUri(view, snippet));
+	await vscode.window.showTextDocument(document, { preview: false });
+}
+
 export function editSnippet(context: vscode.ExtensionContext, snippet: Snippet, snippetsProvider: SnippetsProvider) {
 	if (snippet.resolveSyntax === undefined) {
 		// 3.1 update: disable syntax resolving by default if property is not yet defined in JSON
@@ -385,10 +396,10 @@ export async function importSnippets(snippetsProvider: SnippetsProvider) {
 			vscode.window.showWarningMessage(
 				Labels.snippetImportRequestConfirmation,
 				...[Labels.importSnippets, Labels.discardImport])
-				.then(selection => {
+				.then(async selection => {
 					switch (selection) {
 						case Labels.importSnippets:
-							if (snippetsProvider.importSnippets(fileUris[0].fsPath)) {
+							if (await snippetsProvider.importSnippets(fileUris[0].fsPath)) {
 								snippetsProvider.fixLastId();
 								vscode.window.showInformationMessage(Labels.snippetsImported);
 							} else {
@@ -413,9 +424,9 @@ export async function importSnippetsIntoFolder(snippetsProvider: SnippetsProvide
 		},
 		openLabel: 'Import',
 		title: 'Import Snippets into New Folder'
-	}).then((fileUris: vscode.Uri[] | undefined) => {
+	}).then(async (fileUris: vscode.Uri[] | undefined) => {
 		if (fileUris && fileUris[0] && fileUris[0].fsPath) {
-			const folderName = snippetsProvider.importSnippetsIntoFolder(fileUris[0].fsPath);
+			const folderName = await snippetsProvider.importSnippetsIntoFolder(fileUris[0].fsPath);
 			if (folderName) {
 				snippetsProvider.fixLastId();
 				vscode.window.showInformationMessage(
@@ -437,9 +448,9 @@ export async function fixSnippets(snippetsProvider: SnippetsProvider) {
 		progress.report({  increment: 0 });
 		vscode.window
 			.showInformationMessage(Labels.troubleshootConfirmation, Labels.troubleshootProceed, Labels.troubleshootCancel)
-			.then(answer => {
+			.then(async answer => {
 				if (answer === Labels.troubleshootProceed) {
-					let results = snippetsProvider.fixSnippets();
+					let results = await snippetsProvider.fixSnippets();
 					vscode.window.showInformationMessage(
 						(results[0] > 0 || results[1] > 0) 
 						? Labels.troubleshootResultsDone + ' '

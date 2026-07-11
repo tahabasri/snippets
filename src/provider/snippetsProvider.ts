@@ -2,11 +2,18 @@ import * as vscode from 'vscode';
 import { Snippet } from '../interface/snippet';
 import { CommandsConsts } from '../config/commands';
 import { SnippetService } from '../service/snippetService';
+import { BackupManager } from '../service/backupService';
 import { Labels } from '../config/labels';
 import { LoggingUtility } from '../utility/loggingUtility';
 
 export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscode.TreeDragAndDropController<Snippet> {
-    constructor(private _snippetService: SnippetService, private _languagesConfig: any[]) { }
+    constructor(private _snippetService: SnippetService, private _languagesConfig: any[],
+        private _backupManager?: BackupManager) { }
+
+    // best-effort snapshot of the current tree before a destructive operation
+    private backupBefore(reason: string): void {
+        this._backupManager?.backup(this._snippetService.compact(), reason);
+    }
 
     dropMimeTypes: readonly string[] = ['application/vnd.code.tree.snippetsProvider'];
     dragMimeTypes: readonly string[] = ['text/uri-list'];
@@ -67,11 +74,17 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
             transferSnippet.parentId = target.id;
             this._snippetService.addExistingSnippet(transferSnippet);
         }
-        this.sync();
+        return this.sync();
     }
 
     getTreeItem(element: Snippet): vscode.TreeItem {
         return this.snippetToTreeItem(element);
+    }
+
+    // resolve a leaf snippet from the current tree by id (used by Quick Edit,
+    // whose virtual documents reference snippets by id across reloads)
+    getSnippetById(id: number): Snippet | undefined {
+        return this._snippetService.getAllSnippets().find(s => s.id === id);
     }
 
     getChildren(element?: Snippet): Thenable<Snippet[]> {
@@ -93,17 +106,19 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
     }
 
     // save state of snippets, then refresh
-    sync(): void {
+    // awaiting the save before refreshing is what surfaces write failures — a
+    // fire-and-forget save would repaint the tree from a state that never committed
+    async sync(): Promise<void> {
         LoggingUtility.getInstance().debug(`Syncing snippets`);
-        this._snippetService.saveSnippets();
+        await this._snippetService.saveSnippets();
         this.refresh();
     }
 
-    addSnippet(name: string, snippet: string, parentId: number, languageExt?: string) {
+    addSnippet(name: string, snippet: string, parentId: number, languageExt?: string): Promise<void> {
         let lastId = this._snippetService.incrementLastId();
 
         let extStartPoint = name.lastIndexOf("\.");
-        
+
         if (extStartPoint > 0 && extStartPoint < (name.length-1)) {
             let extension = name.slice(extStartPoint);
             let language = this._languagesConfig.find(l => l.extension === extension);
@@ -123,10 +138,10 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 children: []
             }
         );
-        this.sync();
+        return this.sync();
     }
 
-    addSnippetFolder(name: string, parentId: number, icon?: string) {
+    async addSnippetFolder(name: string, parentId: number, icon?: string): Promise<number> {
         let lastId = this._snippetService.incrementLastId();
 
         this._snippetService.addSnippet(
@@ -139,43 +154,46 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
                 children: []
             }
         );
-        this.sync();
+        await this.sync();
         return lastId;
     }
 
-    editSnippet(snippet: Snippet) {
+    editSnippet(snippet: Snippet): Promise<void> {
         this._snippetService.updateSnippet(snippet);
-        this.sync();
+        return this.sync();
     }
 
-    editSnippetFolder(snippet: Snippet) {
+    editSnippetFolder(snippet: Snippet): Promise<void> {
         this._snippetService.updateSnippet(snippet);
-        this.sync();
+        return this.sync();
     }
 
-    removeSnippet(snippet: Snippet) {
+    removeSnippet(snippet: Snippet): Promise<void> {
+        if (snippet.folder && snippet.children && snippet.children.length > 0) {
+            this.backupBefore('delete-folder');
+        }
         this._snippetService.removeSnippet(snippet);
-        this.sync();
+        return this.sync();
     }
 
-    moveSnippetUp(snippet: Snippet) {
+    moveSnippetUp(snippet: Snippet): Promise<void> {
         this._snippetService.moveSnippet(snippet, -1);
-        this.sync();
+        return this.sync();
     }
 
-    moveSnippetDown(snippet: Snippet) {
+    moveSnippetDown(snippet: Snippet): Promise<void> {
         this._snippetService.moveSnippet(snippet, 1);
-        this.sync();
+        return this.sync();
     }
 
-    sortSnippets(snippet: Snippet) {
+    sortSnippets(snippet: Snippet): Promise<void> {
         this._snippetService.sortSnippets(snippet);
-        this.sync();
+        return this.sync();
     }
 
-    sortAllSnippets() {
+    sortAllSnippets(): Promise<void> {
         this._snippetService.sortAllSnippets();
-        this.sync();
+        return this.sync();
     }
 
     // resolve the color an item should display: its own color, otherwise the nearest
@@ -281,21 +299,23 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         return treeItem;
     }
 
-    exportSnippets(destinationPath: string) {
-        this._snippetService.exportSnippets(destinationPath, Snippet.rootParentId);
-        this.sync();
+    async exportSnippets(destinationPath: string): Promise<void> {
+        await this._snippetService.exportSnippets(destinationPath, Snippet.rootParentId);
+        return this.sync();
     }
 
-    importSnippets(destinationPath: string) : boolean {
-        this._snippetService.importSnippets(destinationPath);
-        this.sync();
+    async importSnippets(destinationPath: string) : Promise<boolean> {
+        // import replaces the whole tree — snapshot it first
+        this.backupBefore('import');
+        await this._snippetService.importSnippets(destinationPath);
+        await this.sync();
         const parentElt = this._snippetService.getParent(undefined);
         return parentElt !== undefined && parentElt.children!== undefined && parentElt.children.length > 0;
     }
 
-    importSnippetsIntoFolder(destinationPath: string) : string | undefined {
+    async importSnippetsIntoFolder(destinationPath: string) : Promise<string | undefined> {
         const folderName = this._snippetService.importSnippetsIntoFolder(destinationPath);
-        this.sync();
+        await this.sync();
         return folderName;
     }
 
@@ -303,7 +323,9 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         this._snippetService.fixLastId();
     }
 
-    fixSnippets() : number[] {
+    async fixSnippets() : Promise<number[]> {
+        // troubleshooting restructures the tree — snapshot it first
+        this.backupBefore('troubleshoot');
         let duplicateCount = 0;
         let corruptedCount = 0;
         // fix last id
@@ -325,15 +347,15 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         }
         // sync duplicates
         if (duplicateCount > 0) {
-            this.sync();
+            await this.sync();
         }
         // extract snippets within non-folders snippets
-        var nonFolderSnippets = 
+        var nonFolderSnippets =
             this._snippetService.getAllSnippetsAndFolders().filter(s=> !s.folder && s.children.length > 0);
-        
+
         if (nonFolderSnippets.length > 0) {
             // create folder for extracted snippets
-            const folderId = this.addSnippetFolder(Labels.troubleshootFolder, Snippet.rootParentId, 'warning');
+            const folderId = await this.addSnippetFolder(Labels.troubleshootFolder, Snippet.rootParentId, 'warning');
             snippets = this._snippetService.getAllSnippetsAndFolders();
             let targetFolder = snippets.find(s => s.id === folderId);
             if (targetFolder) {
@@ -365,7 +387,7 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         // sync corrupted
         if (corruptedCount > 0) {
             LoggingUtility.getInstance().debug(`Corrupted Count: ${corruptedCount}`);
-            this.sync();
+            await this.sync();
         }
         return new Array(duplicateCount, corruptedCount);
     }

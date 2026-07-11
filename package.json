@@ -78,6 +78,12 @@
 				"title": "Init WS Config"
 			},
 			{
+				"command": "miscCmd.openBackupsFolder",
+				"title": "Open Backups Folder",
+				"category": "Snippets",
+				"icon": "$(history)"
+			},
+			{
 				"command": "commonSnippetsCmd.refreshEntry",
 				"title": "Refresh Snippets",
 				"category": "Snippets",
@@ -196,6 +202,18 @@
 			{
 				"command": "wsSnippetsCmd.editSnippet",
 				"title": "Edit Snippet",
+				"icon": "$(edit)",
+				"category": "Snippets"
+			},
+			{
+				"command": "globalSnippetsCmd.quickEditSnippet",
+				"title": "Quick Edit Snippet",
+				"icon": "$(edit)",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.quickEditSnippet",
+				"title": "Quick Edit Snippet",
 				"icon": "$(edit)",
 				"category": "Snippets"
 			},
@@ -367,6 +385,14 @@
 					"when": "false"
 				},
 				{
+					"command": "globalSnippetsCmd.quickEditSnippet",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.quickEditSnippet",
+					"when": "false"
+				},
+				{
 					"command": "globalSnippetsCmd.editSnippetFolder",
 					"when": "false"
 				},
@@ -496,6 +522,11 @@
 					"group": "other@5"
 				},
 				{
+					"command": "miscCmd.openBackupsFolder",
+					"when": "view == snippetsExplorer",
+					"group": "other@6"
+				},
+				{
 					"command": "wsSnippetsCmd.addSnippetFromClipboard",
 					"when": "view == wsSnippetsExplorer && snippets.workspaceState == fileAvailable",
 					"group": "other"
@@ -559,6 +590,26 @@
 				},
 				{
 					"command": "wsSnippetsCmd.editSnippet",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "2_snippetManagement@3"
+				},
+				{
+					"command": "globalSnippetsCmd.quickEditSnippet",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "inline@1"
+				},
+				{
+					"command": "wsSnippetsCmd.quickEditSnippet",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "inline@1"
+				},
+				{
+					"command": "globalSnippetsCmd.quickEditSnippet",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "2_snippetManagement@3"
+				},
+				{
+					"command": "wsSnippetsCmd.quickEditSnippet",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
 					"group": "2_snippetManagement@3"
 				},
@@ -867,7 +918,7 @@
 		"@types/vscode": "^1.75.0",
 		"@typescript-eslint/eslint-plugin": "^4.1.1",
 		"@typescript-eslint/parser": "^4.1.1",
-		"@vscode/test-electron": "^2.3.4",
+		"@vscode/test-electron": "^2.5.2",
 		"eslint": "^7.9.0",
 		"glob": "^7.1.6",
 		"mocha": "^11.1.0",
