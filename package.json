@@ -200,6 +200,18 @@
 				"category": "Snippets"
 			},
 			{
+				"command": "globalSnippetsCmd.quickEditSnippet",
+				"title": "Quick Edit Snippet",
+				"icon": "$(edit)",
+				"category": "Snippets"
+			},
+			{
+				"command": "wsSnippetsCmd.quickEditSnippet",
+				"title": "Quick Edit Snippet",
+				"icon": "$(edit)",
+				"category": "Snippets"
+			},
+			{
 				"command": "globalSnippetsCmd.editSnippetFolder",
 				"title": "Edit Folder",
 				"category": "Snippets"
@@ -364,6 +376,14 @@
 				},
 				{
 					"command": "wsSnippetsCmd.editSnippet",
+					"when": "false"
+				},
+				{
+					"command": "globalSnippetsCmd.quickEditSnippet",
+					"when": "false"
+				},
+				{
+					"command": "wsSnippetsCmd.quickEditSnippet",
 					"when": "false"
 				},
 				{
@@ -559,6 +579,26 @@
 				},
 				{
 					"command": "wsSnippetsCmd.editSnippet",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "2_snippetManagement@3"
+				},
+				{
+					"command": "globalSnippetsCmd.quickEditSnippet",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "inline@1"
+				},
+				{
+					"command": "wsSnippetsCmd.quickEditSnippet",
+					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
+					"group": "inline@1"
+				},
+				{
+					"command": "globalSnippetsCmd.quickEditSnippet",
+					"when": "view == snippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/",
+					"group": "2_snippetManagement@3"
+				},
+				{
+					"command": "wsSnippetsCmd.quickEditSnippet",
 					"when": "view == wsSnippetsExplorer && viewItem =~ /^snippet(:\\S+)?$/ && snippets.workspaceState == fileAvailable",
 					"group": "2_snippetManagement@3"
 				},

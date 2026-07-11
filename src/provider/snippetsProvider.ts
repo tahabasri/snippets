@@ -74,6 +74,12 @@ export class SnippetsProvider implements vscode.TreeDataProvider<Snippet>, vscod
         return this.snippetToTreeItem(element);
     }
 
+    // resolve a leaf snippet from the current tree by id (used by Quick Edit,
+    // whose virtual documents reference snippets by id across reloads)
+    getSnippetById(id: number): Snippet | undefined {
+        return this._snippetService.getAllSnippets().find(s => s.id === id);
+    }
+
     getChildren(element?: Snippet): Thenable<Snippet[]> {
         if (element) {
             return Promise.resolve(element.children);

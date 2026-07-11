@@ -14,6 +14,7 @@ import { Labels } from './config/labels';
 import { FileDataAccess } from './data/fileDataAccess';
 import { LoggingUtility } from './utility/loggingUtility';
 import { DecorationProvider } from './provider/decorationProvider';
+import { SnippetEditorProvider } from './provider/snippetEditorProvider';
 
 /**
  * Activate extension by initializing views for snippets and feature commands.
@@ -71,6 +72,12 @@ export function activate(context: vscode.ExtensionContext) {
     const decorationProvider = new DecorationProvider();
     context.subscriptions.push(decorationProvider);
     const snippetsProvider = new SnippetsProvider(snippetService, allLanguages);
+    // virtual file system backing "Quick Edit" tabs (#131)
+    const snippetEditorProvider = new SnippetEditorProvider();
+    snippetEditorProvider.registerView('global', snippetsProvider);
+    context.subscriptions.push(vscode.workspace.registerFileSystemProvider(
+        SnippetEditorProvider.scheme, snippetEditorProvider, { isCaseSensitive: true }
+    ));
     let cipDisposable: { dispose(): any } = {
         dispose: function () {
         }
@@ -285,6 +292,7 @@ export function activate(context: vscode.ExtensionContext) {
                     const wsDataAccess = new FileDataAccess(snippetsPath);
                     wsSnippetService = new SnippetService(wsDataAccess);
                     wsSnippetsProvider = new SnippetsProvider(wsSnippetService, allLanguages);
+                    snippetEditorProvider.registerView('ws', wsSnippetsProvider);
 
                     wsSnippetsExplorer = vscode.window.createTreeView('wsSnippetsExplorer', {
                         treeDataProvider: wsSnippetsProvider,
@@ -495,6 +503,16 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsEditSnippet,
         (snippet: Snippet) => handleCommand(() => commands.editSnippet(context, snippet, wsSnippetsProvider))
+    ));
+
+    //** COMMAND : QUICK EDIT SNIPPET (#131) **/
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalQuickEditSnippet,
+        (snippet: Snippet) => handleCommand(() => commands.quickEditSnippet(snippet, 'global', snippetEditorProvider))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsQuickEditSnippet,
+        (snippet: Snippet) => handleCommand(() => commands.quickEditSnippet(snippet, 'ws', snippetEditorProvider))
     ));
 
     //** COMMAND : EDIT SNIPPET FOLDER **/

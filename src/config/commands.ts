@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Snippet } from '../interface/snippet';
 import { SnippetsProvider } from '../provider/snippetsProvider';
+import { SnippetEditorProvider } from '../provider/snippetEditorProvider';
 import { UIUtility } from "../utility/uiUtility";
 import { EditSnippet } from '../views/editSnippet';
 import { Labels } from "./labels";
@@ -38,6 +39,7 @@ export const enum CommandsConsts {
 	globalAddSnippetFromClipboard = "globalSnippetsCmd.addSnippetFromClipboard",
 	globalAddSnippetFolder = "globalSnippetsCmd.addSnippetFolder",
 	globalEditSnippet = "globalSnippetsCmd.editSnippet",
+	globalQuickEditSnippet = "globalSnippetsCmd.quickEditSnippet",
 	globalEditSnippetFolder = "globalSnippetsCmd.editSnippetFolder",
 	globalDeleteSnippet = "globalSnippetsCmd.deleteSnippet",
 	globalDeleteSnippetFolder = "globalSnippetsCmd.deleteSnippetFolder",
@@ -54,6 +56,7 @@ export const enum CommandsConsts {
 	wsAddSnippetFromClipboard = "wsSnippetsCmd.addSnippetFromClipboard",
 	wsAddSnippetFolder = "wsSnippetsCmd.addSnippetFolder",
 	wsEditSnippet = "wsSnippetsCmd.editSnippet",
+	wsQuickEditSnippet = "wsSnippetsCmd.quickEditSnippet",
 	wsEditSnippetFolder = "wsSnippetsCmd.editSnippetFolder",
 	wsDeleteSnippet = "wsSnippetsCmd.deleteSnippet",
 	wsDeleteSnippetFolder = "wsSnippetsCmd.deleteSnippetFolder",
@@ -339,6 +342,13 @@ export async function addSnippetFolder(snippetsExplorer: vscode.TreeView<Snippet
 			snippetsProvider.addSnippetFolder(name, selectedItem.parentId ?? Snippet.rootParentId);
 		}
 	}
+}
+
+export async function quickEditSnippet(snippet: Snippet, view: string, editorProvider: SnippetEditorProvider) {
+	// open the snippet body in a real editor tab backed by the virtual file system;
+	// ctrl+s routes through SnippetEditorProvider.writeFile which applies the change
+	const document = await vscode.workspace.openTextDocument(editorProvider.buildUri(view, snippet));
+	await vscode.window.showTextDocument(document, { preview: false });
 }
 
 export function editSnippet(context: vscode.ExtensionContext, snippet: Snippet, snippetsProvider: SnippetsProvider) {
