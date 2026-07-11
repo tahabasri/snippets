@@ -25,20 +25,22 @@ export class MementoDataAccess implements DataAccess {
         return rawData;
     }
 
-    save(data: Snippet): void {
-        this._storageManager.setValue<Snippet>(MementoDataAccess.snippetsMementoPrefix, data);
+    save(data: Snippet): Promise<void> {
+        return this._storageManager.setValue<Snippet>(MementoDataAccess.snippetsMementoPrefix, data);
     }
 }
 
 class StorageManager {
 
     constructor(private storage: Memento) { }
-    
+
     public getValue<T>(key : string) : T | undefined {
         return this.storage.get<T | undefined>(key, undefined);
     }
 
-    public setValue<T>(key : string, value : T){
-        this.storage.update(key, value );
+    public setValue<T>(key : string, value : T): Promise<void> {
+        // memento.update returns a Thenable; awaiting it is the only way to know
+        // the write actually committed (a fire-and-forget update swallows failures)
+        return Promise.resolve(this.storage.update(key, value));
     }
 }

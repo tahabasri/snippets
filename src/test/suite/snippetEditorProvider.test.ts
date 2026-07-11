@@ -23,8 +23,9 @@ suite('SnippetEditorProvider (Quick Edit) Tests', () => {
       return this._data;
     }
 
-    save(data: Snippet): void {
+    save(data: Snippet): Promise<void> {
       this._data = data;
+      return Promise.resolve();
     }
   }
 

@@ -7,5 +7,5 @@ export class DataAccessConsts {
 export interface DataAccess {
     hasNoChild(): boolean;
     load(): Snippet;
-    save(data: Snippet): void
+    save(data: Snippet): Promise<void>
 }

@@ -26,8 +26,9 @@ suite('SnippetsProvider Advanced Tests', () => {
       return this._data;
     }
 
-    save(data: Snippet): void {
+    save(data: Snippet): Promise<void> {
       this._data = data;
+      return Promise.resolve();
     }
   }
 
@@ -88,11 +89,11 @@ suite('SnippetsProvider Advanced Tests', () => {
       return [0, 0];
     }
 
-    public exportSnippets(destinationPath: string, parentId: number): void {
+    public async exportSnippets(destinationPath: string, parentId: number): Promise<void> {
       // Mock implementation
     }
 
-    public importSnippets(sourcePath: string): void {
+    public async importSnippets(sourcePath: string): Promise<void> {
       // Mock implementation
     }
   }
@@ -129,8 +130,8 @@ suite('SnippetsProvider Advanced Tests', () => {
     const syncSpy = sandbox.spy(snippetsProvider, 'sync');
     
     // Act
-    snippetsProvider.sortSnippets(folder);
-    
+    await snippetsProvider.sortSnippets(folder);
+
     // Assert
     assert.ok(sortSpy.calledOnce);
     assert.ok(sortSpy.calledWith(folder));
@@ -143,8 +144,8 @@ suite('SnippetsProvider Advanced Tests', () => {
     const syncSpy = sandbox.spy(snippetsProvider, 'sync');
     
     // Act
-    snippetsProvider.sortAllSnippets();
-    
+    await snippetsProvider.sortAllSnippets();
+
     // Assert
     assert.ok(sortAllSpy.calledOnce);
     assert.ok(syncSpy.calledOnce);
@@ -155,18 +156,18 @@ suite('SnippetsProvider Advanced Tests', () => {
     // Override the actual fixSnippets implementation in the SnippetsProvider
     // to directly call our mock service's fixSnippets method
     const originalFixSnippets = snippetsProvider.fixSnippets;
-    snippetsProvider.fixSnippets = function() {
+    snippetsProvider.fixSnippets = async function() {
       const result = mockSnippetService.fixSnippets();
       // Make sure sync is called
-      this.sync();
+      await this.sync();
       return result;
     };
-    
+
     const fixSnippetsSpy = sandbox.spy(mockSnippetService, 'fixSnippets');
     const syncSpy = sandbox.spy(snippetsProvider, 'sync');
-    
+
     // Act
-    const results = snippetsProvider.fixSnippets();
+    const results = await snippetsProvider.fixSnippets();
     
     // Assert
     assert.ok(fixSnippetsSpy.calledOnce);
@@ -184,8 +185,8 @@ suite('SnippetsProvider Advanced Tests', () => {
     const syncSpy = sandbox.spy(snippetsProvider, 'sync');
     
     // Act
-    snippetsProvider.exportSnippets(testPath);
-    
+    await snippetsProvider.exportSnippets(testPath);
+
     // Assert
     assert.ok(exportSpy.calledOnce);
     assert.ok(exportSpy.calledWith(testPath, Snippet.rootParentId));
@@ -199,7 +200,7 @@ suite('SnippetsProvider Advanced Tests', () => {
     const syncSpy = sandbox.spy(snippetsProvider, 'sync');
 
     // Act
-    snippetsProvider.importSnippets(testPath);
+    await snippetsProvider.importSnippets(testPath);
 
     // Assert
     assert.ok(importSpy.calledOnce);
@@ -246,7 +247,7 @@ suite('SnippetsProvider Advanced Tests', () => {
 
     try {
       // Act
-      const folderName = provider.importSnippetsIntoFolder(tmpFile);
+      const folderName = await provider.importSnippetsIntoFolder(tmpFile);
 
       // Assert — first import lands in the default folder name
       assert.strictEqual(folderName, 'Imported Snippets');
@@ -277,7 +278,7 @@ suite('SnippetsProvider Advanced Tests', () => {
       assert.strictEqual(innerFolder.children[0].parentId, innerFolder.id);
 
       // Second import on the same data should dedupe the folder name
-      const secondName = provider.importSnippetsIntoFolder(tmpFile);
+      const secondName = await provider.importSnippetsIntoFolder(tmpFile);
       assert.strictEqual(secondName, 'Imported Snippets (2)');
     } finally {
       if (fs.existsSync(tmpFile)) { fs.unlinkSync(tmpFile); }

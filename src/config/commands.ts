@@ -17,6 +17,7 @@ let lastSnippetClick: { id: number; time: number } | undefined;
 
 export const enum CommandsConsts {
 	miscRequestWSConfig = "miscCmd.requestWSConfig",
+	miscOpenBackupsFolder = "miscCmd.openBackupsFolder",
 	// common commands across global & ws
 	commonOpenSnippet = "globalSnippetsCmd.openSnippet",
 	commonOpenSnippetButton = "globalSnippetsCmd.openSnippetButton",
@@ -395,10 +396,10 @@ export async function importSnippets(snippetsProvider: SnippetsProvider) {
 			vscode.window.showWarningMessage(
 				Labels.snippetImportRequestConfirmation,
 				...[Labels.importSnippets, Labels.discardImport])
-				.then(selection => {
+				.then(async selection => {
 					switch (selection) {
 						case Labels.importSnippets:
-							if (snippetsProvider.importSnippets(fileUris[0].fsPath)) {
+							if (await snippetsProvider.importSnippets(fileUris[0].fsPath)) {
 								snippetsProvider.fixLastId();
 								vscode.window.showInformationMessage(Labels.snippetsImported);
 							} else {
@@ -423,9 +424,9 @@ export async function importSnippetsIntoFolder(snippetsProvider: SnippetsProvide
 		},
 		openLabel: 'Import',
 		title: 'Import Snippets into New Folder'
-	}).then((fileUris: vscode.Uri[] | undefined) => {
+	}).then(async (fileUris: vscode.Uri[] | undefined) => {
 		if (fileUris && fileUris[0] && fileUris[0].fsPath) {
-			const folderName = snippetsProvider.importSnippetsIntoFolder(fileUris[0].fsPath);
+			const folderName = await snippetsProvider.importSnippetsIntoFolder(fileUris[0].fsPath);
 			if (folderName) {
 				snippetsProvider.fixLastId();
 				vscode.window.showInformationMessage(
@@ -447,9 +448,9 @@ export async function fixSnippets(snippetsProvider: SnippetsProvider) {
 		progress.report({  increment: 0 });
 		vscode.window
 			.showInformationMessage(Labels.troubleshootConfirmation, Labels.troubleshootProceed, Labels.troubleshootCancel)
-			.then(answer => {
+			.then(async answer => {
 				if (answer === Labels.troubleshootProceed) {
-					let results = snippetsProvider.fixSnippets();
+					let results = await snippetsProvider.fixSnippets();
 					vscode.window.showInformationMessage(
 						(results[0] > 0 || results[1] > 0) 
 						? Labels.troubleshootResultsDone + ' '

@@ -55,4 +55,52 @@ suite('FileDataAccess Tests', () => {
     // Assert: Check if it returns false
     assert.strictEqual(result, false);
   });
+
+  test('save is atomic: leaves no temp file and survives a save/load roundtrip', async () => {
+    const rootWithChildren: Snippet = {
+      id: 1,
+      label: 'Root',
+      children: [{ id: 2, label: 'Child', value: 'v', children: [] }],
+    };
+
+    await fileDataAccess.save(rootWithChildren);
+
+    assert.strictEqual(fs.existsSync(`${testDataFile}.tmp`), false, 'temp file must be renamed away');
+    const loaded = fileDataAccess.load();
+    assert.strictEqual(loaded.children.length, 1);
+    assert.strictEqual(loaded.children[0].label, 'Child');
+  });
+
+  test('load throws on corrupted JSON by default (transient import instances)', () => {
+    fs.writeFileSync(testDataFile, '{"id":1,"label":"Root","chi');
+
+    assert.throws(() => fileDataAccess.load());
+    // the corrupt source file must be left untouched
+    assert.strictEqual(fs.readFileSync(testDataFile, 'utf8'), '{"id":1,"label":"Root","chi');
+  });
+
+  test('load recovers from corrupted JSON when recovery is enabled (persistent backend)', () => {
+    const recoveringAccess = new FileDataAccess(testDataFile, true);
+    fs.writeFileSync(testDataFile, '{"id":1,"label":"Root","chi');
+
+    let recovered: Snippet | undefined;
+    const corruptCopies = () => fs.readdirSync(__dirname).filter(f => f.startsWith('testData.json.corrupt-'));
+    try {
+      recovered = recoveringAccess.load();
+
+      // a fresh empty root is returned and re-seeded on disk
+      assert.ok(recovered);
+      assert.strictEqual(recovered!.children.length, 0);
+      assert.strictEqual(recoveringAccess.hasNoChild(), true);
+
+      // the unreadable content is preserved next to the data file
+      const copies = corruptCopies();
+      assert.strictEqual(copies.length, 1, 'corrupt file must be kept aside');
+      assert.strictEqual(fs.readFileSync(path.join(__dirname, copies[0]), 'utf8'), '{"id":1,"label":"Root","chi');
+    } finally {
+      for (const f of corruptCopies()) {
+        fs.unlinkSync(path.join(__dirname, f));
+      }
+    }
+  });
 });

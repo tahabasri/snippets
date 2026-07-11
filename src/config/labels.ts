@@ -51,6 +51,8 @@ export const enum Labels {
 
 	genericError = "[{0}]. You may refresh current window to fix issue.",
 
+	snippetsFileCorrupted = "Your snippets file [{0}] was unreadable (corrupted JSON). It was kept as [{1}] and a fresh file was created — you can also restore an automatic backup from the extension's `backups` folder (command: Open Backups Folder).",
+
 	snippetExportDestinationErrorMsg = "Export destination must not be empty.",
 
 	importSnippets = "Import data",
