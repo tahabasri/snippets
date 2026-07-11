@@ -22,8 +22,9 @@ suite('SnippetsProvider Tests', () => {
       return this._data;
     }
 
-    save(data: Snippet): void {
+    save(data: Snippet): Promise<void> {
       this._data = data;
+      return Promise.resolve();
     }
   }
 
@@ -32,14 +33,10 @@ suite('SnippetsProvider Tests', () => {
     constructor() {
       super(new MockDataAccess()); // Pass null and empty array for constructor arguments
     }
-    
+
     // Mock the methods you need for testing
     refresh(): void {
       // Mock the refresh method
-    }
-
-    sync(): void {
-      // Mock the sync method
     }
 
     // Mock other methods as needed
@@ -57,7 +54,7 @@ suite('SnippetsProvider Tests', () => {
     const parentId = 1;
 
     // Act
-    snippetsProvider.addSnippet(name, snippet, parentId);
+    await snippetsProvider.addSnippet(name, snippet, parentId);
 
     // Assert
     const allSnippets = await snippetsProvider.getChildren();
@@ -71,11 +68,11 @@ suite('SnippetsProvider Tests', () => {
     const name = 'New Snippet';
     const snippet = 'console.log("Hello, World!");';
     const parentId = 1;
-    snippetsProvider.addSnippet(name, snippet, parentId);
+    await snippetsProvider.addSnippet(name, snippet, parentId);
 
     // Act
     let allSnippets = await snippetsProvider.getChildren();
-    snippetsProvider.removeSnippet(allSnippets[0]);
+    await snippetsProvider.removeSnippet(allSnippets[0]);
 
     // Assert
     allSnippets = await snippetsProvider.getChildren();

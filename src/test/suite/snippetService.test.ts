@@ -21,8 +21,9 @@ suite('SnippetService Tests', () => {
       return this._data;
     }
 
-    save(data: Snippet): void {
+    save(data: Snippet): Promise<void> {
       this._data = data;
+      return Promise.resolve();
     }
   }
 
@@ -44,8 +45,9 @@ suite('SnippetService Tests', () => {
       return JSON.parse(JSON.stringify(this._data));
     }
 
-    save(data: Snippet): void {
+    save(data: Snippet): Promise<void> {
       this._data = JSON.parse(JSON.stringify(data));
+      return Promise.resolve();
     }
   }
 

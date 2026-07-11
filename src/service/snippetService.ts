@@ -110,8 +110,8 @@ export class SnippetService {
         return this._dataAccess.load();
     }
     
-    saveSnippets(): void {
-        this._dataAccess.save(this._rootSnippet);
+    saveSnippets(): Promise<void> {
+        return this._dataAccess.save(this._rootSnippet);
     }
 
     fixLastId(): void{
@@ -239,18 +239,18 @@ export class SnippetService {
         }
     }
 
-    exportSnippets(destinationPath: string, parentId: number) {
+    async exportSnippets(destinationPath: string, parentId: number): Promise<void> {
         const parentElement = SnippetService.findParent(parentId ?? Snippet.rootParentId, this._rootSnippet);
         if (parentElement) {
             // save file using destroyable instance of FileDataAccess
-            new FileDataAccess(destinationPath).save(parentElement);
+            await new FileDataAccess(destinationPath).save(parentElement);
             LoggingUtility.getInstance().info(`Exported snippets to destination (${destinationPath})`);
         }
     }
 
-    importSnippets(destinationPath: string) {
+    async importSnippets(destinationPath: string): Promise<void> {
         // save a backup version of current snippets next to the file to import
-        this.exportSnippets(
+        await this.exportSnippets(
             destinationPath.replace(FileDataAccess.dataFileExt, `_pre-import-bak${FileDataAccess.dataFileExt}`),
             Snippet.rootParentId
         );
