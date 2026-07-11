@@ -134,6 +134,14 @@ alt="Preview Snippets">
 
 ## Manage
 
+### Quick Edit a Snippet
+
+Click the pencil icon on any Snippet to open its body in a regular editor tab — with full syntax highlighting for the Snippet's language. Save the tab (`ctrl+s`) and the change is applied to the Snippet instantly; every other field (name, prefix, description) stays untouched. For editing all the fields at once, use the **Edit Snippet** screen from the context menu.
+
+### Automatic backups
+
+The extension keeps rolling backups of your whole library: a snapshot is written before every destructive operation (import, troubleshoot, folder deletion) and at most once a day, with the ten most recent copies retained per view. Use the **Snippets: Open Backups Folder** command to browse them — each backup is a plain JSON file you can restore through **Import Snippets**.
+
 ### Drag and drop Snippets from one folder to another
 
 Reorganize your library by dragging Snippets and folders into any folder in the tree.

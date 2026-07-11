@@ -1,5 +1,14 @@
 # Change Log
 
+### 4.3.0
+
+- [[#144](https://github.com/tahabasri/snippets/pull/144)] Hardened data safety
+  - Added automatic rolling backups (kept in the extension's global storage) before destructive operations — import, troubleshoot, folder deletion — plus one automatic snapshot per day, with a new `Snippets: Open Backups Folder` command.
+  - Writes to `.vscode/snippets.json` are now atomic — a crash mid-save can no longer corrupt the file.
+  - A corrupted snippets file no longer breaks the extension on startup: the unreadable file is preserved next to the original and reported.
+  - Failed saves now surface an error message instead of silently dropping edits.
+- [[#145](https://github.com/tahabasri/snippets/pull/145)] Added Quick Edit ([#131](https://github.com/tahabasri/snippets/issues/131)): a pencil icon on each snippet opens its body in a regular editor tab with syntax highlighting — save the tab (`ctrl+s`) to apply the change.
+
 ### 4.2.0
 
 - [[#142](https://github.com/tahabasri/snippets/pull/142)] Added setting to require a double-click to insert a snippet from the tree (off by default).

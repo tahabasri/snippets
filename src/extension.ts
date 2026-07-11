@@ -14,6 +14,8 @@ import { Labels } from './config/labels';
 import { FileDataAccess } from './data/fileDataAccess';
 import { LoggingUtility } from './utility/loggingUtility';
 import { DecorationProvider } from './provider/decorationProvider';
+import { SnippetEditorProvider } from './provider/snippetEditorProvider';
+import { BackupManager } from './service/backupService';
 
 /**
  * Activate extension by initializing views for snippets and feature commands.
@@ -21,7 +23,8 @@ import { DecorationProvider } from './provider/decorationProvider';
  */
 export function activate(context: vscode.ExtensionContext) {
     // exact version for which show Changelog panel
-    // 4.2.0 intentionally skips the "What's New" panel, so this stays at 4.1.0
+    // 4.2.0 and 4.3.0 intentionally skip the "What's New" panel (no updated release
+    // cover asset), so this stays at 4.1.0
     // (currentVersion !== changelogVersion => NewRelease is never shown)
     const changelogVersion = '4.1.0';
 
@@ -70,7 +73,16 @@ export function activate(context: vscode.ExtensionContext) {
     // tints snippet/folder labels (icons are tinted via ThemeIcon in the provider)
     const decorationProvider = new DecorationProvider();
     context.subscriptions.push(decorationProvider);
-    const snippetsProvider = new SnippetsProvider(snippetService, allLanguages);
+    // rolling backups live in the extension's global storage, shared by both views
+    const backupsDir = path.join(context.globalStorageUri.fsPath, 'backups');
+    const backupManager = new BackupManager(backupsDir, 'global');
+    const snippetsProvider = new SnippetsProvider(snippetService, allLanguages, backupManager);
+    // virtual file system backing "Quick Edit" tabs (#131)
+    const snippetEditorProvider = new SnippetEditorProvider();
+    snippetEditorProvider.registerView('global', snippetsProvider);
+    context.subscriptions.push(vscode.workspace.registerFileSystemProvider(
+        SnippetEditorProvider.scheme, snippetEditorProvider, { isCaseSensitive: true }
+    ));
     let cipDisposable: { dispose(): any } = {
         dispose: function () {
         }
@@ -84,6 +96,12 @@ export function activate(context: vscode.ExtensionContext) {
 
     // make sure lastId is accurate
     snippetService.fixLastId();
+
+    // safety net for gradual corruption: at most one automatic snapshot per day
+    const dayInMs = 24 * 60 * 60 * 1000;
+    if (Date.now() - (backupManager.latestBackupTime() ?? 0) > dayInMs) {
+        backupManager.backup(snippetService.compact(), 'daily');
+    }
 
     // show What's new if it's first time at current release
     const currentVersion = context.extension.packageJSON.version;
@@ -282,9 +300,12 @@ export function activate(context: vscode.ExtensionContext) {
 
                 // initialize workspace snippets
                 if (!wsSnippetsExplorer) {
-                    const wsDataAccess = new FileDataAccess(snippetsPath);
+                    // persistent backend: recover (and preserve) a corrupted snippets.json
+                    // instead of failing activation
+                    const wsDataAccess = new FileDataAccess(snippetsPath, true);
                     wsSnippetService = new SnippetService(wsDataAccess);
-                    wsSnippetsProvider = new SnippetsProvider(wsSnippetService, allLanguages);
+                    wsSnippetsProvider = new SnippetsProvider(wsSnippetService, allLanguages, new BackupManager(backupsDir, 'ws'));
+                    snippetEditorProvider.registerView('ws', wsSnippetsProvider);
 
                     wsSnippetsExplorer = vscode.window.createTreeView('wsSnippetsExplorer', {
                         treeDataProvider: wsSnippetsProvider,
@@ -312,11 +333,14 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     // generic error handler for most commands
-    // command: Promise<any>
-    function handleCommand(callback: (...args: any[]) => any) {
-        new Promise(callback).catch(error => {
-            vscode.window.showErrorMessage(StringUtility.formatString(Labels.genericError, error.message));
-            LoggingUtility.getInstance().error(JSON.stringify(error));
+    // Promise.resolve().then(cb) chains whatever the callback returns, so rejections
+    // from async command bodies land in the catch below. (The previous
+    // `new Promise(callback)` treated the callback as an executor whose resolve/reject
+    // were never called — the promise never settled and async errors bypassed it.)
+    function handleCommand(callback: () => any) {
+        Promise.resolve().then(callback).catch(error => {
+            vscode.window.showErrorMessage(StringUtility.formatString(Labels.genericError, error?.message ?? String(error)));
+            LoggingUtility.getInstance().error(error?.stack ?? JSON.stringify(error));
             refreshUI();
         });
     }
@@ -497,6 +521,16 @@ export function activate(context: vscode.ExtensionContext) {
         (snippet: Snippet) => handleCommand(() => commands.editSnippet(context, snippet, wsSnippetsProvider))
     ));
 
+    //** COMMAND : QUICK EDIT SNIPPET (#131) **/
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalQuickEditSnippet,
+        (snippet: Snippet) => handleCommand(() => commands.quickEditSnippet(snippet, 'global', snippetEditorProvider))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsQuickEditSnippet,
+        (snippet: Snippet) => handleCommand(() => commands.quickEditSnippet(snippet, 'ws', snippetEditorProvider))
+    ));
+
     //** COMMAND : EDIT SNIPPET FOLDER **/
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalEditSnippetFolder,
@@ -635,6 +669,14 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.globalFixSnippets,
         async _ => handleCommand(() => commands.fixSnippets(snippetsProvider))
+    ));
+
+    context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.miscOpenBackupsFolder,
+        async _ => handleCommand(async () => {
+            // make sure the folder exists even before a first backup was written
+            fs.mkdirSync(backupsDir, { recursive: true });
+            await vscode.env.openExternal(vscode.Uri.file(backupsDir));
+        })
     ));
 
     context.subscriptions.push(vscode.commands.registerCommand(commands.CommandsConsts.wsFixSnippets,
